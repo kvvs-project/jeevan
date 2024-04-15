@@ -1,0 +1,43 @@
+<html>
+    <header>
+        <title> Change Admin Password </title>
+    </header>
+    <body>
+        <h1 align="center">change password</h1>
+        <form action="check_admin_pass" method="post">{% csrf_token %}
+            <table align="center" border="0" cellpadding="10">
+                <tr>
+                    <td>
+                        Current password
+                    </td>
+                    <td>
+                        <input type="password" name="c_pass">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        New password
+                    </td>
+                    <td>
+                        <input type="password" name="n_pass">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Re-Type password
+                    </td>
+                    <td>
+                        <input type="password" name="r_pass">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit">
+                        <input type="reset">
+                        {{ message }}
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>

@@ -17,12 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from JeevanApp.views import home_page, validate_login, user_login
+from JeevanApp.views import home_page, validate_login, user_login, admin_validate_change_pass, admin_change_pass
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_page),
     path('login', user_login),
-    path('get_login', validate_login)
+    path('get_login', validate_login),
+    path('change_admin_pass', admin_change_pass),
+    path('check_admin_pass', admin_validate_change_pass)
 ]
 

@@ -29,3 +29,27 @@ def validate_login(request):
     else:
         msg = "other user"
         return render(request, "login.html", {'message': msg})
+
+
+def admin_change_pass(request):
+    return render(request, "adminchangepass.html")
+
+
+def admin_validate_change_pass(request):
+    con = db_connect()
+    cur = con.cursor()
+
+    current_pass = request.POST["c_pass"]
+    new_pass = request.POST["n_pass"]
+
+    query = "select * from UserLogin where userID = 'admin' and password = '" + current_pass + "'"
+    cur.execute(query)
+
+    if cur.rowcount == 0:
+        msg = "Invalid existing password"
+    else:
+        query = "update UserLogin set password ='" + new_pass + "'"
+        cur.execute(query)
+        con.commit()
+        msg = "password change successful"
+    return render(request, "adminchangepass.html", {'message': msg})
