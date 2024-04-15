@@ -17,7 +17,7 @@ def validate_login(request):
     userName = request.POST["uname"]
     userPass = request.POST["pass"]
 
-    query = "select * from login where userID = '" + userName + "' and passwd ='" + userPass + "'"
+    query = "select * from UserLogin where userID = '" + userName + "' and password ='" + userPass + "'"
 
     cur.execute(query)
 

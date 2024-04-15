@@ -4,7 +4,7 @@ def db_connect():
         host='localhost',
         user='root',
         password='',
-        db='mydb',
+        db='JeevanDB',
     )
 
     return con
