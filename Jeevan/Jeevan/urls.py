@@ -17,7 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from JeevanApp.views import home_page, validate_login, user_login, admin_validate_change_pass, admin_change_pass
+from JeevanApp.views import home_page, validate_login, user_login, admin_validate_change_pass, admin_change_pass, \
+    hospital_reg, validate_hospital_reg
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,6 +26,8 @@ urlpatterns = [
     path('login', user_login),
     path('get_login', validate_login),
     path('change_admin_pass', admin_change_pass),
-    path('check_admin_pass', admin_validate_change_pass)
+    path('check_admin_pass', admin_validate_change_pass),
+    path('hospital_reg', hospital_reg),
+    path('get_hreg', validate_hospital_reg)
 ]
 
