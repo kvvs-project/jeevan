@@ -23,7 +23,7 @@ from JeevanApp.views import home_page, validate_login, user_login, admin_validat
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', home_page),
+    path('', home_page),
     path('login', user_login),
     path('get_login', validate_login),
     path('change_admin_pass', admin_change_pass),
