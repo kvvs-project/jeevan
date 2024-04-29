@@ -1,4 +1,6 @@
-from django.http import HttpResponse
+import os
+
+from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from Jeevan import db_connect
@@ -104,10 +106,61 @@ def validate_hospital_reg(request):
     hidNoSuffix = hid[1:]
     hidNew = int(hidNoSuffix)
     hidNew = hidNew + 1
-    hid = "D" + str(hidNew)
+    hid = "H" + str(hidNew)
 
     query = "insert into Hospital values ( '" + hid + "','" + name + "','" + place + "','" + location + "','" + pin + "','" + phone + "','" + district + "','" + email + "','" + hType + "','" + proofName + "','" + photoName + "','" + hasBloodBank + "','" + password + "','" + date + "')"
     cur.execute(query)
     con.commit()
     msg = "ok stored"
     return render(request, "hospitalreg.html", {'message': msg})
+
+
+def hospital_approval(request):
+    con = db_connect()
+    cursor = con.cursor()
+    query = "select id,name,place,regdate from Hospital where id not in(select id from HospitalApproval)"
+    cursor.execute(query)
+    records = cursor.fetchall()
+    return render(request, "hospitalapproval.html", {'records': records})
+
+
+def show_hospital_details(request):
+    con = db_connect()
+    cursor = con.cursor()
+    hid = request.POST['hid']
+    query = "select id,name,place,Location,pin,phone,District,Email,type,hasbloodbank,proofName,Password,regdate from Hospital where id = '" + hid + "'"
+    cursor.execute(query)
+    records = cursor.fetchall()
+    return render(request, "hospitaldetails.html", {'records': records})
+
+
+def download_hospital_proof(request):
+    proof = request.POST["h_proof"]
+
+    file_path = "./static/data/hospital/proof/" + proof
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/pdf")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
+
+
+def validate_hospital_approval(request):
+    hid = request.POST['hid']
+    approve_status = request.POST['approve_status']
+    comment = request.POST['comment']
+    date = time.strftime('%Y-%m-%d %H:%M:%S')
+
+    print(hid, approve_status, comment)
+
+    con = db_connect()
+    cur = con.cursor()
+
+    query = "insert into HospitalApproval values ('" + hid + "','" + approve_status + "','" + comment + "','" + date + "')"
+    print(query)
+    cur.execute(query)
+    con.commit()
+
+    return HttpResponse("ok")
+

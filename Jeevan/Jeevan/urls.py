@@ -18,16 +18,21 @@ from django.contrib import admin
 from django.urls import path
 
 from JeevanApp.views import home_page, validate_login, user_login, admin_validate_change_pass, admin_change_pass, \
-    hospital_reg, validate_hospital_reg
+    hospital_reg, validate_hospital_reg, hospital_approval, show_hospital_details, validate_hospital_approval, \
+    download_hospital_proof
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home_page),
+    # path('', home_page),
     path('login', user_login),
     path('get_login', validate_login),
     path('change_admin_pass', admin_change_pass),
     path('check_admin_pass', admin_validate_change_pass),
     path('hospital_reg', hospital_reg),
+    path('hospital_approval', hospital_approval),
+    path('show_hospital_details', show_hospital_details),
+    path('validate_hospital_approval', validate_hospital_approval),
+    path('download_hospital_proof', download_hospital_proof),
     path('get_hreg', validate_hospital_reg)
 ]
 
