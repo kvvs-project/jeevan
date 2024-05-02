@@ -34,7 +34,13 @@
     </tr>
     <tr>
       <td height="329">&nbsp;</td>
-      <td colspan="2" rowspan="2" valign="top">{% if records %}<table border="0" align="center" cellpadding="15">{% for id,name,place,Location,pin,phone,District,Email,type,hasbloodbank,proofName,Password,regdate in records %}
+      <td colspan="2" rowspan="2" valign="top">{% if records %}<table border="0" align="center" cellpadding="15">
+        {% for photoName,id,name,place,Location,pin,phone,District,Email,type,hasbloodbank,proofName,regdate in records %}
+        <tr>
+          <td>
+            <img src="./static/data/hospital/photo/{{ photoName }}" width="300px">
+          </td>
+        </tr>
         <tr>
           <td>Hospital ID</td>
           <td>
@@ -100,15 +106,9 @@
           <td>Proof</td>
           <td><form nam="h_proof" method="post" action="download_hospital_proof">
             {% csrf_token %}
-            <input type="text" name="h_proof" value="{{ proofName }}">
+            <input type="hidden" name="h_proof" value="{{ proofName }}">
             <input type="submit" value="Download Proof">
           </form>
-          </td>
-        </tr>
-        <tr>
-          <td>Password</td>
-          <td>
-            <input type="text" name="pass" value="{{Password}}"disabled id="h-pass" />
           </td>
         </tr>
         <tr>
@@ -116,7 +116,6 @@
           <td>
             <input type="text" name="pass" value="{{regdate}}" id="h-pass" disabled />
           </td>
-
         </tr>
       </table>        </td>
       <td>&nbsp;</td>
@@ -128,15 +127,15 @@
               <td width="161">Approval Status</td>
               <td width="119"><p>
                 <div>
-                <input name="approve_status" type="radio" id="status-yes" value="Y">
+                <input name="approve_status" type="radio" id="status-yes" value="Yes"  checked>
                 <label for="status-yes">Yes</label> 
                 </div>
                 <div>
-                  <input name="approve_status" type="radio" value="N" id="status-no">
-                  <label for="status-no">No</label></td>
+                  <input name="approve_status" type="radio" value="No" id="status-no">
+                  <label for="status-no">No</label></td> </div>
                 </tr>
                 <tr>
-                  <td height="55" colspan="2">Comment</td>
+                  <td  height="55" colspan="2">Comment</td>
                 </tr>
                 <tr>
                   <td height="74" colspan="2"><textarea name="comment" maxlength="200"></textarea></td>
@@ -144,9 +143,14 @@
                 </tr>
                 <tr>
                   <td colspan="2"><input type="submit" name="Submit" value="Approve"></td>
-                  {% endfor %}
                 </tr>
-            {% else %}<br><b>No Hospitals are waiting for approval</b>{% endif %}
+                                      {% endfor %}
+              {% else %}<br><b>No Hospitals are waiting for approval</b>{% endif %}
+      <tr>
+        <td>
+          {{ message }}
+        </td>
+      </tr>
           </table>
         </form>        <p align="center"><u></u></p></td>
       <td>&nbsp;</td>

@@ -32,6 +32,30 @@ def validate_login(request):
     elif userName == "admin":
         return render(request, "adminprocess.html")
     else:
+        unSufix = userName[0]
+        if unSufix == 'H':
+            query = " select * from UserLogin where userID ='"+ userName + "' and password = '" + userPass + "'"
+            cur.execute(query)
+            if cur.rowcount == 0:
+                msg = "invalid Username / Id or password"
+                return render(request, "login.html", {'message': msg})
+            else:
+                query = "select * from HospitalApproval where id = '" + userName + "'"
+                cur.execute(query)
+                if cur.rowcount == 0:
+                    msg = "please wait for approval"
+                    return render(request, "login.html", {'message': msg})
+                else:
+                    records = cur.fetchall()
+                    for row in records:
+                        status = row[1]
+                    print(status)
+
+                    if status == "No":
+                        msg = "Your registration is rejected"
+                        return render(request, "login.html", {'message': msg})
+                    else:
+                        return render(request,"hospitaldashboard.html")
         msg = "other user"
         return render(request, "login.html", {'message': msg})
 
@@ -108,7 +132,11 @@ def validate_hospital_reg(request):
     hidNew = hidNew + 1
     hid = "H" + str(hidNew)
 
-    query = "insert into Hospital values ( '" + hid + "','" + name + "','" + place + "','" + location + "','" + pin + "','" + phone + "','" + district + "','" + email + "','" + hType + "','" + proofName + "','" + photoName + "','" + hasBloodBank + "','" + password + "','" + date + "')"
+    query = "insert into Hospital values ( '" + hid + "','" + name + "','" + place + "','" + location + "','" + pin + "','" + phone + "','" + district + "','" + email + "','" + hType + "','" + proofName + "','" + photoName + "','" + hasBloodBank + "','" + date + "')"
+    cur.execute(query)
+    con.commit()
+
+    query = "insert into UserLogin values ('" + hid +"','" + password + "')"
     cur.execute(query)
     con.commit()
     msg = "ok stored"
@@ -128,7 +156,7 @@ def show_hospital_details(request):
     con = db_connect()
     cursor = con.cursor()
     hid = request.POST['hid']
-    query = "select id,name,place,Location,pin,phone,District,Email,type,hasbloodbank,proofName,Password,regdate from Hospital where id = '" + hid + "'"
+    query = "select photoName,id,name,place,Location,pin,phone,District,Email,type,hasbloodbank,proofName,regdate from Hospital where id = '" + hid + "'"
     cursor.execute(query)
     records = cursor.fetchall()
     return render(request, "hospitaldetails.html", {'records': records})
@@ -162,5 +190,14 @@ def validate_hospital_approval(request):
     cur.execute(query)
     con.commit()
 
-    return HttpResponse("ok")
+    query = "select photoName,id,name,place,Location,pin,phone,District,Email,type,hasbloodbank,proofName,regdate from Hospital where id = '" + hid + "'"
+    cur.execute(query)
+    records = cur.fetchall()
+    msg = ""
+    if approve_status == 'Yes':
+        msg = "Successfully approved hospital"
+    else:
+        msg = "Hospital not approved"
+    print(records, msg)
+    return render(request, "hospitaldetails.html", {'records': records, 'message': msg})
 
