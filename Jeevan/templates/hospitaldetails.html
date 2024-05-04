@@ -1,11 +1,11 @@
 <html>
-  <head>
+ <head>
     <title>Hospital Registration</title>
-  </head>
+ </head>
 
-  <body>
+ <body>
 
-  <table width="913" border="0" cellpadding="0" cellspacing="0" align="center">
+ <table width="913" border="0" cellpadding="0" cellspacing="0" align="center">
     <!--DWLayoutTable-->
     <tr>
       <td width="47" height="41">&nbsp;</td>
@@ -27,7 +27,7 @@
       <td height="60">&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</t
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
@@ -44,55 +44,55 @@
         <tr>
           <td>Hospital ID</td>
           <td>
-            <input type="text" name="h_id" value="{{id}}" id="h-id" disabled/>
+            <label>{{id}}</label>
           </td>
         </tr>
         <tr>
           <td>Hospital name</td>
           <td>
-            <input type="text" name="h_name" value="{{name}}" id="h-name" disabled/>
+            <label>{{name}}</label>
           </td>
         </tr>
         <tr>
           <td>Place</td>
           <td>
-            <input type="text" name="h_place" value="{{place}}" disabled id="h-place" />
+            <label>{{place}}</label>
           </td>
         </tr>
         <tr>
           <td>Location</td>
           <td>
-            <input type="text" name="h_loc" value="{{Location}}" disabled id="h-loc"/>
+            <label>{{Location}}</label>
           </td>
         </tr>
         <tr>
           <td>Pin</td>
           <td>
-            <input type="text" name="h_pin" id="h-pin" value="{{pin}}" disabled />
+            <label>{{pin}}</label>
           </td>
         </tr>
         <tr>
           <td>Phone</td>
           <td>
-            <input type="text" name="h_phone" id="h-phone" value="{{phone}}" disabled />
+            <label>{{phone}}</label>
           </td>
         </tr>
         <tr>
           <td>District</td>
           <td>
-            <input type="text" name="h_dist" id="h-dish_dist" value="{{District}}" disabled />
+            <label>{{District}}</label>
           </td>
         </tr>
         <tr>
           <td>Email</td>
           <td>
-            <input type="text" name="h_email" id="h-email" value="{{Email}}" disabled />
+            <label>{{Email}}</label>
           </td>
         </tr>
         <tr>
           <td>Type of the Hospital</td>
           <td>
-            <input type="text" name="h_type" id="h-type" disabled value="{{type}}"/>
+            <label>{{type}}</label>
           </td>
         </tr>
         <tr>
@@ -114,7 +114,7 @@
         <tr>
           <td>Registration date</td>
           <td>
-            <input type="text" name="pass" value="{{regdate}}" id="h-pass" disabled />
+            <label>{{regdate}}</label>
           </td>
         </tr>
       </table>        </td>
@@ -127,22 +127,22 @@
               <td width="161">Approval Status</td>
               <td width="119"><p>
                 <div>
-                <input name="approve_status" type="radio" id="status-yes" value="Yes"  checked>
+                <input name="approve_status" type="radio" id="status-yes" value="Yes" checked>
                 <label for="status-yes">Yes</label> 
                 </div>
                 <div>
-                  <input name="approve_status" type="radio" value="No" id="status-no">
-                  <label for="status-no">No</label></td> </div>
+                 <input name="approve_status" type="radio" value="No" id="status-no">
+                 <label for="status-no">No</label></td> </div>
                 </tr>
                 <tr>
-                  <td  height="55" colspan="2">Comment</td>
+                 <td height="55" colspan="2">Comment</td>
                 </tr>
                 <tr>
-                  <td height="74" colspan="2"><textarea name="comment" maxlength="200"></textarea></td>
-                  <input type="text" name="hid" value="{{id}}" hidden>
+                 <td height="74" colspan="2"><textarea name="comment" maxlength="200"></textarea></td>
+                 <input type="text" name="hid" value="{{id}}" hidden>
                 </tr>
                 <tr>
-                  <td colspan="2"><input type="submit" name="Submit" value="Approve"></td>
+                 <td colspan="2"><input type="submit" name="Submit" value="Approve"></td>
                 </tr>
                                       {% endfor %}
               {% else %}<br><b>No Hospitals are waiting for approval</b>{% endif %}
@@ -171,6 +171,6 @@
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
-  </table>
-  </body>
+ </table>
+ </body>
 </html>
