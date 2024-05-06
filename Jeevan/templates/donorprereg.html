@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1 align="center">Donor Registration</h1>
+    <div align="center">
+        <form method="post" align="left" action="/donor_reg"> {% csrf_token%}
+            <label for="dist">Select your district : </label>
+            <select name="dist">
+                <option value="">Select a District</option>
+                <option value="Alappuzha">Alappuzha</option>
+                <option value="Ernakulam">Ernakulam</option>
+                <option value="Idukki">Idukki</option>
+                <option value="Kannur">Kannur</option>
+                <option value="Kasaragod">Kasaragod</option>
+                <option value="Kollam">Kollam</option>
+                <option value="Kottayam">Kottayam</option>
+                <option value="Kozhikode">Kozhikode</option>
+                <option value="Malappuram">Malappuram</option>
+                <option value="Palakkad">Palakkad</option>
+                <option value="Pathanamthitta">Pathanamthitta</option>
+                <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                <option value="Thrissur">Thrissur</option>
+                <option value="Wayanad">Wayanad</option>
+              </select>
+              <input type=submit>
+        </form>
+    </div>
+</body>
+
+</html>

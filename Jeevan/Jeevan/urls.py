@@ -19,7 +19,9 @@ from django.urls import path
 
 from JeevanApp.views import home_page, validate_login, user_login, admin_validate_change_pass, admin_change_pass, \
     hospital_reg, validate_hospital_reg, hospital_approval, show_hospital_details, validate_hospital_approval, \
-    download_hospital_proof
+    download_hospital_proof, donor_approval, show_donor_details, validate_donor_approval, download_donor_report, \
+    donor_new_organ_Donation, validate_donor_new_organ_donation, donor_organ_donation_status, \
+    donor_cancel_organ_donation, validate_donor_cancel_organ_donation
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,6 +35,15 @@ urlpatterns = [
     path('show_hospital_details', show_hospital_details),
     path('validate_hospital_approval', validate_hospital_approval),
     path('download_hospital_proof', download_hospital_proof),
-    path('get_hreg', validate_hospital_reg)
+    path('get_hreg', validate_hospital_reg),
+    path('donor_approval', donor_approval),
+    path('show_donor_details', show_donor_details),
+    path('validate_donor_approval', validate_donor_approval),
+    path('download_donor_report', download_donor_report),
+    path('donor_new_organ_Donation', donor_new_organ_Donation),
+    path('validate_donor_new_organ_donation', validate_donor_new_organ_donation),
+    path('donor_organ_donation_status', donor_organ_donation_status),
+    path('donor_cancel_organ_donation', donor_cancel_organ_donation),
+    path('validate_donor_cancel_organ_donation', validate_donor_cancel_organ_donation)
 ]
 

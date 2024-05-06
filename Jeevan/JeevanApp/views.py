@@ -1,5 +1,4 @@
 import os
-
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
@@ -32,9 +31,9 @@ def validate_login(request):
     elif userName == "admin":
         return render(request, "adminprocess.html")
     else:
-        unSufix = userName[0]
-        if unSufix == 'H':
-            query = " select * from UserLogin where userID ='"+ userName + "' and password = '" + userPass + "'"
+        unSuffix = userName[0]
+        if unSuffix == 'H':
+            query = " select * from UserLogin where userID ='" + userName + "' and password = '" + userPass + "'"
             cur.execute(query)
             if cur.rowcount == 0:
                 msg = "invalid Username / Id or password"
@@ -42,6 +41,7 @@ def validate_login(request):
             else:
                 query = "select * from HospitalApproval where id = '" + userName + "'"
                 cur.execute(query)
+                status = ""
                 if cur.rowcount == 0:
                     msg = "please wait for approval"
                     return render(request, "login.html", {'message': msg})
@@ -55,7 +55,47 @@ def validate_login(request):
                         msg = "Your registration is rejected"
                         return render(request, "login.html", {'message': msg})
                     else:
-                        return render(request,"hospitaldashboard.html")
+                        query = "delete from UserSession where type = 'H'"
+                        cur.execute(query)
+                        con.commit()
+                        query = "insert into UserSession values ('" + userName + "','" + unSuffix + "')"
+                        cur.execute(query)
+                        con.commit()
+                        return render(request, "hospitaldashboard.html")
+        elif unSuffix == 'D':
+            query = " select * from UserLogin where userID ='" + userName + "' and password = '" + userPass + "'"
+            cur.execute(query)
+            if cur.rowcount == 0:
+                msg = "invalid Username / Id or password"
+                return render(request, "login.html", {'message': msg})
+            else:
+                query = "select * from DonorApproval where id = '" + userName + "'"
+                cur.execute(query)
+                status = ""
+                if cur.rowcount == 0:
+                    msg = "please wait for approval"
+                    return render(request, "login.html", {'message': msg})
+                else:
+                    records = cur.fetchall()
+                    for row in records:
+                        status = row[1]
+                    print(status)
+
+                    if status == "No":
+                        msg = "Your registration is rejected"
+                        return render(request, "login.html", {'message': msg})
+                    else:
+                        query = "delete from UserSession where type = 'D'"
+                        cur.execute(query)
+                        con.commit()
+                        query = "insert into UserSession values ('" + userName + "','" + unSuffix + "')"
+                        cur.execute(query)
+                        con.commit()
+                        did = userName
+                        query = "select * from Donor where donorid = '" + did + "'"
+                        cur.execute(query)
+                        records = cur.fetchall()
+                        return render(request, "donordashboard.html", {'records': records})
         msg = "other user"
         return render(request, "login.html", {'message': msg})
 
@@ -136,7 +176,7 @@ def validate_hospital_reg(request):
     cur.execute(query)
     con.commit()
 
-    query = "insert into UserLogin values ('" + hid +"','" + password + "')"
+    query = "insert into UserLogin values ('" + hid + "','" + password + "')"
     cur.execute(query)
     con.commit()
     msg = "ok stored"
@@ -201,3 +241,202 @@ def validate_hospital_approval(request):
     print(records, msg)
     return render(request, "hospitaldetails.html", {'records': records, 'message': msg})
 
+
+def donor_pre_reg(request):
+    return render(request, "donorprereg.html")
+
+
+def donor_reg(request):
+    con = db_connect()
+    cur = con.cursor()
+    district = request.POST["dist"]
+    query = "select Name , ID, Place,District from Hospital where ID in ( select ID from HospitalApproval where status = 'Yes') and District = '" + district + "'"
+    cur.execute(query)
+    records = cur.fetchall()
+    con.commit()
+
+    return render(request, "donorreg.html", {'records': records})
+
+
+def validate_donor_reg(request):
+    # establish db connectivity
+    con = db_connect()
+    cur = con.cursor()
+    # create fs object
+    fs = FileSystemStorage()
+
+    # generate registration date
+    date = time.strftime('%Y-%m-%d %H:%M:%S')
+
+    # get data from client
+    name = request.POST['name']
+    place = request.POST['place']
+    gender = request.POST['gender']
+    pin = request.POST['pin']
+    hid = request.POST['hospital']
+    bloodtype = request.POST['blood']
+    phone = request.POST['phone']
+    district = request.POST['dist']
+    DType = request.POST['type']
+    email = request.POST['email']
+    address = request.POST['address']
+    dob = request.POST['dob']
+
+    password = request.POST['pass']
+
+    report = request.FILES["medicalReport"]
+    reportName = fs.save("static/data/donor/proof/" + report.name, report)
+    reportName = reportName[24:]
+
+    photo = request.FILES["photo"]
+    photoName = fs.save("static/data/donor/photo/" + photo.name, photo)
+    photoName = photoName[24:]
+
+    did = "D1000"
+    query = "select * from Donor order by donorID desc"
+    cur.execute(query)
+    records = cur.fetchall()
+    for row in records:
+        did = row[0]
+        break
+
+    didNoSuffix = did[1:]
+    didNew = int(didNoSuffix)
+    didNew = didNew + 1
+    did = "D" + str(didNew)
+
+    query = "insert into Donor values ( '" + did + "','" + hid + "','" + name + "','" + gender + "','" + bloodtype + "','" + DType + "','" + dob + "','" + pin + "','" + place + "','" + district + "','" + address + "','" + phone + "','" + email + "','" + photoName + "','" + reportName + "','" + date + "')"
+    print(query)
+    cur.execute(query)
+    con.commit()
+
+    query = "insert into UserLogin values ('" + did + "','" + password + "')"
+    cur.execute(query)
+    con.commit()
+    msg = "ok stored"
+
+    return render(request, "donorreg.html", {'message': msg})
+
+
+def donor_approval(request):
+    con = db_connect()
+    cursor = con.cursor()
+    query = "select donorid,Name,place,regdate from Donor where donorid not in(select id from DonorApproval)"
+    cursor.execute(query)
+    records = cursor.fetchall()
+    return render(request, "donorapproval.html", {'records': records})
+
+
+def show_donor_details(request):
+    con = db_connect()
+    cursor = con.cursor()
+    did = request.POST['donorid']
+    query = "select * from Donor where donorid = '" + did + "'"
+    cursor.execute(query)
+    records = cursor.fetchall()
+    print(query,records)
+    return render(request, "donordetails.html", {'records': records})
+
+
+def validate_donor_approval(request):
+    did = request.POST['donorID']
+    approve_status = request.POST['approve_status']
+    comment = request.POST['comment']
+    date = time.strftime('%Y-%m-%d %H:%M:%S')
+
+    print(did, approve_status, comment)
+
+    con = db_connect()
+    cur = con.cursor()
+
+    query = "insert into DonorApproval values ('" + did + "','" + approve_status + "','" + comment + "','" + date + "')"
+    print(query)
+    cur.execute(query)
+    con.commit()
+
+    query = "select * from Donor where donorid = '" + did + "'"
+    cur.execute(query)
+    records = cur.fetchall()
+    msg = ""
+    if approve_status == 'Yes':
+        msg = "Successfully approved Donor"
+    else:
+        msg = "Donor not approved"
+    print(records, msg)
+    return render(request, "donordetails.html", {'records': records, 'message': msg})
+
+
+def download_donor_report(request):
+    report = request.POST["report"]
+
+    file_path = "./static/data/donor/proof/" + report
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/pdf")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
+
+
+def donor_new_organ_Donation(request):
+    return render(request, "donorneworgandonation.html")
+
+
+def validate_donor_new_organ_donation(request):
+    con = db_connect()
+    cur = con.cursor()
+    date = time.strftime('%Y-%m-%d %H:%M:%S')
+    organName = request.POST['name']
+    query = "select id from UserSession where type = 'D'"
+    cur.execute(query)
+    records = cur.fetchall()
+    status = "Y"
+    did = ""
+    for row in records:
+        did = row[0]
+        break
+    print(query, records, did)
+    query = "insert into DonorOrganStatus values ('" + did + "','" + organName + "','" + status + "','" + date + "')"
+    print(query)
+    cur.execute(query)
+    con.commit()
+    query = "select * from Donor where donorid = '" + did + "'"
+    cur.execute(query)
+    records = cur.fetchall()
+    print(query, records)
+    return render(request, "donordashboard.html", {'records': records})
+
+
+def donor_organ_donation_status(request):
+    con = db_connect()
+    cur = con.cursor()
+    did = request.POST['id']
+    query = "select OrganName,Date from DonorOrganStatus where ID = '" + did + "' and Status = 'Y'"
+    cur.execute(query)
+    records = cur.fetchall()
+    return render(request, "donororganstatus.html", {'records': records})
+
+
+def donor_cancel_organ_donation(request):
+    con = db_connect()
+    cur = con.cursor()
+    did = request.POST['id']
+    query = "select ID,OrganName,Date from DonorOrganStatus where ID = '" + did + "' and Status = 'Y'"
+    cur.execute(query)
+    records = cur.fetchall()
+    return render(request,"donorcancelorgandonation.html", {'records': records})
+
+
+def validate_donor_cancel_organ_donation(request):
+    con = db_connect()
+    cur = con.cursor()
+    did = request.POST['donorID']
+    organName = request.POST['organ']
+    query = "update DonorOrganStatus set Status = 'N' where ID = '" + did + "' and  OrganName = '" + organName + "'"
+    cur.execute(query)
+    con.commit()
+    query = "select ID,OrganName,Date from DonorOrganStatus where ID = '" + did + "' and Status = 'Y'"
+    cur.execute(query)
+    records = cur.fetchall()
+    msg = "Canceled successfully"
+    return render(request,"donorcancelorgandonation.html", {'records': records, 'message': msg})

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1 align="center">Donor Registration</h1>
+        <form method="post" align="left" action="/validate_donor_new_organ_donation"> 
+            {% csrf_token%}
+            <label for="name">Select the organ you want to donate : </label>
+            <select name="name">
+                <option value="Kidneys">Kidneys</option>
+                <option value="Liver">Liver</option>
+                <option value="Lungs">Lungs</option>
+                <option value="Heart">Heart</option>
+                <option value="Pancreas">Pancreas</option>
+                <option value="Intestines">Intestines</option>
+                <option value="Corneas">Corneas</option>
+                <option value="Skin">Skin</option>
+                <option value="HeartValves">Heart valves</option>
+                <option value="Bone">Bone</option>
+                <option value="Veins">Veins</option>
+                <option value="Cartilage">Cartilage</option>
+                <option value="Tendons">Tendons</option>
+                <option value="Ligaments">Ligaments</option>
+              </select>
+              <input type=submit>
+        </form>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Untitled Document</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  </head>
+
+  <body>
+    <h1 align="center">Cancel Your Organ Donation</h1>
+    {% if records %}
+    <table
+      border="1"
+      cellspacing="0"
+      align="center"
+      cellpadding="15"
+    >
+      <tr>
+        <td>Organ Name</td>
+        <td>Registration date</td>
+        <td>Cancel registration</td>
+      </tr>
+      {% for ID,OrganName,Date in records %}
+      <tr>
+        <td >{{OrganName}}</td>
+        <td >{{Date}}</td>
+        <td>
+            <form method="post" action="/validate_donor_cancel_organ_donation">
+              {%csrf_token%}
+                <input type="hidden" name="donorID" value="{{ID}}">
+                <input type="hidden" name="organ" value="{{OrganName}}">
+                <input type="submit" value="Cancel">
+            </form>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    <br />
+    <div align="center"><b>You have not registered for any organ donation </b></div>
+    {% endif %}
+    <br>
+    <div align="center">{{message}}<div>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Untitled Document</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  </head>
+
+  <body>
+    <h1 align="center">Your Organ Donation Registration Status</h1>
+    {% if records %}
+    <table
+      width="524"
+      border="1"
+      cellspacing="0"
+      align="center"
+      cellpadding="15"
+    >
+      <tr>
+        <th>Organ Name</th>
+        <th>Registration date</th>
+      </tr>
+      {% for OrganName,Date in records %}
+      <tr>
+        <td width="78">{{OrganName}}</td>
+        <td width="84">{{Date}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    <br />
+    <div align="center"><b>You have not registered for any organ donation </b></div>
+    {% endif %}
+    <a href="javascript:window.history.back();"><button>Back</button></a>
+  </body>
+</html>
