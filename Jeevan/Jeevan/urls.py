@@ -21,7 +21,8 @@ from JeevanApp.views import home_page, validate_login, user_login, admin_validat
     hospital_reg, validate_hospital_reg, hospital_approval, show_hospital_details, validate_hospital_approval, \
     download_hospital_proof, donor_approval, show_donor_details, validate_donor_approval, download_donor_report, \
     donor_new_organ_Donation, validate_donor_new_organ_donation, donor_organ_donation_status, \
-    donor_cancel_organ_donation, validate_donor_cancel_organ_donation
+    donor_cancel_organ_donation, validate_donor_cancel_organ_donation, admin_organ_list, admin_add_new_organ, \
+    admin_validate_add_new_organ
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -44,6 +45,9 @@ urlpatterns = [
     path('validate_donor_new_organ_donation', validate_donor_new_organ_donation),
     path('donor_organ_donation_status', donor_organ_donation_status),
     path('donor_cancel_organ_donation', donor_cancel_organ_donation),
-    path('validate_donor_cancel_organ_donation', validate_donor_cancel_organ_donation)
+    path('validate_donor_cancel_organ_donation', validate_donor_cancel_organ_donation),
+    path('admin_organ_list', admin_organ_list),
+    path('admin_add_new_organ', admin_add_new_organ),
+    path('admin_validate_add_new_organ', admin_validate_add_new_organ),
 ]
 

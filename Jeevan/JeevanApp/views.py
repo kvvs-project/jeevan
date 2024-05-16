@@ -85,6 +85,7 @@ def validate_login(request):
                         msg = "Your registration is rejected"
                         return render(request, "login.html", {'message': msg})
                     else:
+
                         query = "delete from UserSession where type = 'D'"
                         cur.execute(query)
                         con.commit()
@@ -379,7 +380,21 @@ def download_donor_report(request):
 
 
 def donor_new_organ_Donation(request):
-    return render(request, "donorneworgandonation.html")
+    con = db_connect()
+    cur = con.cursor()
+
+    query = "Select * from OrganDonationTypes"
+    cur.execute(query)
+    records = cur.fetchall()
+    for row in records:
+        if row[1] == 'A':
+            row[1] = "While Alive"
+        elif row[1] == 'D':
+            row[1] = "After Death"
+        else:
+            row[1] = "Partial donation is possible"
+
+    return render(request, "donorneworgandonation.html", {'records', records})
 
 
 def validate_donor_new_organ_donation(request):
@@ -440,3 +455,33 @@ def validate_donor_cancel_organ_donation(request):
     records = cur.fetchall()
     msg = "Canceled successfully"
     return render(request,"donorcancelorgandonation.html", {'records': records, 'message': msg})
+
+
+def admin_organ_list(request):
+    con = db_connect()
+    cur = con.cursor()
+    query = "select * from OrganDonationTypes"
+    cur.execute(query)
+    records = cur.fetchall()
+    return render(request, "adminorganlist.html", {'records': records})
+
+
+def admin_add_new_organ(request):
+    return render(request,"adminaddneworgan.html")
+
+
+def admin_validate_add_new_organ(request):
+    con = db_connect()
+    cur = con.cursor()
+
+    organName = request.POST['name']
+    organName = organName.replace(" ", "")
+    DonationType = request.POST['type']
+
+    query = "insert into OrganDonationTypes values('" + organName + "','" + DonationType + "')"
+    cur.execute(query)
+    con.commit()
+
+    msg = "Organ added successfully"
+
+    return render(request, "adminaddneworgan.html", {'message': msg})

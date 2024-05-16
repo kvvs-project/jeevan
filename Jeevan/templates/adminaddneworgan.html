@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1 align="center">Add A New Organ</h1>
+  <div style="display: flex; justify-content: center;">
+  <form method="post" action="admin_validate_add_new_organ" >{%csrf_token%}
+    <div style="padding: 5px;">
+      <label for="organName">New organ name</label>
+      <div style="top-padding: 2px;">
+        <input type="text" name="name" id="organName" required>
+      </div>
+    </div>
+    <div style="padding: 5px;">
+      <label for="DType">Donation type: </label>
+        <select name="type" id="DType" required>
+          <option value="A">Alive</option>
+          <option value="P">Partial</option>
+          <option value="D">After Death</option>
+        </select>
+    </div>
+    <div>
+    <input type="submit">
+    <span>{{message}}</span>
+    </div>
+  </form>
+  <div>
+</body>
+</html>

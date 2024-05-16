@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1 align="center">Organ Donation List</h1>
+  {%if records%}
+  <table align="center" border="1px" cellpadding="5px">
+  <tr>
+    <th>
+      Name of organs
+    </th>
+    <th>
+      Type of donation
+    </th>
+  </tr>
+  {% for OrganName, Type in records %}
+  <tr>
+      <td align="center">
+        {{OrganName}}
+      </td>
+      <td align="center">
+        {{Type}}
+      </td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}<b>No organs found in DB</b>{%endif%}
+</body>
+</html>

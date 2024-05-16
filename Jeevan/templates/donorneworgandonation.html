@@ -1,35 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1 align="center">Donor Registration</h1>
-        <form method="post" align="left" action="/validate_donor_new_organ_donation"> 
-            {% csrf_token%}
-            <label for="name">Select the organ you want to donate : </label>
-            <select name="name">
-                <option value="Kidneys">Kidneys</option>
-                <option value="Liver">Liver</option>
-                <option value="Lungs">Lungs</option>
-                <option value="Heart">Heart</option>
-                <option value="Pancreas">Pancreas</option>
-                <option value="Intestines">Intestines</option>
-                <option value="Corneas">Corneas</option>
-                <option value="Skin">Skin</option>
-                <option value="HeartValves">Heart valves</option>
-                <option value="Bone">Bone</option>
-                <option value="Veins">Veins</option>
-                <option value="Cartilage">Cartilage</option>
-                <option value="Tendons">Tendons</option>
-                <option value="Ligaments">Ligaments</option>
-              </select>
-              <input type=submit>
-        </form>
-</body>
+    <form
+      method="post"
+      align="left"
+      action="/validate_donor_new_organ_donation"
+    >
+      {% csrf_token%}
+      <label for="name">Select the organ you want to donate : </label>
+      <table
+        width="524"
+        border="1"
+        cellspacing="0"
+        align="center"
+        cellpadding="15"
+      >
+        <tr>
+          <th>Organ Name</th>
+          <th>Donation Type</th>
+        </tr>
+        {%if records%}
+        {%for OrganName,DonationType in records%}
+        <tr>
+          <td width="78">{{OrganName}}</td>
+          <td width="84">{{DonationType}}</td>
+        </tr>
+      </table>
 
+      <select name="name">
+        <option value="{{OrganName}}">{{OrganName}}</option>
+        {%endfor%}
+      </select>
+      {% else %}
+      <br />
+      <div align="center"><b>You have not registered for any organ donation </b></div>
+      {% endif %}
+      <input type="submit" />
+    </form>
+  </body>
 </html>
