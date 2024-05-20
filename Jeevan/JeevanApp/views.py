@@ -306,7 +306,9 @@ def validate_donor_reg(request):
     didNew = didNew + 1
     did = "D" + str(didNew)
 
-    query = "insert into Donor values ( '" + did + "','" + hid + "','" + name + "','" + gender + "','" + bloodtype + "','" + DType + "','" + dob + "','" + pin + "','" + place + "','" + district + "','" + address + "','" + phone + "','" + email + "','" + photoName + "','" + reportName + "','" + date + "')"
+    isAlive = 'Y'
+
+    query = "insert into Donor values ( '" + did + "','" + hid + "','" + name + "','" + gender + "','" + bloodtype + "','" + DType + "','" + dob + "','" + pin + "','" + place + "','" + district + "','" + address + "','" + phone + "','" + email + "','" + photoName + "','" + reportName + "','" + isAlive + "','" + date + "')"
     print(query)
     cur.execute(query)
     con.commit()
