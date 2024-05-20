@@ -93,10 +93,45 @@ def validate_login(request):
                         cur.execute(query)
                         con.commit()
                         did = userName
-                        query = "select * from Donor where donorid = '" + did + "'"
+                        query = "select DonorID,HospitalID,Name,Gender,BloodGroup,TypeOfDonation,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport,RegDate from Donor where donorid = '" + did + "'"
                         cur.execute(query)
                         records = cur.fetchall()
                         return render(request, "donordashboard.html", {'records': records})
+        elif unSuffix == 'P':
+            query = " select * from UserLogin where userID ='" + userName + "' and password = '" + userPass + "'"
+            cur.execute(query)
+            if cur.rowcount == 0:
+                msg = "invalid Username / Id or password"
+                return render(request, "login.html", {'message': msg})
+            else:
+                query = "select * from PatientApproval where id = '" + userName + "'"
+                cur.execute(query)
+                status = ""
+                if cur.rowcount == 0:
+                    msg = "please wait for approval"
+                    return render(request, "login.html", {'message': msg})
+                else:
+                    records = cur.fetchall()
+                    for row in records:
+                        status = row[1]
+                    print(status)
+
+                    if status == "No":
+                        msg = "Your registration is rejected"
+                        return render(request, "login.html", {'message': msg})
+                    else:
+
+                        query = "delete from UserSession where type = 'P'"
+                        cur.execute(query)
+                        con.commit()
+                        query = "insert into UserSession values ('" + userName + "','" + unSuffix + "')"
+                        cur.execute(query)
+                        con.commit()
+                        did = userName
+                        query = "select * from Patient where patientid = '" + did + "'"
+                        cur.execute(query)
+                        records = cur.fetchall()
+                        return render(request, "patientdashboard.html", {'records': records})
         msg = "other user"
         return render(request, "login.html", {'message': msg})
 
@@ -487,3 +522,138 @@ def admin_validate_add_new_organ(request):
     msg = "Organ added successfully"
 
     return render(request, "adminaddneworgan.html", {'message': msg})
+
+
+def patient_pre_reg(request):
+    return render(request, "patientprereg.html")
+
+
+def patient_reg(request):
+    con = db_connect()
+    cur = con.cursor()
+    district = request.POST["dist"]
+    query = "select Name , ID, Place,District from Hospital where ID in ( select ID from HospitalApproval where status = 'Yes') and District = '" + district + "'"
+    cur.execute(query)
+    records = cur.fetchall()
+    con.commit()
+
+    return render(request, "patientreg.html", {'records': records})
+
+
+def validate_patient_reg(request):
+    # establish db connectivity
+    con = db_connect()
+    cur = con.cursor()
+    # create fs object
+    fs = FileSystemStorage()
+
+    # generate registration date
+    date = time.strftime('%Y-%m-%d %H:%M:%S')
+
+    # get data from client
+    name = request.POST['name']
+    place = request.POST['place']
+    gender = request.POST['gender']
+    pin = request.POST['pin']
+    hid = request.POST['hospital']
+    bloodtype = request.POST['blood']
+    phone = request.POST['phone']
+    district = request.POST['dist']
+    email = request.POST['email']
+    address = request.POST['address']
+    dob = request.POST['dob']
+
+    password = request.POST['pass']
+
+    report = request.FILES["medicalReport"]
+    reportName = fs.save("static/data/patient/proof/" + report.name, report)
+    reportName = reportName[26:]
+
+    photo = request.FILES["photo"]
+    photoName = fs.save("static/data/patient/photo/" + photo.name, photo)
+    photoName = photoName[26:]
+
+    pid = "D1000"
+    query = "select * from Patient order by patientID desc"
+    cur.execute(query)
+    records = cur.fetchall()
+    for row in records:
+        pid = row[0]
+        break
+
+    pidNoSuffix = pid[1:]
+    pidNew = int(pidNoSuffix)
+    pidNew = pidNew + 1
+    pid = "P" + str(pidNew)
+
+    query = "insert into Patient values ( '" + pid + "','" + hid + "','" + name + "','" + gender + "','" + bloodtype + "','" + dob + "','" + pin + "','" + place + "','" + district + "','" + address + "','" + phone + "','" + email + "','" + photoName + "','" + reportName + "','" + date + "')"
+    print(query)
+    cur.execute(query)
+    con.commit()
+
+    query = "insert into UserLogin values ('" + pid + "','" + password + "')"
+    cur.execute(query)
+    con.commit()
+    msg = "ok stored"
+
+    return render(request, "patientreg.html", {'message': msg})
+
+
+def patient_approval(request):
+    con = db_connect()
+    cursor = con.cursor()
+    query = "select patientid,Name,place,regdate from Patient where patientid not in(select id from PatientApproval)"
+    cursor.execute(query)
+    records = cursor.fetchall()
+    return render(request, "patientapproval.html", {'records': records})
+
+
+def show_patient_details(request):
+    con = db_connect()
+    cursor = con.cursor()
+    pid = request.POST['patientid']
+    query = "select * from Patient where patientid = '" + pid + "'"
+    cursor.execute(query)
+    records = cursor.fetchall()
+    print(query,records)
+    return render(request, "patientdetails.html", {'records': records})
+
+
+def validate_patient_approval(request):
+    pid = request.POST['patientID']
+    approve_status = request.POST['approve_status']
+    comment = request.POST['comment']
+    date = time.strftime('%Y-%m-%d %H:%M:%S')
+
+    print(pid, approve_status, comment)
+
+    con = db_connect()
+    cur = con.cursor()
+
+    query = "insert into PatientApproval values ('" + pid + "','" + approve_status + "','" + comment + "','" + date + "')"
+    print(query)
+    cur.execute(query)
+    con.commit()
+
+    query = "select * from Patient where patientid = '" + pid + "'"
+    cur.execute(query)
+    records = cur.fetchall()
+    msg = ""
+    if approve_status == 'Yes':
+        msg = "Successfully approved Patient"
+    else:
+        msg = "Patient not approved"
+    print(records, msg)
+    return render(request, "patientdetails.html", {'records': records, 'message': msg})
+
+
+def download_patient_report(request):
+    report = request.POST["report"]
+
+    file_path = "./static/data/patient/proof/" + report
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/pdf")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
