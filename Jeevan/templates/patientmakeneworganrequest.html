@@ -1,0 +1,139 @@
+<html>
+ <head>
+    <title>Hospital Registration</title>
+ </head>
+
+ <body>
+
+ <table width="913" border="0" cellpadding="0" cellspacing="0" align="center">
+    <!--DWLayoutTable-->
+    <tr>
+      <td width="47" height="41">&nbsp;</td>
+      <td width="156">&nbsp;</td>
+      <td width="340">&nbsp;</td>
+      <td width="41">&nbsp;</td>
+      <td width="107">&nbsp;</td>
+      <td width="150">&nbsp;</td>
+      <td width="72">&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="55">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td colspan="3" valign="top"><h1 align="center">Organ request</h1></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="60">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="329">&nbsp;</td>
+      <td colspan="2" rowspan="2" valign="top"><table border="0" align="center" cellpadding="15">
+        {% for ID,photoName,id,name,place,Location,pin,phone,District,Email,type in records %}
+        <tr>
+          <td>
+            <img src="./static/data/hospital/photo/{{ photoName }}" width="300px">
+          </td>
+        </tr>
+        <tr>
+          <td>Hospital name</td>
+          <td>
+            <label>{{name}}</label>
+          </td>
+        </tr>
+        <tr>
+          <td>Place</td>
+          <td>
+            <label>{{place}}</label>
+          </td>
+        </tr>
+        <tr>
+          <td>Location</td>
+          <td>
+            <label>{{Location}}</label>
+          </td>
+        </tr>
+        <tr>
+          <td>Pin</td>
+          <td>
+            <label>{{pin}}</label>
+          </td>
+        </tr>
+        <tr>
+          <td>Phone</td>
+          <td>
+            <label>{{phone}}</label>
+          </td>
+        </tr>
+        <tr>
+          <td>District</td>
+          <td>
+            <label>{{District}}</label>
+          </td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td>
+            <label>{{Email}}</label>
+          </td>
+        </tr>
+        <tr>
+          <td>Type of the Hospital</td>
+          <td>
+            <label>{{type}}</label>
+          </td>
+        </tr>
+      </table>        </td>
+      <td>&nbsp;</td>
+      <td colspan="2" valign="top"><h2>Make a request</h2>
+        <form name="approval_form" method="post" action="patient_validate_organ_donation_request">
+          {% csrf_token %}
+          <table border="0" cellpadding="5">
+                <tr>
+                 <td >Add a comment to the hospital</td>
+                </tr>
+                <tr>
+                 <td><textarea name="comment" maxlength="200"></textarea></td>
+                </tr>
+                <tr>
+                 <td >
+                    <input type="hidden" value="{{id}}" name="hid" />
+                    <input type="hidden" value="{{organ}}" name="organ">
+                    <input type="submit" name="Submit" value="Submit">
+                </td>
+                </tr>
+                {% endfor %}
+      <tr>
+        <td>
+          {{ message }}
+        </td>
+      </tr>
+          </table>
+        </form>        <p align="center"><u></u></p></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="603">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="38">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+ </table>
+ </body>
+</html>

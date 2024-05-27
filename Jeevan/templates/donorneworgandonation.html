@@ -1,48 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+          .form-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 15px;
+        }
 
-  <body>
-    <h1 align="center">Donor Registration</h1>
-    <form
-      method="post"
-      align="left"
-      action="/validate_donor_new_organ_donation"
-    >
-      {% csrf_token%}
-      <label for="name">Select the organ you want to donate : </label>
-      <table
-        width="524"
-        border="1"
-        cellspacing="0"
-        align="center"
-        cellpadding="15"
-      >
-        <tr>
-          <th>Organ Name</th>
-          <th>Donation Type</th>
-        </tr>
-        {%if records%}
-        {%for OrganName,DonationType in records%}
-        <tr>
-          <td width="78">{{OrganName}}</td>
-          <td width="84">{{DonationType}}</td>
-        </tr>
-      </table>
+        .inner {
+            padding: 5px;
+        }
+        </style>
+    </head>
 
-      <select name="name">
-        <option value="{{OrganName}}">{{OrganName}}</option>
-        {%endfor%}
-      </select>
-      {% else %}
-      <br />
-      <div align="center"><b>You have not registered for any organ donation </b></div>
-      {% endif %}
-      <input type="submit" />
-    </form>
-  </body>
+    <body>
+        <h1 align="center">New Organ Donation Registration</h1>
+        <div class="form-wrapper">
+        <form method="post" align="center" action="/validate_donor_new_organ_donation">
+            {% csrf_token%}
+            <div class="inner">
+            <label for="name">Select the organ you want to donate :</label>
+            <select name="name" id="name" required>
+                <option value="">Select</option>
+                {%for OrganName,DonationType in records%}
+                <option value="{{OrganName}}">{{OrganName}}</option>
+                {%endfor%}
+            </select>
+            <h2>{{message}}</h2>
+            <input type="submit" />
+          </div>
+        </form>
+      </div>
+        <table border="1" cellspacing="0" align="center" cellpadding="3">
+            <tr>
+                <th>Organ Name</th>
+                <th>Donation Type</th>
+            </tr>
+            {%for OrganName,DonationType in records%}
+            <tr>
+                <td >{{OrganName}}</td>
+                <td >{{DonationType}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
 </html>

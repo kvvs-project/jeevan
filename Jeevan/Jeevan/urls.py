@@ -23,7 +23,9 @@ from JeevanApp.views import home_page, validate_login, user_login, admin_validat
     donor_new_organ_Donation, validate_donor_new_organ_donation, donor_organ_donation_status, \
     donor_cancel_organ_donation, validate_donor_cancel_organ_donation, admin_organ_list, admin_add_new_organ, \
     admin_validate_add_new_organ, donor_pre_reg, donor_reg, validate_donor_reg, patient_pre_reg, patient_reg, \
-    validate_patient_reg, patient_approval, show_patient_details, validate_patient_approval, download_patient_report
+    validate_patient_reg, patient_approval, show_patient_details, validate_patient_approval, download_patient_report, \
+    guest_find_organ_donor, guest_get_organ_hospital_list, patient_make_new_organ_request, \
+    patient_get_organ_hospital_list, patient_make_organ_donation_request, patient_validate_organ_donation_request
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -59,6 +61,12 @@ urlpatterns = [
     path('patient_approval', patient_approval),
     path('show_patient_details', show_patient_details),
     path('validate_patient_approval', validate_patient_approval),
-    path('download_patient_report', download_patient_report)
+    path('patient_make_new_organ_request', patient_make_new_organ_request),
+    path('patient_get_organ_hospital_list', patient_get_organ_hospital_list),
+    path('patient_make_organ_donation_request', patient_make_organ_donation_request),
+    path('patient_validate_organ_donation_request', patient_validate_organ_donation_request),
+    path('download_patient_report', download_patient_report),
+    path('guest_find_organ_donor', guest_find_organ_donor),
+    path('guest_get_hospital_list', guest_get_organ_hospital_list)
 ]
 

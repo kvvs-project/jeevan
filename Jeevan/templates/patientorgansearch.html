@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organ Availability Index</title>
+    <style>
+        main {
+            display: flex;
+            justify-content: center;
+        }
+
+        .inner {
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 align="center">Find Hospitals with Available Organs</h1>
+    <main>
+        <div class="container">
+            <form action="patient_get_organ_hospital_list" method="post">{% csrf_token %}
+                <div class="inner">
+                    <label for="dist">District</label>
+                    <select id="dist" name="dist">
+                        <option value="">select</option>
+                        <option value="Alappuzha">Alappuzha</option>
+                        <option value="Ernakulam">Ernakulam</option>
+                        <option value="Idukki">Idukki</option>
+                        <option value="Kannur">Kannur</option>
+                        <option value="Kasaragod">Kasaragod</option>
+                        <option value="Kollam">Kollam</option>
+                        <option value="Kottayam">Kottayam</option>
+                        <option value="Kozhikode">Kozhikode</option>
+                        <option value="Malappuram">Malappuram</option>
+                        <option value="Palakkad">Palakkad</option>
+                        <option value="Pathanamthitta">Pathanamthitta</option>
+                        <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                        <option value="Thrissur">Thrissur</option>
+                        <option value="Wayanad">Wayanad</option>
+                    </select>
+                </div>
+                <div class="inner">
+                    <label for="organ">Organ</label>
+                    <select name="organ" id="organ">
+                        <option value="">select</option>
+                        {%for OrganName,DonationType in records%}
+                        <option value="{{OrganName}}">{{OrganName}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <div class="inner">
+                    <label for="blood">Blood group</label>
+                    <select id="blood" name="blood">
+                        <option value="">select</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div class="inner">
+                    <label>Gender</label>
+                    <div>
+                        <input type="radio" name="gender" id="male" value='m'>
+                        <label for="male">Male</label>
+                        <input type="radio" name="gender" id="female" value='f'>
+                        <label for="female">Female</label>
+                    </div>
+                </div>
+                <div>
+                    <input type
+                    <input type="submit" value="search">
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

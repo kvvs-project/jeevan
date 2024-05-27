@@ -291,7 +291,7 @@ def donor_reg(request):
     records = cur.fetchall()
     con.commit()
 
-    return render(request, "donorreg.html", {'records': records})
+    return render(request, "donorreg.html", {'records': records , 'dist': district})
 
 
 def validate_donor_reg(request):
@@ -353,13 +353,25 @@ def validate_donor_reg(request):
     con.commit()
     msg = "ok stored"
 
-    return render(request, "donorreg.html", {'message': msg})
+    query = "select Name , ID, Place,District from Hospital where ID in ( select ID from HospitalApproval where status = 'Yes') and District = '" + district + "'"
+    cur.execute(query)
+    records = cur.fetchall()
+    con.commit()
+
+    return render(request, "donorreg.html", {'message': msg, 'records': records , 'dist': district})
 
 
 def donor_approval(request):
     con = db_connect()
     cursor = con.cursor()
-    query = "select donorid,Name,place,regdate from Donor where donorid not in(select id from DonorApproval)"
+    query = "select id from UserSession where type = 'H'"
+    cursor.execute(query)
+    records = cursor.fetchall()
+    hid = ''
+    for row in records:
+        hid = str(row[0])
+        break
+    query = f"select donorid,Name,place,regdate from Donor where HospitalID = '{hid}' and donorid not in(select id from DonorApproval)"
     cursor.execute(query)
     records = cursor.fetchall()
     return render(request, "donorapproval.html", {'records': records})
@@ -369,7 +381,7 @@ def show_donor_details(request):
     con = db_connect()
     cursor = con.cursor()
     did = request.POST['donorid']
-    query = "select * from Donor where donorid = '" + did + "'"
+    query = "select donorID,HospitalID,Name,Gender,BloodGroup,TypeOfDonation,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport,RegDate from Donor where donorid = '" + did + "'"
     cursor.execute(query)
     records = cursor.fetchall()
     print(query,records)
@@ -392,7 +404,7 @@ def validate_donor_approval(request):
     cur.execute(query)
     con.commit()
 
-    query = "select * from Donor where donorid = '" + did + "'"
+    query = "select donorID,HospitalID,Name,Gender,BloodGroup,TypeOfDonation,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport,RegDate from Donor where donorid = '" + did + "'"
     cur.execute(query)
     records = cur.fetchall()
     msg = ""
@@ -423,15 +435,8 @@ def donor_new_organ_Donation(request):
     query = "Select * from OrganDonationTypes"
     cur.execute(query)
     records = cur.fetchall()
-    for row in records:
-        if row[1] == 'A':
-            row[1] = "While Alive"
-        elif row[1] == 'D':
-            row[1] = "After Death"
-        else:
-            row[1] = "Partial donation is possible"
 
-    return render(request, "donorneworgandonation.html", {'records', records})
+    return render(request, "donorneworgandonation.html", {'records': records})
 
 
 def validate_donor_new_organ_donation(request):
@@ -439,6 +444,7 @@ def validate_donor_new_organ_donation(request):
     cur = con.cursor()
     date = time.strftime('%Y-%m-%d %H:%M:%S')
     organName = request.POST['name']
+
     query = "select id from UserSession where type = 'D'"
     cur.execute(query)
     records = cur.fetchall()
@@ -447,16 +453,29 @@ def validate_donor_new_organ_donation(request):
     for row in records:
         did = row[0]
         break
-    print(query, records, did)
-    query = "insert into DonorOrganStatus values ('" + did + "','" + organName + "','" + status + "','" + date + "')"
+
+    query = f"SELECT id FROM DonorOrganStatus WHERE ID = '{did}' AND OrganName = '{organName}'"
+    cur.execute(query)
     print(query)
-    cur.execute(query)
-    con.commit()
-    query = "select * from Donor where donorid = '" + did + "'"
-    cur.execute(query)
     records = cur.fetchall()
-    print(query, records)
-    return render(request, "donordashboard.html", {'records': records})
+    print(records)
+
+    if cur.rowcount == 0:
+        query = "insert into DonorOrganStatus values ('" + did + "','" + organName + "','" + status + "','" + date + "')"
+        print(query)
+        cur.execute(query)
+        con.commit()
+        query = "select donorID,HospitalID,Name,Gender,BloodGroup,TypeOfDonation,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport,RegDate from Donor where donorid = '" + did + "'"
+        cur.execute(query)
+        records = cur.fetchall()
+
+        return render(request, "donordashboard.html", {'records': records})
+    else:
+        msg = f"You have already registered your {organName} for donation"
+        query = "Select * from OrganDonationTypes"
+        cur.execute(query)
+        records = cur.fetchall()
+        return render(request, "donorneworgandonation.html", {'records': records, 'message': msg})
 
 
 def donor_organ_donation_status(request):
@@ -657,3 +676,103 @@ def download_patient_report(request):
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
+
+
+def patient_make_new_organ_request(request):
+    con = db_connect()
+    cur = con.cursor()
+    query = "select * from OrganDonationTypes"
+    cur.execute(query)
+    records = cur.fetchall()
+    return render(request, "patientorgansearch.html", {'records': records})
+
+
+def patient_get_organ_hospital_list(request):
+    con = db_connect()
+    cur = con.cursor()
+
+    district = request.POST['dist']
+    organ = request.POST['organ']
+    bloodGroup = request.POST['blood']
+    gender = request.POST['gender']
+
+    query = f"select ID,Name,Place,Location,Pin,Phone,District,Email from Hospital where ID in ( select HospitalID from Donor where District = '{district}' and Gender = '{gender}' and BloodGroup = '{bloodGroup}' and donorID in (select ID from DonorApproval where status = 'Yes') and donorID in ( select ID from DonorOrganStatus where organName = '{organ}' and status = 'Y') )"
+    cur.execute(query)
+    records = cur.fetchall()
+
+    return render(request, "patientgetorganhospitallist.html",{'records': records, 'organ': organ})
+
+
+def patient_make_organ_donation_request(request):
+    con = db_connect()
+    cur = con.cursor()
+
+    hid = request.POST['hid']
+    organ = request.POST['organ']
+    query = "select ID,photoName,id,name,place,Location,pin,phone,District,Email,type from Hospital where id = '" + hid + "'"
+    cur.execute(query)
+    records = cur.fetchall()
+
+    return render(request, "patientmakeneworganrequest.html", {'records': records, 'organ': organ})
+
+
+def patient_validate_organ_donation_request(request):
+    con = db_connect()
+    cur = con.cursor()
+    date = time.strftime('%Y-%m-%d %H:%M:%S')
+
+    rid = "R1000"
+    query = "select RequestID from PatientOrganRequest order by RequestID desc"
+    cur.execute(query)
+    records = cur.fetchall()
+    for row in records:
+        rid = row[0]
+        break
+
+    ridNoSuffix = rid[1:]
+    ridNew = int(ridNoSuffix)
+    ridNew = ridNew + 1
+    rid = "R" + str(ridNew)
+
+    query = "select id from UserSession where type = 'P'"
+    cur.execute(query)
+    records = cur.fetchall()
+    pid = ""
+    for row in records:
+        pid = row[0]
+        break
+
+
+    hid = request.POST['hid']
+    organ = request.POST['organ']
+    comment = request.POST['comment']
+
+    query = f"insert into PatientOrganRequest values ('{rid}','{pid}','{hid}','{comment}','{date}')"
+    cur.execute(query)
+    con.commit()
+    return HttpResponse('ok')
+
+def guest_find_organ_donor(request):
+    con = db_connect()
+    cur = con.cursor()
+    query = "select * from OrganDonationTypes"
+    cur.execute(query)
+    records = cur.fetchall()
+    return render(request, "searchorgandonor.html", {'records': records})
+
+
+def guest_get_organ_hospital_list(request):
+    con = db_connect()
+    cur = con.cursor()
+
+    district = request.POST['dist']
+    organ = request.POST['organ']
+    bloodGroup = request.POST['blood']
+    gender = request.POST['gender']
+
+    query = f"select Name,Place,Location,Pin,Phone,District,Email from Hospital where ID in ( select HospitalID from Donor where District = '{district}' and Gender = '{gender}' and BloodGroup = '{bloodGroup}' and donorID in (select ID from DonorApproval where status = 'Yes') and donorID in ( select ID from DonorOrganStatus where organName = '{organ}' and status = 'Y') )"
+    print(query)
+    cur.execute(query)
+    records = cur.fetchall()
+    print(records)
+    return render(request, "searchhospitallist.html",{'records': records})
