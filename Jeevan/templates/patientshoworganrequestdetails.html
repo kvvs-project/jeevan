@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            #title {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .title{
+                display:flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center
+            }
+
+            #container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #inner {
+                display: flex;
+                flex-direction: row;
+            }
+
+            .child {
+                padding: 30px;
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1 id="title">Your Organ Request Details</h1>
+        </header>
+        <div id="container">
+            <div id="inner">
+                <div class="child">
+                    <div class="title">
+                        <H3>Hospital Details</H3>
+                    </div>
+                    {% for ID,name,place,Location,pin,phone,District,Email,type in HospitalDetails %}
+                    <table cellspacing="0" cellpadding="15">
+                        <tr>
+                            <td>Hospital name</td>
+                            <td>
+                                <label>{{name}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hospital ID</td>
+                            <td>
+                                <label>{{ID}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Place</td>
+                            <td>
+                                <label>{{place}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Location</td>
+                            <td>
+                                <label>{{Location}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pin</td>
+                            <td>
+                                <label>{{pin}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td>
+                                <label>{{phone}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>District</td>
+                            <td>
+                                <label>{{District}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>
+                                <label>{{Email}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Type of the Hospital</td>
+                            <td>
+                                <label>{{type}}</label>
+                            </td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+                <div class="child">
+                    <div class="title">
+                        <H3>Request Details</H3>
+                    </div>
+                    {% for PatientID,OrganName,Request,RequestDate in RequestDetails %}
+                    <table cellspacing="0" cellpadding="10">
+                        <tr>
+                            <td>Patient ID</td>
+                            <td>{{PatientID}}</td>
+                        </tr>
+                        <tr>
+                            <td>Organ Name</td>
+                            <td>{{OrganName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Request</td>
+                            <td>{{Request}}</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>{{RequestDate}}</td>
+                        </tr>
+                    </table>
+                    {%endfor%}
+                </div>
+                <div class="child">
+                    <div class="title">
+                        <H3>Approval Status</H3>
+                    </div>
+                    {%if ApprovalDetails%}
+                    {% for status,comment,Date in ApprovalDetails %}
+                    <table cellspacing="0" cellpadding="10">
+                        <tr>
+                            <td>Status</td>
+                            <td>{{status}}</td>
+                        </tr>
+                        <tr>
+                            <td>Comment from the hospital</td>
+                            <td>{{comment}}</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>{{Date}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{msg}}
+                            </td>
+                        </tr>
+                    </table>
+                    {%endfor%}
+                    {%else%}
+                    <b>Waiting for approval...</b>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

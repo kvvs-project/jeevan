@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>patient Profile</title>
+    <title>Patient Profile</title>
 </head>
 
 <body>
@@ -124,50 +124,44 @@
                     </tr>
                 </table>
             </td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        <td colspan="2" valign="top"><h2 align="center"><u>A</u>pp<u>roval</u></h2>
+            <form name="approval_form" method="post" action="hospital_validate_organ_request_approval">
+              {% csrf_token %}
+              <table width="300" height="290" border="0" cellpadding="5">
+                <tr>
+                  <td width="161">Approval Status</td>
+                  <td width="119"><p>
+                    <div>
+                    <input name="status" type="radio" id="status-yes" value="Yes" checked>
+                    <label for="status-yes">Yes</label> 
+                    </div>
+                    <div>
+                     <input name="status" type="radio" value="No" id="status-no">
+                     <label for="status-no">No</label></td> </div>
+                    </tr>
+                    <tr>
+                     <td height="55" colspan="2">Comment</td>
+                    </tr>
+                    <tr>
+                     <td height="74" colspan="2">
+                        <textarea name="comment" maxlength="200"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                        <input type="text" name="rid" value="{{RequestID}}" hidden>
+                        <input type="text" name="pid" value="{{patientID}}" hidden>
+                     <td colspan="2"><input type="submit" name="Submit" value="Approve"></td>
+                    </tr>
+          <tr>                {%endfor%}
 
-            
-            <td>&nbsp;</td>
-            <td colspan="2" valign="top">
-                <h2 align="center">Patient Account Options</h2>
-                    <table border="0" cellpadding="5">
-                        <tr>
-                            <td>
-                                Make a new organ donation request
-                            </td>
-                            <td>
-                                <a name="new_donation" href="/patient_make_new_organ_request">
-                                    <button>Request</button>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Check your organ donation request status
-                            </td>
-                            <td>
-                                <form name="send_data" id="send-data" method="post" action="patient_organ_request_status" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <input type="text" name="id" value="{{patientID}}" hidden />
-                                    <input type="submit" name="Submit" value="View Details" />
-                                </form>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Cancel your organ donation request
-                            </td>
-                            <td>
-                                <form name="send_data" id="send-data" method="post" action="patient_cancel_organ_request" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <input type="text" name="pid" value="{{patientID}}" hidden />
-                                    <input type="submit" name="Submit" value="Cancel" />
-                                </form>
-                            </td>
-                        </tr>
-                    </table>
-                <p align="center"><u></u></p>
-            </td>{%endfor%}
-            <td>&nbsp;</td>
+            <td>
+              {{ message }}
+            </td>
+          </tr>
+              </table>
+            </form>        <p align="center"><u></u></p></td>
         </tr>
         <tr>
             <td height="603">&nbsp;</td>

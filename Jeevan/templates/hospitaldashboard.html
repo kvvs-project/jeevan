@@ -1,9 +1,192 @@
 <html>
-  <head>
-    
-  </head>
-  <body>
-  <h1>Hospital Dashboard</h1>
-  <a href="/donor_approval">donor approval</a>
-  </body>
+    <head>
+        <title>Hospital Registration</title>
+    </head>
+
+    <body>
+        <table width="913" border="0" cellpadding="0" cellspacing="0" align="center">
+            <!--DWLayoutTable-->
+            <tr>
+                <td width="47" height="41">&nbsp;</td>
+                <td width="156">&nbsp;</td>
+                <td width="340">&nbsp;</td>
+                <td width="41">&nbsp;</td>
+                <td width="107">&nbsp;</td>
+                <td width="150">&nbsp;</td>
+                <td width="72">&nbsp;</td>
+            </tr>
+            <tr>
+                <td height="55">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td colspan="3" valign="top">
+                    <h1 align="center">H<u>os</u>p<u>ital Detail</u>s</h1>
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td height="60">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td height="329">&nbsp;</td>
+                <td colspan="2" rowspan="2" valign="top">
+                    <table border="0" align="center" cellpadding="15">
+                        {% for photoName,id,name,place,Location,pin,phone,District,Email,type,hasbloodbank,proofName,regdate in records %}
+                        <tr>
+                            <td>
+                                <img src="./static/data/hospital/photo/{{ photoName }}" width="300px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hospital ID</td>
+                            <td>
+                                <label>{{id}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hospital name</td>
+                            <td>
+                                <label>{{name}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Place</td>
+                            <td>
+                                <label>{{place}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Location</td>
+                            <td>
+                                <label>{{Location}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pin</td>
+                            <td>
+                                <label>{{pin}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td>
+                                <label>{{phone}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>District</td>
+                            <td>
+                                <label>{{District}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>
+                                <label>{{Email}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Type of the Hospital</td>
+                            <td>
+                                <label>{{type}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Does Hospital have a blood bank</td>
+                            <td>
+                                <input type="radio" name="h_bb" id="h-bb" checked disabled />
+                                <label for="h-bb">{{hasbloodbank}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Proof</td>
+                            <td>
+                                <form nam="h_proof" method="post" action="download_hospital_proof">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="h_proof" value="{{ proofName }}" />
+                                    <input type="submit" value="Download Proof" />
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Registration date</td>
+                            <td>
+                                <label>{{regdate}}</label>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>&nbsp;</td>
+                <td colspan="2" valign="top">
+                    <h2 align="center">Hospital Account Options</h2>
+                    <table border="0" cellpadding="5">
+                        <tr>
+                          <tr>
+                            <td>Donor Approval</td>
+                            <td>
+                                <form name="send_data" method="post" action="/donor_approval">
+                                    {% csrf_token %}
+                                    <input type="text" name="id" value="{{id}}" hidden />
+                                    <input type="submit" name="Submit" value="View Details" />
+                                </form>
+                            </td>
+                        <tr>
+                            <td>Patient Approval</td>
+                            <td>
+                                <form name="send_data" method="post" action="/patient_approval">
+                                    {% csrf_token %}
+                                    <input type="text" name="id" value="{{id}}" hidden />
+                                    <input type="submit" name="Submit" value="View Details" />
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                          <td>Organ donation Request Approval</td>
+                          <td>
+                              <form name="send_data" method="post" action="/hospital_organ_request_approval">
+                                  {% csrf_token %}
+                                  <input type="text" name="id" value="{{id}}" hidden />
+                                  <input type="submit" name="Submit" value="View Details" />
+                              </form>
+                          </td>
+                      </tr>
+                        <tr>
+                            <td>Cancel organ donation request</td>
+                            <td>
+                                <form name="send_data" method="post" action="/hospital_cancel_patient_organ_request">
+                                    {% csrf_token %}
+                                    <input type="text" name="id" value="{{id}}" hidden />
+                                    <input type="submit" name="Submit" value="Cancel Request" />
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+                    <p align="center"><u></u></p>
+                </td>
+                {%endfor%}
+            </tr>
+            <tr>
+                <td height="603">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td height="38">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </body>
 </html>

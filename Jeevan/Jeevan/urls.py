@@ -25,7 +25,12 @@ from JeevanApp.views import home_page, validate_login, user_login, admin_validat
     admin_validate_add_new_organ, donor_pre_reg, donor_reg, validate_donor_reg, patient_pre_reg, patient_reg, \
     validate_patient_reg, patient_approval, show_patient_details, validate_patient_approval, download_patient_report, \
     guest_find_organ_donor, guest_get_organ_hospital_list, patient_make_new_organ_request, \
-    patient_get_organ_hospital_list, patient_make_organ_donation_request, patient_validate_organ_donation_request
+    patient_get_organ_hospital_list, patient_make_organ_donation_request, patient_validate_organ_donation_request, \
+    hospital_organ_request_approval, hospital_show_organ_approval_details, hospital_validate_organ_request_approval, \
+    patient_organ_request_status, patient_organ_request_details, hospital_cancel_patient_organ_request, \
+    validate_hospital_cancel_patient_organ_request, validate_patient_cancel_organ_request, patient_cancel_organ_request, \
+    hospital_organ_transplantation, hospital_organ_transplantation_details, hospital_organ_transplantation_entry, \
+    validate_hospital_organ_transplantation_entry
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,11 +40,20 @@ urlpatterns = [
     path('change_admin_pass', admin_change_pass),
     path('check_admin_pass', admin_validate_change_pass),
     path('hospital_reg', hospital_reg),
+    path('get_hreg', validate_hospital_reg),
     path('hospital_approval', hospital_approval),
     path('show_hospital_details', show_hospital_details),
-    path('validate_hospital_approval', validate_hospital_approval),
     path('download_hospital_proof', download_hospital_proof),
-    path('get_hreg', validate_hospital_reg),
+    path('validate_hospital_approval', validate_hospital_approval),
+    path('hospital_organ_request_approval', hospital_organ_request_approval),
+    path('hospital_show_organ_approval_details', hospital_show_organ_approval_details),
+    path('hospital_organ_transplantation', hospital_organ_transplantation),
+    path('hospital_cancel_patient_organ_request', hospital_cancel_patient_organ_request),
+    path('hospital_organ_transplantation_details', hospital_organ_transplantation_details),
+    path('hospital_organ_transplantation_entry', hospital_organ_transplantation_entry),
+    path('validate_hospital_organ_transplantation_entry', validate_hospital_organ_transplantation_entry),
+    path('hospital_validate_organ_request_approval', hospital_validate_organ_request_approval),
+    path('validate_hospital_cancel_patient_organ_request', validate_hospital_cancel_patient_organ_request),
     path('donor_pre_reg', donor_pre_reg),
     path('donor_reg', donor_reg),
     path('validate_donor_reg', validate_donor_reg),
@@ -67,6 +81,10 @@ urlpatterns = [
     path('patient_validate_organ_donation_request', patient_validate_organ_donation_request),
     path('download_patient_report', download_patient_report),
     path('guest_find_organ_donor', guest_find_organ_donor),
-    path('guest_get_hospital_list', guest_get_organ_hospital_list)
+    path('guest_get_hospital_list', guest_get_organ_hospital_list),
+    path('patient_organ_request_status', patient_organ_request_status),
+    path('patient_organ_request_details', patient_organ_request_details),
+    path('patient_cancel_organ_request', patient_cancel_organ_request),
+    path('validate_patient_cancel_organ_request', validate_patient_cancel_organ_request)
 ]
 

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Organ request cancellation</title>
+    </head>
+    <body>
+        <h1 align="center">Organ request cancellation</h1>
+        {%if RequestDetails%}
+        <table border="1" cellspacing="0" align="center" cellpadding="10">
+            <tr>
+                <td>Request ID</td>
+                <td>Hospital ID</td>
+                <td>Organ Name</td>
+                <td>Request</td>
+                <td>Date</td>
+                <td>Cancel Request</td>
+            </tr>
+            {% for RequestID,HospitalID,OrganName,Request,RequestDate in RequestDetails %}
+            <tr>
+                <td>{{RequestID}}</td>
+                <td>{{HospitalID}}</td>
+                <td>{{OrganName}}</td>
+                <td>{{Request}}</td>
+                <td>{{RequestDate}}</td>
+                <td align="center">
+                    <form method="post" action="validate_patient_cancel_organ_request">{%csrf_token%}
+                        <input type="hidden" name="rid" value="{{RequestID}}">
+                        <input type="hidden" name="pid" value="{{pid}}">
+                        <input type="submit" value="Cancel">
+                    </form>
+                </td>
+            </tr>
+            {%endfor%}
+        </table>
+        {%else%}
+        <div style="text-align: center;">
+            <b>No Request available for cancellation</b>
+        </div>
+        {%endif%}
+        <div style="text-align: center;">
+            <b>{{message}}</b>
+        </div>
+    </body>
+</html>

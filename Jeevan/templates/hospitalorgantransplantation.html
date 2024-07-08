@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Hospital Organ Request Approval</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    </head>
+
+    <body>
+        <h1 align="center">Organ Tranplantation</h1>
+        {% if records %}
+        <table border="1" cellspacing="0" align="center" cellpadding="5">
+            <tr>
+                <td>ID</td>
+                <td>Organ Name</td>
+                <td>Request</td>
+                <td>Request date</td>
+                <td>fetch data</td>
+            </tr>
+            {% for RequestID,PatientID,OrganName,Request,RequestDate in records %}
+            <tr>
+                <td>{{PatientID}}</td>
+                <td>{{OrganName}}</td>
+                <td>{{Request}}</td>
+                <td>{{RequestDate}}</td>
+                <td>
+                    <form name="send_data" id="send-data" method="post" action="hospital_organ_transplantation_details" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="rid" value="{{RequestID}}" />
+                        <input type="hidden" name="pid" value="{{PatientID}}" />
+                        <input type="submit" name="Submit" value="Show More" />
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <br />
+        <b>No patients are waiting for tranplantation</b>
+        {% endif %}
+    </body>
+</html>

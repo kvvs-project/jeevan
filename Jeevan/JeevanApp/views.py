@@ -61,7 +61,10 @@ def validate_login(request):
                         query = "insert into UserSession values ('" + userName + "','" + unSuffix + "')"
                         cur.execute(query)
                         con.commit()
-                        return render(request, "hospitaldashboard.html")
+                        query = "select photoName,id,name,place,Location,pin,phone,District,Email,type,hasbloodbank,proofName,regdate from Hospital where id = '" + userName + "'"
+                        cur.execute(query)
+                        records = cur.fetchall()
+                        return render(request, "hospitaldashboard.html", {'records': records})
         elif unSuffix == 'D':
             query = " select * from UserLogin where userID ='" + userName + "' and password = '" + userPass + "'"
             cur.execute(query)
@@ -85,7 +88,6 @@ def validate_login(request):
                         msg = "Your registration is rejected"
                         return render(request, "login.html", {'message': msg})
                     else:
-
                         query = "delete from UserSession where type = 'D'"
                         cur.execute(query)
                         con.commit()
@@ -250,6 +252,7 @@ def download_hospital_proof(request):
     raise Http404
 
 
+# noinspection PyUnusedLocal
 def validate_hospital_approval(request):
     hid = request.POST['hid']
     approve_status = request.POST['approve_status']
@@ -278,6 +281,296 @@ def validate_hospital_approval(request):
     return render(request, "hospitaldetails.html", {'records': records, 'message': msg})
 
 
+def hospital_organ_request_approval(request):
+    con = db_connect()
+    cur = con.cursor()
+    hid = request.POST['id']
+
+    query = f"select RequestID,PatientID,OrganName,Request,RequestDate from PatientOrganRequest where HospitalID = '{hid}' and requestID not in (select requestID from PatientOrganRequestApproval )"
+    cur.execute(query)
+    records = cur.fetchall()
+    return render(request, "hospitalorganrequestapproval.html", {'records': records})
+
+
+def hospital_show_organ_approval_details(request):
+    con = db_connect()
+    cur = con.cursor()
+    rid = request.POST['rid']
+    pid = request.POST['id']
+
+    query = "select patientID,HospitalID,Name,Gender,BloodGroup,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport,RegDate from Patient where patientid = '" + pid + "'"
+    cur.execute(query)
+    records = cur.fetchall()
+    print(query, records)
+    return render(request, "hospitalorganrequestdetail.html", {'records': records, 'RequestID': rid})
+
+
+# noinspection PyUnusedLocal
+def hospital_validate_organ_request_approval(request):
+    con = db_connect()
+    cur = con.cursor()
+
+    rid = request.POST['rid']
+    pid = request.POST['pid']
+    status = request.POST['status']
+    comment = request.POST['comment']
+    date = time.strftime('%Y-%m-%d %H:%M:%S')
+    msg = ""
+
+    query = f"select RequestID from PatientOrganRequestApproval where RequestID = '{rid}' "
+    print(query)
+    cur.execute(query)
+    print(cur.fetchall())
+
+    if cur.rowcount == 0:
+        query = "insert into PatientOrganRequestApproval values ('" + rid + "','" + status + "','" + comment + "','" + date + "')"
+        print(query)
+        cur.execute(query)
+        con.commit()
+    else:
+        query = f"update PatientOrganRequestApproval set status = '{status}', comment = '{comment}', date = '{date}' where RequestID = '{rid}'"
+        print(query)
+        cur.execute(query)
+        con.commit()
+
+    if status == "Yes":
+        msg = "Approved Successfully"
+    else:
+        msg = "Request not Approved"
+
+    query = "select patientID,HospitalID,Name,Gender,BloodGroup,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport,RegDate from Patient where patientid = '" + pid + "'"
+    cur.execute(query)
+    records = cur.fetchall()
+
+    return render(request, "hospitalorganrequestdetail.html", {'records': records, 'RequestID': rid, 'message': msg})
+
+
+def hospital_cancel_patient_organ_request(request):
+    con = db_connect()
+    cur = con.cursor()
+    hid = request.POST['id']
+
+    query = f"select RequestID,PatientID,OrganName,Request,RequestDate from PatientOrganRequest where HospitalID  = '{hid}' and RequestID in (select RequestID from PatientOrganRequestApproval where status = 'Yes' )"
+    cur.execute(query)
+    records = cur.fetchall()
+    print(records)
+
+    return render(request, "hospitalcancelpatientorganrequest.html", {'RequestDetails': records})
+
+
+def validate_hospital_cancel_patient_organ_request(request):
+    con = db_connect()
+    cur = con.cursor()
+
+    rid = request.POST['rid']
+    query = f"update PatientOrganRequestApproval set status = 'No' where RequestID = '{rid}'"
+    print(query)
+    cur.execute(query)
+    con.commit()
+    msg = "successfully canceled the request"
+    query = "select id from UserSession where type = 'H'"
+    cur.execute(query)
+    records = cur.fetchall()
+    hid = ""
+    for row in records:
+        hid = row[0]
+        break
+
+    query = f"select RequestID,PatientID,OrganName,Request,RequestDate from PatientOrganRequest where HospitalID  = '{hid}' and RequestID in (select RequestID from PatientOrganRequestApproval where status = 'Yes' )"
+    print(query)
+    cur.execute(query)
+    records = cur.fetchall()
+    print(records)
+    return render(request, "hospitalcancelpatientorganrequest.html", {'message': msg, 'RequestDetails': records})
+
+
+def hospital_organ_transplantation(request):
+    con = db_connect()
+    cur = con.cursor()
+
+    query = "select id from UserSession where type = 'H'"
+    cur.execute(query)
+    records = cur.fetchall()
+    hid = ""
+    for row in records:
+        hid = row[0]
+        break
+
+    query = f"select RequestID,PatientID,OrganName,Request,RequestDate from PatientOrganRequest where HospitalID  = '{hid}' and RequestID in (select RequestID from PatientOrganRequestApproval where status = 'Yes' )"
+
+    cur.execute(query)
+    records = cur.fetchall()
+
+    return render(request, "hospitalorgantransplantation.html", {'records': records})
+
+
+def hospital_organ_transplantation_details(request):
+    con = db_connect()
+    cur = con.cursor()
+
+    query = "delete from OrganDonorListCache"
+    cur.execute(query)
+    con.commit()
+
+    currentDate = str(time.strftime('%Y-%m-%d'))
+
+    query = "select id from UserSession where type = 'H'"
+    cur.execute(query)
+    records = cur.fetchall()
+    hid = ""
+    for row in records:
+        hid = row[0]
+        break
+    rid = request.POST['rid']
+    pid = request.POST['pid']
+
+    query = f"select patientID, HospitalID, Name, Gender, BloodGroup, DOB, Pin, Place, District, Address, Phone, Email, Photo, MedicalReport from Patient where patientID = '{pid}'"
+    cur.execute(query)
+    PatientDetails = cur.fetchall()
+
+    query = f"select RequestID, PatientID, HospitalID, OrganName, Request, RequestDate from PatientOrganRequest where requestID = '{rid}'"
+    cur.execute(query)
+    RequestDetails = cur.fetchall()
+    organName = ""
+    for row in RequestDetails:
+        organName = row[3]
+        break
+
+    query = f"select Donorid,Name,Place,DOD,RegDate from Donor where HospitalID = '{hid}' and DonorID in (select ID from DonorApproval where Status = 'Yes') and donorID in ( select id from DonorOrganStatus where OrganName = '{organName}' and Status = 'Y') "
+    print("fetch list : ", query)
+    cur.execute(query)
+    DonorDetails = cur.fetchall()
+    print("before loop : ", DonorDetails)
+
+    for row in DonorDetails:
+        did = row[0]
+        query = f"select DonationType from OrganDonationTypes where organName = '{organName}'"
+        cur.execute(query)
+        records = cur.fetchall()
+        status = ""
+        print("inside loop : ", row)
+        for r in records:
+            status = r[0]
+            break
+        if status == 'A':
+            query = f"insert into OrganDonorListCache+ values ('{row[0]}','{row[1]}','{row[2]}','{row[3]}','{row[4]}')"
+            print("if alive : ", query)
+            cur.execute(query)
+            con.commit()
+        elif status == 'P':
+            query = f"select * from OrganTransplantation where did = '{did}' and RequestID in ( select RequestID from PatientOrganRequest where organName = '{organName})'"
+            cur.execute(query)
+            if cur.rowcount(0):
+                query = f"insert into OrganDonorListCache values ('{row[0]}','{row[1]}','{row[2]}','{row[3]}','{row[4]}')"
+                print("if partial : ", query)
+                cur.execute(query)
+                con.commit()
+        else:
+            dateOfDeath = str(row[3])
+            print("dod : ", dateOfDeath, "\nc date : ", currentDate, "\nquery : ", query)
+            if currentDate == dateOfDeath:
+                query = f"select requestID from PatientOrganRequest where requestId in (select requestID from OrganTransplantation where DonorID = '{did}') and organName = '{organName}'"
+                print("if freshly dead : ", query)
+                cur.execute(query)
+                if cur.rowcount == 0:
+                    query = f"insert into OrganDonorListCache values ('{row[0]}','{row[1]}','{row[2]}','{row[3]}','{row[4]}')"
+                    print("if dead : ", query)
+                    cur.execute(query)
+                    con.commit()
+
+    query = "select * from OrganDonorListCache"
+    cur.execute(query)
+    DonorDetails = cur.fetchall()
+    print("final : ", DonorDetails)
+    return render(request, "hospitalorgantransplantationentry.html", {'PatientDetails': PatientDetails, 'RequestDetails': RequestDetails, 'DonorDetails': DonorDetails,  'organ': organName})
+
+
+def hospital_organ_transplantation_entry(request):
+    con = db_connect()
+    cur = con.cursor()
+
+    rid = request.POST['rid']
+    pid = request.POST['pid']
+    did = request.POST['did']
+    organName = request.POST['organ']
+
+    query = f"select patientID, HospitalID, Name, Gender, BloodGroup, DOB, Pin, Place, District, Address, Phone, Email, Photo, MedicalReport from Patient where patientID = '{pid}'"
+    cur.execute(query)
+    PatientDetails = cur.fetchall()
+
+    query = f"select RequestID, PatientID, HospitalID, OrganName, Request, RequestDate from PatientOrganRequest where requestID = '{rid}'"
+    cur.execute(query)
+    RequestDetails = cur.fetchall()
+
+    query = f"select donorID,HospitalID,Name,Gender,BloodGroup,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport from Donor where DonorID = '{did}'"
+    print(query, did)
+    cur.execute(query)
+    DonorDetails = cur.fetchall()
+
+    return render(request, "hospitalorgantransplantationdetails.html", {'PatientDetails': PatientDetails, 'RequestDetails': RequestDetails, 'DonorDetails': DonorDetails, 'rid': rid, 'did': did, 'pid': pid, 'organ': organName})
+
+
+def validate_hospital_organ_transplantation_entry(request):
+    con = db_connect()
+    cur = con.cursor()
+
+    tid = "T1000"
+    query = "select * from OrganTransplantation order by TransplantationID desc"
+    cur.execute(query)
+    records = cur.fetchall()
+    for row in records:
+        tid = row[0]
+        break
+    tidNoSuffix = tid[1:]
+    tidNew = int(tidNoSuffix)
+    tidNew = tidNew + 1
+    tid = "T" + str(tidNew)
+
+    rid = request.POST['rid']
+    pid = request.POST['pid']
+    did = request.POST['did']
+    organName = request.POST['organ']
+    doctorName = request.POST['doctorName']
+    patientCondition = request.POST['patientCondition']
+    donorCondition = request.POST['donorCondition']
+    operationStatus = request.POST['operationStatus']
+    operationResult = request.POST['operationResult']
+    surgeryDate = request.POST['surgeryDate']
+    remarks = request.POST['Remarks']
+    date = time.strftime('%Y-%m-%d %H:%M:%S')
+
+    query = f"select DonationType from OrganDonationTypes where organName = '{organName}'"
+    cur.execute(query)
+    records = cur.fetchall()
+    organStatus = ""
+    for row in records:
+        organStatus = row[0]
+        break
+
+    query = f"update DonorOrganStatus set status = '{organStatus}' where ID = '{did}'"
+    cur.execute(query)
+    con.commit()
+
+    query = f"insert into OrganTransplantation values ('{tid}','{rid}','{did}','{pid}','{surgeryDate}','{patientCondition}','{donorCondition}','{operationStatus}','{operationResult}','{doctorName}','{remarks}','{date}')"
+    cur.execute(query)
+    con.commit()
+
+    query = f"select patientID, HospitalID, Name, Gender, BloodGroup, DOB, Pin, Place, District, Address, Phone, Email, Photo, MedicalReport from Patient where patientID = '{pid}'"
+    cur.execute(query)
+    PatientDetails = cur.fetchall()
+
+    query = f"select RequestID, PatientID, HospitalID, OrganName, Request, RequestDate from PatientOrganRequest where requestID = '{rid}'"
+    cur.execute(query)
+    RequestDetails = cur.fetchall()
+
+    query = f"select donorID,HospitalID,Name,Gender,BloodGroup,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport from Donor where DonorID = '{did}'"
+    print(query, did)
+    cur.execute(query)
+    DonorDetails = cur.fetchall()
+
+    return render(request, "hospitalorgantransplantationdetails.html", {'PatientDetails': PatientDetails, 'RequestDetails': RequestDetails, 'DonorDetails': DonorDetails, 'rid': rid, 'did': did, 'pid': pid, 'organ': organName})
+
+
 def donor_pre_reg(request):
     return render(request, "donorprereg.html")
 
@@ -291,7 +584,7 @@ def donor_reg(request):
     records = cur.fetchall()
     con.commit()
 
-    return render(request, "donorreg.html", {'records': records , 'dist': district})
+    return render(request, "donorreg.html", {'records': records, 'dist': district})
 
 
 def validate_donor_reg(request):
@@ -341,9 +634,7 @@ def validate_donor_reg(request):
     didNew = didNew + 1
     did = "D" + str(didNew)
 
-    isAlive = 'Y'
-
-    query = "insert into Donor values ( '" + did + "','" + hid + "','" + name + "','" + gender + "','" + bloodtype + "','" + DType + "','" + dob + "','" + pin + "','" + place + "','" + district + "','" + address + "','" + phone + "','" + email + "','" + photoName + "','" + reportName + "','" + isAlive + "','" + date + "')"
+    query = "insert into Donor(DonorID, HospitalID, Name, Gender, BloodGroup, TypeOfDonation, DOB, Pin, Place, District, Address, Phone, Email, photo, MedicalReport, RegDate) values ( '" + did + "','" + hid + "','" + name + "','" + gender + "','" + bloodtype + "','" + DType + "','" + dob + "','" + pin + "','" + place + "','" + district + "','" + address + "','" + phone + "','" + email + "','" + photoName + "','" + reportName + "','" + "','" + date + "')"
     print(query)
     cur.execute(query)
     con.commit()
@@ -358,19 +649,13 @@ def validate_donor_reg(request):
     records = cur.fetchall()
     con.commit()
 
-    return render(request, "donorreg.html", {'message': msg, 'records': records , 'dist': district})
+    return render(request, "donorreg.html", {'message': msg, 'records': records, 'dist': district})
 
 
 def donor_approval(request):
     con = db_connect()
     cursor = con.cursor()
-    query = "select id from UserSession where type = 'H'"
-    cursor.execute(query)
-    records = cursor.fetchall()
-    hid = ''
-    for row in records:
-        hid = str(row[0])
-        break
+    hid = request.POST['id']
     query = f"select donorid,Name,place,regdate from Donor where HospitalID = '{hid}' and donorid not in(select id from DonorApproval)"
     cursor.execute(query)
     records = cursor.fetchall()
@@ -384,10 +669,11 @@ def show_donor_details(request):
     query = "select donorID,HospitalID,Name,Gender,BloodGroup,TypeOfDonation,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport,RegDate from Donor where donorid = '" + did + "'"
     cursor.execute(query)
     records = cursor.fetchall()
-    print(query,records)
+    print(query, records)
     return render(request, "donordetails.html", {'records': records})
 
 
+# noinspection PyUnusedLocal
 def validate_donor_approval(request):
     did = request.POST['donorID']
     approve_status = request.POST['approve_status']
@@ -495,7 +781,7 @@ def donor_cancel_organ_donation(request):
     query = "select ID,OrganName,Date from DonorOrganStatus where ID = '" + did + "' and Status = 'Y'"
     cur.execute(query)
     records = cur.fetchall()
-    return render(request,"donorcancelorgandonation.html", {'records': records})
+    return render(request, "donorcancelorgandonation.html", {'records': records})
 
 
 def validate_donor_cancel_organ_donation(request):
@@ -510,7 +796,7 @@ def validate_donor_cancel_organ_donation(request):
     cur.execute(query)
     records = cur.fetchall()
     msg = "Canceled successfully"
-    return render(request,"donorcancelorgandonation.html", {'records': records, 'message': msg})
+    return render(request, "donorcancelorgandonation.html", {'records': records, 'message': msg})
 
 
 def admin_organ_list(request):
@@ -523,7 +809,7 @@ def admin_organ_list(request):
 
 
 def admin_add_new_organ(request):
-    return render(request,"adminaddneworgan.html")
+    return render(request, "adminaddneworgan.html")
 
 
 def admin_validate_add_new_organ(request):
@@ -592,7 +878,7 @@ def validate_patient_reg(request):
     photoName = fs.save("static/data/patient/photo/" + photo.name, photo)
     photoName = photoName[26:]
 
-    pid = "D1000"
+    pid = "P1000"
     query = "select * from Patient order by patientID desc"
     cur.execute(query)
     records = cur.fetchall()
@@ -621,7 +907,8 @@ def validate_patient_reg(request):
 def patient_approval(request):
     con = db_connect()
     cursor = con.cursor()
-    query = "select patientid,Name,place,regdate from Patient where patientid not in(select id from PatientApproval)"
+    hid = request.POST['id']
+    query = f"select patientid,Name,place,regdate from Patient where patientid not in(select id from PatientApproval) and HospitalID = '{hid}'"
     cursor.execute(query)
     records = cursor.fetchall()
     return render(request, "patientapproval.html", {'records': records})
@@ -634,10 +921,11 @@ def show_patient_details(request):
     query = "select * from Patient where patientid = '" + pid + "'"
     cursor.execute(query)
     records = cursor.fetchall()
-    print(query,records)
+    print(query, records)
     return render(request, "patientdetails.html", {'records': records})
 
 
+# noinspection PyUnusedLocal
 def validate_patient_approval(request):
     pid = request.POST['patientID']
     approve_status = request.POST['approve_status']
@@ -700,7 +988,7 @@ def patient_get_organ_hospital_list(request):
     cur.execute(query)
     records = cur.fetchall()
 
-    return render(request, "patientgetorganhospitallist.html",{'records': records, 'organ': organ})
+    return render(request, "patientgetorganhospitallist.html", {'records': records, 'organ': organ})
 
 
 def patient_make_organ_donation_request(request):
@@ -742,15 +1030,21 @@ def patient_validate_organ_donation_request(request):
         pid = row[0]
         break
 
-
     hid = request.POST['hid']
     organ = request.POST['organ']
     comment = request.POST['comment']
 
-    query = f"insert into PatientOrganRequest values ('{rid}','{pid}','{hid}','{comment}','{date}')"
+    query = f"insert into PatientOrganRequest values ('{rid}','{pid}','{hid}','{organ}','{comment}','{date}')"
     cur.execute(query)
     con.commit()
-    return HttpResponse('ok')
+
+    query = "select ID,photoName,id,name,place,Location,pin,phone,District,Email,type from Hospital where id = '" + hid + "'"
+    cur.execute(query)
+    records = cur.fetchall()
+    msg = "Request successfully. Please wait for approval"
+
+    return render(request, "patientmakeneworganrequest.html", {'records': records, 'organ': organ, 'message': msg})
+
 
 def guest_find_organ_donor(request):
     con = db_connect()
@@ -775,4 +1069,85 @@ def guest_get_organ_hospital_list(request):
     cur.execute(query)
     records = cur.fetchall()
     print(records)
-    return render(request, "searchhospitallist.html",{'records': records})
+    return render(request, "searchhospitallist.html", {'records': records})
+
+
+def patient_organ_request_status(request):
+    con = db_connect()
+    cur = con.cursor()
+    pid = request.POST['id']
+    print(pid)
+    query = f"select RequestID,OrganName,RequestDate from PatientOrganRequest where PatientID = '{pid}'"
+    cur.execute(query)
+    records = cur.fetchall()
+    return render(request, "patientorganrequeststatus.html", {'records': records})
+
+
+# noinspection PyUnusedLocal
+def patient_organ_request_details(request):
+    con = db_connect()
+    cur = con.cursor()
+    rid = request.POST['id']
+    print(rid)
+    query = f"select PatientID,OrganName,Request,RequestDate from PatientOrganRequest where RequestID = '{rid}'"
+    cur.execute(query)
+    RequestDetails = cur.fetchall()
+    query = f"select ID,name,place,Location,pin,phone,District,Email,type from Hospital where id in (select HospitalID from PatientOrganRequest where requestID = '{rid}')"
+    cur.execute(query)
+    HospitalDetails = cur.fetchall()
+    query = f"select status from PatientOrganRequestApproval where RequestID = '{rid}'"
+    cur.execute(query)
+    ApprovalDetails = cur.fetchall()
+    msg = ""
+    print(RequestDetails, "\n\n", HospitalDetails, "\n\n", ApprovalDetails)
+    if cur.rowcount == 0:
+        msg = "Waiting for approval..."
+    else:
+        status = ""
+        for row in ApprovalDetails:
+            status = row[0]
+        if status == "Yes":
+            msg = "Your Request has been approved"
+        else:
+            msg = "Your request was denied"
+
+    return render(request, "patientshoworganrequestdetails.html", {'RequestDetails': RequestDetails, 'HospitalDetails': HospitalDetails, 'ApprovalDetails': ApprovalDetails, 'message': msg})
+
+
+def patient_cancel_organ_request(request):
+    con = db_connect()
+    cur = con.cursor()
+    pid = request.POST['pid']
+
+    query = f"select RequestID,HospitalID,OrganName,Request,RequestDate from PatientOrganRequest where PatientID  = '{pid}' and RequestID not in (select RequestID from PatientOrganRequestApproval )"
+    cur.execute(query)
+    records = cur.fetchall()
+    print(records)
+
+    return render(request, "patientcancelorganrequest.html", {'RequestDetails': records, 'pid': pid})
+
+
+def validate_patient_cancel_organ_request(request):
+    con = db_connect()
+    cur = con.cursor()
+    rid = request.POST['rid']
+    pid = request.POST['pid']
+
+    print(request, "\ntest\n", request.POST)
+
+    query = f"delete from PatientOrganRequestApproval where RequestID = '{rid}'"
+    print(query)
+    cur.execute(query)
+    con.commit()
+
+    query = f" delete from PatientOrganRequest where RequestID = '{rid}'"
+    print(query)
+    cur.execute(query)
+    con.commit()
+
+    query = f"select RequestID,HospitalID,OrganName,Request,RequestDate from PatientOrganRequest where PatientID  = '{pid}' and RequestID not in (select RequestID from PatientOrganRequestApproval )"
+    cur.execute(query)
+    records = cur.fetchall()
+    print(records)
+    msg = 'successfully cancelled'
+    return render(request, "patientcancelorganrequest.html", {'RequestDetails': records, 'pid': pid, 'message': msg, })

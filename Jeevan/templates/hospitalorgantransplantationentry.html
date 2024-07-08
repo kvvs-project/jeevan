@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            #title {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .title {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #inner {
+                display: flex;
+                flex-direction: row;
+            }
+
+            .child {
+                padding: 30px;
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1 id="title">Organ Transplantation Details</h1>
+        </header>
+        <div id="container">
+            <div id="inner">
+                <div class="child">
+                    <div class="title">
+                        <h3>Patient Details</h3>
+                    </div>
+                    {% for patientID,HospitalID, Name, Gender, BloodGroup, DOB, Pin, Place, District, Address, Phone, Email, Photo, MedicalReport in PatientDetails %}
+                    <table cellspacing="0" cellpadding="15">
+                        <tr>
+                            <td colspan="2">
+                                <img src="./static/data/patient/photo/{{Photo}}" width="300px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Patient name</td>
+                            <td>
+                                <label>{{name}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Patient ID</td>
+                            <td>
+                                <label>{{patientID}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hospital ID</td>
+                            <td>
+                                <label>{{HospitalID}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Gender</td>
+                            <td>
+                                <label>{{Gender}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Date of Birth</td>
+                            <td>
+                                <label>{{DOB}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Place</td>
+                            <td>
+                                <label>{{Place}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pin</td>
+                            <td>
+                                <label>{{Pin}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td>
+                                <label>{{Phone}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>District</td>
+                            <td>
+                                <label>{{District}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>
+                                <label>{{Address}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>
+                                <label>{{Email}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Medical Report</td>
+                            <td>
+                                <form nam="report_form" method="post" action="download_patient_report">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="report" value="{{MedicalReport}}" />
+                                    <input type="submit" value="Download Report" />
+                                </form>
+                            </td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+                <div class="child">
+                    <div class="title">
+                        <h3>Request Details</h3>
+                    </div>
+                    {% for RequestID, PatientID, HospitalID, OrganName, Request, RequestDate in RequestDetails %}
+                    <tr>
+                        <td>Request ID</td>
+                        <td>{{RequestID}}</td>
+                    </tr>
+                    <table cellspacing="0" cellpadding="10">
+                        <tr>
+                            <td>Patient ID</td>
+                            <td>{{PatientID}}</td>
+                        </tr>
+                        <tr>
+                            <td>Organ Name</td>
+                            <td>{{OrganName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Request</td>
+                            <td>{{Request}}</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>{{RequestDate}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="inner">
+                <div class="child">
+                    <div class="title">
+                        <h3>Donor List</h3>
+                    </div>
+                    {%if DonorDetails%}
+                    <table border="1px" cellspacing="0" align="center" cellpadding="10">
+                        <tr>
+                            <td>ID</td>
+                            <td>Name</td>
+                            <td>Place</td>
+                            <td>reg date</td>
+                            <td>date of death</td>
+                            <td>fetch data</td>
+                        </tr>
+                        {% for DonorID,name,place,regdate,DOD in DonorDetails %}
+                        <tr>
+                            <td>{{DonorID}}</td>
+                            <td>{{name}}</td>
+                            <td>{{place}}</td>
+                            <td>{{DOD}}</td>
+                            <td>{{regdate}}</td>
+                            <td>
+                                <form name="send_data" id="send-data" method="post" action="hospital_organ_transplantation_entry">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="rid" value="{{RequestID}}" />
+                                    <input type="hidden" name="pid" value="{{PatientID}}" />
+                                    <input type="text" name="did" value="{{DonorID}}" hidden />
+                                    <input type="hidden" name="organ" value="{{organ}}">
+                                    <input type="submit" name="Submit" value="Show More" />
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% else %}
+                    <br />
+                    <b>No Active Donors Avaiable</b>
+                    {% endif %}
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

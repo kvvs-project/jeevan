@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            #title {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .title {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+            }
+
+            #inner {
+                display: flex;
+                flex-direction: row;
+            }
+
+            .child {
+                padding: 10px;
+                text-align: left;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <h1 id="title">Organ Transplantation Details</h1>
+        </header>
+        <div id="container">
+            <div id="inner">
+                <div class="child">
+                    <div class="title">
+                        <h3>Patient Details</h3>
+                    </div>
+                    {% for patientID, HospitalID, Name, Gender, BloodGroup, DOB, Pin, Place, District, Address, Phone, Email, Photo, MedicalReport in PatientDetails %}
+                    <table cellspacing="0" cellpadding="15">
+                        <tr>
+                            <td colspan="2">
+                                <img src="./static/data/patient/photo/{{Photo}}" width="300px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Patient name</td>
+                            <td>
+                                <label>{{name}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Patient ID</td>
+                            <td>
+                                <label>{{patientID}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hospital ID</td>
+                            <td>
+                                <label>{{HospitalID}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Gender</td>
+                            <td>
+                                <label>{{Gender}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Date of Birth</td>
+                            <td>
+                                <label>{{DOB}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Place</td>
+                            <td>
+                                <label>{{Place}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pin</td>
+                            <td>
+                                <label>{{Pin}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td>
+                                <label>{{Phone}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>District</td>
+                            <td>
+                                <label>{{District}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>
+                                <label>{{Address}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>
+                                <label>{{Email}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Medical Report</td>
+                            <td>
+                                <form nam="report_form" method="post" action="download_patient_report">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="report" value="{{MedicalReport}}" />
+                                    <input type="submit" value="Download Report" />
+                                </form>
+                            </td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+                <div class="child">
+                    <div class="title">
+                        <h3>Donor details</h3>
+                    </div>
+                    <table border="0" align="center" cellpadding="15">
+                        {% for donorID,HospitalID,Name,Gender,BloodGroup,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport in DonorDetails %}
+                        <tr>
+                            <td colspan="2">
+                                <img src="./static/data/donor/photo/{{ photo }}" width="300px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Donor ID</td>
+                            <td>
+                                <label>{{donorID}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Donor name</td>
+                            <td>
+                                <label>{{Name}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>date of birth</td>
+                            <td>
+                                <label>{{DOB}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Place</td>
+                            <td>
+                                <label>{{Place}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>
+                                <label>{{Address}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pin</td>
+                            <td>
+                                <label>{{Pin}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td>
+                                <label>{{Phone}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>District</td>
+                            <td>
+                                <label>{{District}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>
+                                <label>{{Email}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Blood Group</td>
+                            <td>
+                                <input type="radio" name="h_bb" id="h-bb" checked disabled />
+                                <label for="h-bb">{{BloodGroup}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Medical Report</td>
+                            <td>
+                                <form nam="report_form" method="post" action="download_donor_report">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="report" value="{{ MedicalReport }}" />
+                                    <input type="submit" value="Download Report" />
+                                </form>
+                            </td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="container">
+            <div class="inner">
+                <div class="child">
+                    <div class="title">
+                        <h3>Request Details</h3>
+                    </div>
+                    {% for RequestID, PatientID, HospitalID, OrganName, Request, RequestDate in RequestDetails %}
+
+                    <table cellspacing="0" cellpadding="10">
+                        <tr>
+                            <td>Request ID</td>
+                            <td>{{RequestID}}</td>
+                        </tr>
+                        <tr>
+                            <td>Patient ID</td>
+                            <td>{{PatientID}}</td>
+                        </tr>
+                        <tr>
+                            <td>Organ Name</td>
+                            <td>{{OrganName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Request</td>
+                            <td>{{Request}}</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>{{RequestDate}}</td>
+                        </tr>
+                    </table>
+                    {%endfor%}
+                </div>
+            </div>
+            <div class="child">
+                <div class="title">
+                    <h3>Transplantation Details</h3>
+                </div>
+                <form method="post" action="validate_hospital_organ_transplantation_entry"> {%csrf_token%}
+                    <table>
+                        <tr>
+                            <td>Doctor Name</td>
+                            <td><input type="text" name="doctorName" /></td>
+                        </tr>
+                        <tr>
+                            <td>Patient Condition</td>
+                            <td><textarea name="patientCondition"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>Donor Condition</td>
+                            <td><textarea name="donorCondition"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>Was Operation Successful?</td>
+                            <td>
+                                <div>
+                                    <input type="radio" name="operationStatus" id="Successful" value="Successful" />
+                                    <label for="Successful">Successful</label>
+                                    <input type="radio" name="operationStatus" id="Failed" value="Failed" />
+                                    <label for="Failed">Failed</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>How was the Operation?</td>
+                            <td>
+                                <select name="operationResult">
+                                    <option value="">Select</option>
+                                    <option value="Bad">Bad</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="Satisfactory">Satisfactory</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Very Good">Very Good</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Surgery date</td>
+                            <td>
+                                <input type="date" name="surgeryDate" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Remarks</td>
+                            <td>
+                                <textarea name="Remarks"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="hidden" name="pid" value="{{pid}}">
+                                <input type="hidden" name="did" value="{{did}}">
+                                <input type="hidden" name="rid" value="{{rid}}">
+                                <input type="hidden" name="organ" value="{{organ}}">
+                                <input type="submit" value="Submit" />
+                            </td>
+                            <td>{{message}}</td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
