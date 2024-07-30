@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -136,11 +137,11 @@
                         <h3>Request Details</h3>
                     </div>
                     {% for RequestID, PatientID, HospitalID, OrganName, Request, RequestDate in RequestDetails %}
-                    <tr>
-                        <td>Request ID</td>
-                        <td>{{RequestID}}</td>
-                    </tr>
                     <table cellspacing="0" cellpadding="10">
+                        <tr>
+                            <td>Request ID</td>
+                            <td>{{RequestID}}</td>
+                        </tr>
                         <tr>
                             <td>Patient ID</td>
                             <td>{{PatientID}}</td>

@@ -162,7 +162,27 @@
                                 <form name="send_data" method="post" action="/hospital_cancel_patient_organ_request">
                                     {% csrf_token %}
                                     <input type="text" name="id" value="{{id}}" hidden />
-                                    <input type="submit" name="Submit" value="Cancel Request" />
+                                    <input type="submit" name="Submit" value="View Details" />
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Organ transplantation Entry</td>
+                            <td>
+                                <form name="send_data" method="post" action="/hospital_organ_transplantation">
+                                    {% csrf_token %}
+                                    <input type="text" name="id" value="{{id}}" hidden />
+                                    <input type="submit" name="Submit" value="View Details" />
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Blood Donation entry</td>
+                            <td>
+                                <form name="send_data" method="post" action="/hospital_find_blood_donor">
+                                    {% csrf_token %}
+                                    <input type="text" name="id" value="{{id}}" hidden />
+                                    <input type="submit" name="Submit" value="View Details" />
                                 </form>
                             </td>
                         </tr>

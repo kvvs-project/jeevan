@@ -30,7 +30,9 @@ from JeevanApp.views import home_page, validate_login, user_login, admin_validat
     patient_organ_request_status, patient_organ_request_details, hospital_cancel_patient_organ_request, \
     validate_hospital_cancel_patient_organ_request, validate_patient_cancel_organ_request, patient_cancel_organ_request, \
     hospital_organ_transplantation, hospital_organ_transplantation_details, hospital_organ_transplantation_entry, \
-    validate_hospital_organ_transplantation_entry
+    validate_hospital_organ_transplantation_entry, guest_find_blood_donor, guest_get_blood_donor_list, \
+    hospital_find_blood_donor, hospital_get_blood_donor_list, hospital_get_blood_donor_details, \
+    hospital_validate_blood_donation
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -47,6 +49,10 @@ urlpatterns = [
     path('validate_hospital_approval', validate_hospital_approval),
     path('hospital_organ_request_approval', hospital_organ_request_approval),
     path('hospital_show_organ_approval_details', hospital_show_organ_approval_details),
+    path('hospital_find_blood_donor', hospital_find_blood_donor),
+    path('hospital_get_blood_donor_list', hospital_get_blood_donor_list),
+    path('hospital_get_blood_donor_details', hospital_get_blood_donor_details),
+    path('hospital_validate_blood_donation', hospital_validate_blood_donation),
     path('hospital_organ_transplantation', hospital_organ_transplantation),
     path('hospital_cancel_patient_organ_request', hospital_cancel_patient_organ_request),
     path('hospital_organ_transplantation_details', hospital_organ_transplantation_details),
@@ -82,6 +88,8 @@ urlpatterns = [
     path('download_patient_report', download_patient_report),
     path('guest_find_organ_donor', guest_find_organ_donor),
     path('guest_get_hospital_list', guest_get_organ_hospital_list),
+    path('guest_find_blood_donor', guest_find_blood_donor),
+    path('guest_get_blood_donor_list', guest_get_blood_donor_list),
     path('patient_organ_request_status', patient_organ_request_status),
     path('patient_organ_request_details', patient_organ_request_details),
     path('patient_cancel_organ_request', patient_cancel_organ_request),

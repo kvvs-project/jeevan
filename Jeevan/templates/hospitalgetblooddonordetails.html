@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0%;
+        }
+
+        .title {
+            padding: 16px;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: top;
+        }
+
+        .inner {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .inner .title {
+            padding-left: 0px;
+            text-align: left;
+        }
+
+        .child {
+            padding-left: 30px;
+            padding-right: 30px;
+            text-align: left;
+        }
+
+        .alert-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 10px;
+            background-color: #008ad4;
+            color: white;
+            width: fit-content;
+            box-sizing: border-box;
+            border-radius: 16px;
+            width: 300px;
+        }
+        .alert {
+            margin-left: 10px;
+            font-size: 16px;
+            width: 80%;
+            max-width: inherit;
+
+        }
+        .alert-text {
+            word-wrap: break-word;
+            width: fit-content;
+            max-width: 85%;
+        }
+
+        .closebtn {
+            display: flex;
+            justify-content: flex-end;
+            color: white;
+            cursor: pointer;
+            background-color: white;
+            padding-left: 8px;
+            padding-right: 8px;
+            border-radius: 30px;
+            margin-left: 8px;
+            font-size: 1.5rem;
+            color:#008ad4;
+        }
+
+        .closebtn:hover {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 class="title">Blood Donation Details</h1>
+    </header>
+    <div class="container">
+        <div class="child">
+            <div class="title">
+                <h2>Donor details</h2>
+            </div>
+            <table border="0" align="center" cellpadding="5">
+                {% for donorID,HospitalID,Name,Gender,BloodGroup,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport in DonorDetails %}
+                <tr>
+                    <td colspan="2">
+                        <img src="./static/data/donor/photo/{{ photo }}" width="300px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Donor ID</td>
+                    <td>
+                        <label>{{donorID}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Donor name</td>
+                    <td>
+                        <label>{{Name}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>date of birth</td>
+                    <td>
+                        <label>{{DOB}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Place</td>
+                    <td>
+                        <label>{{Place}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>
+                        <label>{{Address}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pin</td>
+                    <td>
+                        <label>{{Pin}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td>
+                        <label>{{Phone}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>District</td>
+                    <td>
+                        <label>{{District}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>
+                        <label>{{Email}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Blood Group</td>
+                    <td>
+                        <label for="h-bb">{{BloodGroup}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Medical Report</td>
+                    <td>
+                        <form nam="report_form" method="post" action="download_donor_report">
+                            {% csrf_token %}
+                            <input type="hidden" name="report" value="{{ MedicalReport }}" />
+                            <input type="submit" value="Download Report" />
+                        </form>
+                    </td>
+                </tr>
+                {%endfor%}
+            </table>
+        </div>
+        <div class="inner">
+            {%if DonationRecords%}
+            <div class="child">
+                <div class="title">
+                    <h3>Past Donations</h3>
+                </div>
+                <table cellspacing="0" border="1px" cellpadding="5px">
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Unit</th>
+                        <th>Hospital ID</th>
+                        <th>Hospital Name</th>
+                        <th>Hospital Place</th>
+                        <th>Remarks</th>
+                    </tr>
+                    {% for Date,Time,Unit,Remarks,ID,HospitalName,HospitalPlace in DonationRecords %}
+                    <tr>
+                        <td>{{Date}}</td>
+                        <td>{{Time}}</td>
+                        <td>{{Unit}}</td>
+                        <td>{{ID}}</td>
+                        <td>{{HospitalName}}</td>
+                        <td>{{HospitalPlace}}</td>
+                        <td>{{Remarks}}</td>
+                    </tr>
+                    {%endfor%}
+                </table>
+            </div>
+            {%endif%}
+            <div class="child">
+                <div class="title">
+                    <h3>Confirm New Blood Donation</h3>
+                </div>
+                <table cellspacing="0px" cellpadding="5px">
+                    <form method="post" action="/hospital_validate_blood_donation"> {%csrf_token%}
+                        {%if Date%}
+                        <tr>
+                            <td>Last donated date</td>
+                            <td>{{Date}}</td>
+                        </tr>
+                        {%endif%}
+                        {%if Day%}
+                        <tr>
+                            <td>Number of days <br> since last donation</td>
+                            <td>{{Day}} Days</td>
+                        </tr>
+                        {%endif%}
+                        <tr>
+                            <td>Collected unit</td>
+                            <td><input type="text" name="unit" {{btnStatus}}></td>
+                        </tr>
+                        <tr>
+                            <td>Remarks</td>
+                            <td><textarea name="remarks" {{btnStatus}}></textarea></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2px">
+                                <input type="hidden" name="did" value="{{did}}">
+                                <input type="submit" value="Submit" {{btnStatus}}>
+                            </td>
+                        </tr>
+                    </form>
+                </table>
+                {%if message%}
+                <div class="alert-container">
+                    <div class="alert">
+                        <div class="alert-text">{{message}}.</div>
+                    </div>
+                    <div class="closebtn" onclick="this.parentElement.style.display='none';">&times;</div>
+                </div>
+                {%endif%}
+            </div>           
+        </div>
+    </div>
+</body>
+
+</html>
