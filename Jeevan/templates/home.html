@@ -1,11 +1,305 @@
-<html>
-    <body>
-        <h1 align="center">Welcome to Jeevan</h1>
-        <p>
-        <a href="/login">login</a>
-        <br>
-        <a href="/guest_find_organ_donor">Find organ donor</a>
-        <br>
-        <a href="/guest_find_blood_donor">Find a blood donor</a>
-    </body>
-</html>
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links%}
+<link rel="stylesheet" href="/static/css/home.css">
+{% endblock %}
+
+{% block nav %}
+<li><a href="/signup">Sign up</a></li>
+<li><a href="/login">Login</a></li>
+{% endblock %}
+
+{% block main %}
+<section class="hero">
+    <div class="hero-container">
+        <div class="hero-main">
+            <div class="hero-title">
+                <h1>Jeevan </h1>
+                <img src="{% static '/img/misc/jeevan.webp' %}" alt="navbar site icon">
+            </div>
+            <div class="hero-disc">
+                Uniting Hearts and Healing Hands for Life
+            </div>
+            <div class="hero-button">
+                <a href="/find"><button>Find A Donor Now</button></a>
+            </div>
+        </div>
+        <div class="hero-img">
+            <img src="data:image/webp;base64,UklGRoozAABXRUJQVlA4TH4zAAAv40VDEQ8w//M///Mf8BwHbRsJUswf9vTu/hlExAT0R2tX4VOqYNFpCXqYxi8tp2O0HLkPFalWmV3oz5icbYutbctNSH6sadqTKfxNa6Zl8eWDL/+vNh3CH0cib6yaOgOxboo1iYSrsfeG+2YB1r4R/Z8AT9K2xbatzdGN42YoR8VcdEHF7LMPNUXNyAXHPDnFrwneFdyyryg1IOOYZ0WhHJnhPIXBgDHXnnOWI/o/AfTV/1/9/9X/X/3/1f9f/f815H+6uip1c5K5uCbZi5uSu7ciyd9b++6mpHBb8y7rellV7qZKgdsaijdNgmm+qyndDPmvK0uyqylg2q+qSnIrRWB8V02SX2T5i/uqhqSwKLJA/66mULphR0pfkSJdq3Rp/tIkuS+oyFFlLjXuDEnxC6qyZNkzXb+gJkBuES41AGVhvp+egOmP6sJ+PyMAPaz+y0sE2sJ9P/JAiwvfgXLpSkz5L8gCNa2GuUvADF9PlgGKjoYHWvx6igCyzJED6vdT0wXZlYWSgGmBkr6eFhfTbeSFAfL308Ni+BN9ScMv+iLscNXXM92ihe9MdhUX/Z9YEJC+JbOo6cZ9VVksi4AS+v/nF3k1v52SVvlG3xkyUGL7smq8s6sA83tq4WZuGXKq5qsaDnJsijfNfkX+pnvIact9Q30jXKrSN6QNd9OO6sUUuTt7UyOQyqXdTlM8KwnQdzSkB7SjL0eSPcqL/A1lSf4IGZhfUZWU7tqdhfmbrvZFX0vTP5DMynWzmm4D+mpGYsjeDLsaDoZu/z7Uv9K3okiTX/nub/wWQv2nWynyZMVF8z2seviSqhzMdNTiHto/mUtpMjC0Ci3yb1xqBO0bItzIENBkLzXURLyURD3QlzIjUOQWsWhjSAoQlauRB1C4lJSV0yUrS/Jc88UUObJnxoWyftMF/R9SZF3vpcpSIj1dstDfupFkbuK9NEFNNBkAMX+XuUzJc1+upUcoosouzPiL7GVIdiO+CRcywsVkucu0/e/dRXY7zJ3IXyzyl+F6mG7ltgrslWQ5yLLMuGpx+MsU2xH+SooMMC190X1N/ZIV96jjSqoAhqPp0kJRC0CVP6jQ8UJaWliqzCKrRaDLHmSYG+nx0i1FFqgx648ETHEY4W5khEs1IAeUhP4QoHhC3d/I9Jfr9BcxfxcU+aOG6O9D7m4EIIvhZGhyRwXf3UeWvesRQKZ7WbrMUcIP7qPI3LV0mbaFaZmJ44g/uY8qoLhL1WW4FofLilt/88L8376QBLQAlSKzqLH7Ir813WXo+2gR6Am6zbJA9yX10GSh2RulS/tCergIhkMOaCGrhS4Dw93JAlXh6xgeaDIMz/CXmFXjTJC144HyjTigyjICPQA1oT+SIlT5jQjkL2RaoMgzEj0CReifSA7GxpQM8IXoggJdtARkMf+WZEFyN0NywPhCzGVGmkwVgMz4XTKUnS55oMdvI4trTxTZsph2/I9K0CR7Q1cE2tdR0qKJLJdlLq7/bwowlLgvkoGavpQqw/TIAsM3yYPkN5iyUPRt1LgosozAdED3VXIUyex0ecgyX0ZbZTl6ZHighSoZqhK7VQGQ/TbCAnlaoi9ikaApbGUJmFtF8VVQ5xiBKloAaipKMGS3mDIw3EaT5F8ToffX/apHikyNQBEKoMR+l4Pu76aur0kwB3CrlsiyJQFZyJMVD6r8VtfSvcjub9xUgVwRgIwcVf4gK0ILq6p1fEmGO4BdFcH0eWVlabIHzAQ1rsZN+nTzJsswAjLA+KtgiNOhjaJ781y0ZzArZOmRaS9KMNNRk6GkRd9wzxWf4fenrRaZDuiKoHhUZcm6ZF09TPnnGs4yLTUxLk2BLH+U5W/axQBV4bl+CG6HpYjugSpPkTtCAWSAKelf56r0ir86SjdkmRaAIkeVORtxlSV5rmHoORwhbwBZ9sbSxXlPMC00KXLNocm84O9OkLaQrXFhGPGBptWQ7CoW2RfgONOVFczwQJVhOJASyxKz3BcxfE5ATSD/QJGhe6rk7pj+i+ghC2iRLPdAlr10iY3xTbTIpQeK7EGOgBwtMBV2enisH6HEvRqRgeGp4rAImJ4WsmTvAi0+1k6UmBamo6WTKgvDU2OV2PhTTV9EEcOCLD2eeeiBGrvCzv9QnquHyHYnywwHMoxwFqBFahpyG3FmPVaOkFP1O8h0T5Zh+pOiBDVSJLH123MZgDtB2LPdUwRyW9mRJUNNl7hnZZ5Kp4hb07VATRTZrRphylIWfiOn6aZ9ik40XA20SJHZE1R5ssiS/Sn9BKjsdV8jLVAFYaPJkhXIMlmJHf1LN9xj7RBpL5RIDzSR9wLMCJew9//7/lw5Q95rISeGpydK3KhK0BPIZrkd1Hz3j+UjzKytGrOYjh6pezI0wbRFdu//CO25eIbf9kpETMsItJ0iOaoM01ax98cr6EQJGRmmp+8wFSiyDNfT3vwj1vBch93fsDI7WczfZJBjhJv/CqoSyDHciCfpFfVMf0tkWaa/mREkmJ7hp98b/yTV+Fw+DzLjHySyDNqQZcgyAt3LHfwDlRckmP11N+3Jv4gUkeVupECTo0f635Pd67+/hKCPM23//yJVFJkNmaJASzTJHPxFv6UX/BqdYLgTBVqiiB2PIlU0Jfabn3/rFSds/mC4Jk+L1LSVGIkiquJJ+DK6v/RAi1syXSbLVIWDGof7dN0fVDlGoIc9V2WRrfIHJXanj1ZPWqiyDM/Y+J8lhSLHdFX2JHX/4cJRkWU6pr+DqYQ8wzWZPZvV/fxwLWzVWGSQZbqdKjEDw3exXTz6Pz5ciU9kWWR3kOyI9DDiXg3oH7ivoqQisgwyW12uJVqY4SAyHdPcRaKIfFAVqmiS2+jmMvyHy6nGraxVEdtZsYgq2Y1hqOkbidRETXvMlGWqZHYsJdHDd4FqpEZqPOgyskXiQLT44dDl3975I9Ai7aTKTlcU99pvMjV9vJLgf9j5PwI90MJBkRu+KWy5bmWLzIebF23M/8tfuj9Avocut9Ndd9Nm2U/390/kGJ5xNEILU3bLdzddlpuc7TftjYtjuJMemyQO/PBM/+HG37qYHct0zKOWqhS3Wui+B2b8QizTnhRVyR+00CJd+mz9Mje6DLLInGT9IdmtGluokab04ZyKHfbAPIAkcVBjSdQP1M3JHwdkmfxM3CuppCyK4seR32pO/4fbaReyeMIf6GLy5ymKe37+H364jUQRJR1VSXYvKwtZFD5NVTrrB+kJSYmT32SmY36cJm3VMP84qYkaT5okf4Cs7AhM/2m6ZA7+Sej+rkZqfECS7Mm00/bIcJ9mSHYrjn8S2kZ7pkpKHLnpWmJ+nCm5nRLHP4kHLdDCwZRkj4Yfvuo32U+jF4UniqTEcQ89FP0LmQ/kD/4aW9jqge73miR71kKLWRIfNp/k2P+atjzdH00p8UCsCSl9orCV+l9T3eiL4baKJPtATUVMxc/3e6pxwzHcSZMCDxZlmaHwUYqhSIo7pPaI3RoST2Yh2+U+yvAPqP1FZWMs5p7kHzLyVeajKD3i9yzTHmTJPILsCFV80iKZh9KJLH++q4o8O12PLX2UKrlL2poH0yKDTI53Te6h4Zv+ZfgoTfIvM6uy0WUe6qFK/qMMKTzwR9BvJ1nszMRTsUjuo0wpvko3dUPhqZayZD+KpHQ2LuI/uCGLS7jJcsRnqpD4NHpk/ib+vFUS7a7IloeK7EwfJb58mfsnYVqRNtKl+5sqKoEnwnZ/nj+Y+wfxoruycjctUWMihG7P8zt8/wqQ082465HA1QFznt/l+/NGjQx7M0KCZ6qAPkp6+dFU/QdxWBmRbuKJz3BMBVDn+f25v8bhppG5lERdzLvpCgxTBugeftNGCzuyFYopwp8lvrxO/L4Xb2TuTAvEDXcFqR+EvSzTPcM3b7q9h/m3btqKdRGwDP0NzFK//DziKb+n7qdd1UX3+a6mDM0ARUQReqmwLW2Fs1ig5uKbBFo5bcut/nrnL+mmxQriymGpvIMuIsk/ElpgSG+KX6puy6v7oWVsgX4pd903X8xcICKqa7UdNLYwV9JiuK3uqp3K/qW5peA3UNm06W/izXDdtrnyppuVEtwGClc7cCfDdAa3XobdVPbqD9S7aYeBnoimvoFeqUJvIHNtr+zW/AHURHLVElGEWqmDNpgWcDfhzugPQJPZV0NECbQy/A6iBNfLcMwdGX0JMyW0N2GlBLcDEmBZ7toG+gvPoIko+5UKzBbaOz/2F0luxXAMe5CVp2roL2WpCr2FyiIpcuZXWTkVNwdFRNWt1EFbzFz2FeWBBtCLXQl+D4kp8oJUYrFTf4CsiJpZKMHtgZjcmXlN/wMUTdRXKjCb6AxVYrMvtFFSjXXuS/j3F71Qg9pEZegKT/SX4C8ATQS1UAdtssxFyC66FBn2xm2EZuZ+f7UIv4s8lyGWQ5J/ID7zIyiKoHUT7C7yIux0xR099R/sZbW/yFDSDyowu+BsyAHVMi+6KXbvz79ahdrGOJIMZLkTbktsfrh4kNpfBDX+oA7aZj8pSsD4WbH9/sMi/D7qxW80BSg6yOLg94MS++8JWvg5GW4f5aTLQf9xf/1hBWYfnEwZsi7jFekg9H+QoPuf06A3MiW5DSWokizXJsv8AeOf/DCANtr3iiIMSaznM36naRlhuB+T4XfSJNm7Jg+S/M14xt0U3f+sCreTstdlqZL4CVXbMO2P6TA7QZK5m4Iu+Z+Qte+Y5scM6K3MLSWQxAtSXRWdGv0cgbbaJW6LAlkKrwnDiawHf0yW30tVuqtyNMm+IKcaupvoSX5qldtL3mmyDCVe5fXsj2kye2GGuyGQwsEweyqx+/mMeYXZGtKbafZuJrJkF1WyDMewZ3/Rred2SPIvKH5riratQFXi2iUp6giV2LRMbEtKL6hhJytuq8jTFS5F6wdyWnn2uyT7XNsqCtuqcky5y9hLW7+tPIdZUniux50mt60mg2SAoi0OdA0cNyk9N7aGzLa6KEoAc6cb/rQz/9aCByWZx2bYmWLbI9IUgKKdxv7KPVEld/Rf3chvZMX3pUCXA8bW6fxdUuRRKRzNVZbbqApvK8szZSBr2Z/5qyT7TFc60qrIbjS5t1VkUQLaxQD1gSEp8GyV7EG+qTIbQ+ZtVZmiCExJhut8hqcl91ATm1O87SaaPFRJnmX3W9Uv/GND8aCkVY8bWel99USXhSaJddtrK7NoD1Slg3ozwkZReF8zMAUMyd/UvRFgKrCUOcuSPYir6Tea3PuSRwmQxDMzkCW7aE8w5PbajdzGkH1bWa4oQJX8M1mOJnGtkn2gKez1sMiyG1O87SJb5aFL5tIk/X9hp8jRFRbjmaL0SJG5y0rvq8o0WZiKAFXXu38LmgxT9lL1DFNma/hFFfdF4X01MQRI/jIP4gUkruOpLrvnFi1tNLn31RMzQZUM0LSMq5JgJIrCpUiSeaLJb81Vjxtd9n2NiCI0JQAd1AQz0uQu/cKTRWFLdjHCxhTve4YiD0MeGCctkRXoMhdJco+g9MT0G0pvTL7KgWQBnfREkWMIoEqKPDtkNrLMQu6uKLyvLNdkKBJQFn9PSqsRabIoXrok81CT3eKaZe+q3PsqMl1QFYEqKQLjRoEusvxFUuDhKr9RVkXmrsu+rypGgi4PDEkA5c4zEkUOKJJ4Oits1LSo4n6I990SM8CQBabkLlmLLMuMNBmgS/4xZjpraUPpjfWY5UECkCLLVZHJ8vQEMCXz3NBGi4se74rCGxuhyJGVVm6viiLHiECWIs83mY2wGOGuyr+x6assVWHFjVkkqgwKQJPcC4rcXV9Nf9dl35hcEzS5hb+ZixJpIssDQ4kXZvkNv5C7GzLvK8v2BENmwZ29ZM9IFFlACq9gxrvhLln2Ton3XWRGhJm4/it3Y4FlBpoMFMm+ZKS7uSgyN1nxjVWhAIqLzRuQpyegKfHSJnMje6nitsq/sZaQJ8sfuVWWY0RgKLymyh60dNfk3lksslS5k35TZZkBkNxritydufR4N2TeWI9FhiZz5FdNIAdF4sUKB2NjJt748E3QBPzNrXbTE0UWmuKrZjyY4SYrvrPpWoKegPDIiFQZGPKvGumOq9xNkX9ncj3CiFDjXljNQBMg2Vc13aRL3mhybyzLjgAjQNurcSVPT1CUeHWVWf3pUmRuuswbKzLTw3DQH8lyjABV8WVFbrWsG1O88SrkYFgYe2VVZZgemvzLkN9qiVvFd9ZSloVhnmoCORiyr5thq8ebovDWYpGBDoywldOiJ4osSLx+pK1xV+XeWQ9VrIffi4sRqTJkxR/QtTXDTZd9Z8O3dNPtFqsZaIIq/wOqzI78zRDvvNviP5z+eSFPj9Blf0CR3chyN0pvDaY6pn/nkuUYAYbMD8hyG0V2lRXeWYRuXMssy/SgxE9U2KgyqyL/3lS3EkUGObLC6/4EI240sW6y7yyBYOjnJSiyVPnXydDTRk83Q+ad5RCh6RuBRJWhyf4AS9PGiDcz8c6Lj1D0LV+ONEEX8KdXOYrM3QyrrPjmEoggEOgRZgLSqzxZ9k5uVeTfWnUZFAXwjACKUPWiGUDuJsuumtxba7YESkEApqfIQ3/ViDD9TZFZdZm31k31lGXkqLIwXtUFI54N8dahq6MikmVpMj+gydB3WCu9tQjdLFUvUWQYCRjpRVWWpru0ygpvTnVLzUk0wYyX+MDcynJUmVWOqyL31hIIhpqV6AkULv4B+R0UyLIr/saqyb61HAiaupEYkSx3sWdZcWtGkLu57eKtlxChCVpiBqrshSe01RNMfzLTm/MRKsrI02SA/+QZu9MEI5wovLfqEihCCWQ5unhacjtVhh4Pivx7ay4HSiDBIstIL/A7RZaWDqrce+s2B8pBogpmeKzvIUfVQZd5bzDFUxFpCeQfqyeeIrM3xJvT1VHxEj2S5R5DYWsEsuzejO8tQlVH1UmMQJF9rvmtHkFuT+HtNUvNSkxPFfwnT5W9lmD6rSL33hKoGSE5WoI/P8Xf2KqCHraa7HvLgbqmbkQsPUJ8bL/I0OJWl3lvJRA0QYsYRqD8jCxLTVsj8eY8QRGUxAR52s9AjqItxTdXXYSKMv8dWY7+Q6Yny2xk+TfXbAIlkGyWZf6QEciyG1Xu/QVKQajIoB/SI2w12TfXTQ6UpZooCj+jJZhuY4g3D108FS+VqHI/owqG35jpGxiRJvszigw93GWFNxehqqPqpAJD/MR/hyxDi3dF/s0lULXUrND0zPQj/gSy1I0q9/6aoWaE5FD8EQPkKOmuyby5HF661LRZ/mcYpifrbojNbN5R8dQ1QUuZIveUObCMQJa5mWmnuTcFHeVoMg/lcODoEWRvFHamf0fVEVSEEvrv6OLhEg8CLcK8yfIbRW8qvpDwnxjpMZm9SE0w3J3daO+p2QiiIAUzPGe3eqIIur8zG+PXapqrmxRoRfnn/FYVWYYe7rgvkvuVYJ6V5Z7KChR3V2SyLC3epI0mmV/KckFnv0KRfS7R/F2WRZZ6FzaGEr9wFFBrVJmnmKKFO+SYjpJu/F2W4q+U4JgiVHErtMTjXaaljekZnqIV9q5J7h0lUH1YlWvaGOGS7zanxK8bbYLnClTtEnGvSVJcZYUqc9cjPYDMSZHCL5RdZsuBmlkibFUt/QLFKnvXIi3CtCdNcr9QCQJ+kep3sm5XIxW5u5qo6Ykh8QtXZASm4qnrFbLd6Xd+0YX8XRElwXAHWYq/UsNf8Tm+LincbRdtLqrsCHdZpgi6P2iS+7X+jq06guKpuron+o6/FLke75DNMrSTIZlfqUvYyKX1A1m76YJ823Jcwl6WIr/W37M1E0Gs7SactS2Zyww1bUyPLDXuNcn/YhBITLo/076/jPg/7QzPdJSDIZk31XUKLGXDnZSDeGkp7/TAcJS0J0XeFHTyLH0jnvQDGaCKnRbpnqytKrn3lXm0aw7miQOKzP+wk+gB9oZkfq3GF6EKS93ye1WnAchyf9qool3MjhT5tasEFcfRt+JeP0oA8v/JRhE1wrQbVfK/WOEroj+CcTWEcwuMwGaWqQnGzpD4xbNAovsH0oQZSQwO6HEH2XJxG1L81RJfTQxPOyoTbqQyBKClgyzo/q5J7leLADxTZDi6PWkTYaQzRKDuTXcyJPOrEV+LTMc4wqz+FMEJFG0Njwwt3GQp8ss3vsC0zJM0ZT5lFgtZ5qYZukeWetck/+tVth7QA2XKf6os7mJvhqMHpqXGmyGZX6/w+YvMQZsKnzpLAOTuPC0yHOVOSvz6iW34LJOP+hTUuwjWCEx/F6iR4Slpw7+BCDgml0UW+xHz5l3iETDueqAmuiffZMm+ARIooqSDzGDfVSYDPdxFSqIH0F3kHTauaUs6Kwz+XWOy0OJNi2TR9vxbqLA8sjVR40FjwDswO6jpLpFlaoRpbsxbyGymxjNwqpfEFaDopghkaoJpF0TeYoThapF2EFnMS+GKF7NlS4Jx8y6hWbJMC7Swl1jsS+NKkHcMc+XeS+OiBbrfKyz+pXMJkF1lGYbLgv5mimIp6YnKEogogt3AdCsWyND9e2EuieoZbq+zQBFlPgvD30zo/tI+RHZH4NVEhc9vAT0wLS18gBoBpt1KTIao8QXoYact6ofKTI6o80Voe5HhqPEDtHCR2SpMniL4E7S4UxflQzUmUBIQ1LRTEt1/hr5iu3OpImEoD+T0CTyQD8BtqoSlaCeLFj7DeCCy2S7hyDJH6BM4oKStxCbrYAuZGj9VeYSHaR8w729eatyqjwgw3c60JcH8BLb6k/aICOMJ+wnaUX9EguF3hsuC8QGgiqXihvCU/qHqTHyGoIed7pFhuI9gqNqR9BBDi2f9/UXQVH6IpW61wLR0/wnaTHmIo6az9gECNU3NjNTHlK0aGe4TJIb2EE/WA2GrmjfVNTU90h8SDkpieOpOk+w7yv6lD+ExyOx1T42roat7U1BbiAf5YL49NRCfkmDaHdEC5Ubvq7gXjKSn6Jn0ASKIQIP5QWMHmQ9VHmPoBzWSD+w7qjYGikN1F/airch7SoFiGGmPsbStaUuCrcRn6I9x1OemFHlTJgVKQ3hQ2RpuYRb/FW+7meQp+R149ofLgrl6483kibiL7j9IHknPCc/Yd9f1tpBhfIDiKbuB/Jx40D6HozJSthEW7t1hqj4nPWA/gXqxO9BJZFr6B6iW6kjbRf1Q/UHmaFi6f3MR9GIGsBNH+6LsXvkYzVAbiNvI4TOEXeEYnhreXHqnP6UnmQmieqB8X5r6tXnqY+VJdqpYyn5z+Z36VLfiKJ0Be3AX0O5LEYjpHx6WPaWwueIIKo70sbyYvwDcWNhWvKgwlU5gCTQSJxLTj9YJh0gDaSIz/exAXQCbqzY+yM9gIpoUiM7guZKUk0n2QHniC5NZJLs4kPy2zEThCZWtSeFTxq7aS5bybFbIj+l9BYHvmGz/1GeUhD1DnfjBO/eM9KZ/wLZSoOykGpeBTKAxvSk90SY0V1tKfbAbK2xGSsupD2lbfabz2D7h6ocfTOkj+SFM2i703Tq0ObuW//RFCEPUj9TemKnyIYn1kWI2pfJQnHEfMBnyhywT37QPUe0JQlUmLKCp6Xe7FvLljZ5B+lCmzEQ4Rv2UmH7A5YWIjpfq4rej7965egGUndzfP9LvbLsF8yHPqCzKWb+O7zH9tqhHpr0x/XgRVF6iZTKXdGbfaYg1c4rk3pQpOyXFduTKm++ux42XxAsI7zJblxT6kU8vId2BHalTvknyZyG++HwLjS9USW4cgV5sWcMcodg3bSoWSXaeqQbA1CXqETRbQpLRuS4AdLseMaX8gM0AqJ8vBapDfc50pfKAI8BH3I+r8vUBTwU6X0Rl88i2B0BEVG7AT2A+AP0JTURN7OcPYUQSMJ6wRASxdgEyoCcDUebQ9+Eoj3BPqXoO8xI5Ev3X0Reg/11fTxf50f+xMMdQu7IHaCPpaeo4+T8GRe9In4PeXl6+LvefB/Qfi2yujugs5T9y4Uz6v/v401WRv1ivH8Is8uViaIW/WMBNqTPovelL+L0XV0UsSzOX8N1T9AHaEj9YwMzgGL92d5+bnL82vYCe+/51tKWoXoRZQDHoE5iV3Gpme35r7apoMr5Tt9DFAk+/tnAVVs4fKP1Hoj/LzaRATV+G7cvhFlwTswz95vwbuiVzorARfTf1CeoevJyayZ6g4v7qttwh7CoFgBEhnrC3uFB4A8HAQvdWzvHza2QpP2fjAfDyzRIQczxpf8XSt1uq58AaScrOmRgo+Wv4AkBLGIa0P3qJi3wnpafKSz6AW+kHK2V9CoJaQkupKaLkKbvt5V3QmdQ6pgPfCQSOfID+0vdVDuBXsQ34IuBZHBV7grYDx1GOkJZxFUgClqluTydPlZbJAobLnOCzkC8IEprF7q+tlJerZwirhIRQBBRT09eACC9BhzILKbjKF1iaOUFcqFsBfy4so5tpfI6rq3swVXc+y6P3V1eyROA3LF0TLsJRFNCnsrSOpySg5rKmrgh0ALVKoCJADIZwgLISdOcLDOUlhgP0dST9yfQGHEsEHcDtwXIlf5T2HMOSwgGyo7YDzaGPYTaguPL+/B6Ix1N2VxQ4ssonSJ7qBjwHUfZU7Ans8xxPcbdkzxWobMCwVXMC96k+RvFUe4C4B2Jr+gT+cYGpmROA8vP83Tm+rnZHW7BMXZ8hhcdpPhxAjZSnKCYoAt0QHayr+LjAFEExHAFPc0fT9DjLlAKlK9ICfn9NE9TDFF++ImLOnrI7gKGun+UFyiHUsxxXcaf4NfqYn2EEqt1ftTT4EH13xF0tVXM/QaIdoDzOsTVDTR/AjaRHGIl+QZqta+pqf/lxdDj/sMAHRaDrcYdLQ1EojEeMAMVwgrCOb48otngdrj4RiC9Q8of4+VXKE44vHSIGom9W4Qkrko8Aom8/0AM0X/aU3SGwzDgLJFJOQC9qlX7mBYqjYo+gFmpnVqaeousPXaqeaYFqqZrLKEeBZNoRuqZmVslHTqIZavoyODIX0IYaW5oPKRFNXR3BUF2grcZBICFcgy+rfmBlFIFOWIcqH1PyZ0qkUjyEpawX6Iu252n6p4aIYjjFoERd1D07ZyfSTeRF2VNTacofobiRwhZgXtjyNJ1n8lX0xdwxc2XKXUOEqgCMHc7HSTlD9iOZLUFZ9A3/wHTfiiArAm3DPqCTao+QwhIG5qXeRc7LmTlO4rPQL/nOPlCP2kU4qAlgriIPNtkTfYSIJTyURV+ZJ/pRP08UyfFSF54np8yJuocA/EcXLoFHdYQzEJTY35Ii90WKPJq/AGIyXWnj+SqxH0Fn7Fou/4h2Fg7UmeqP6EfpGmxtP2Ge+UM0M9J43H/BT5DSTVEv+R7gz68rO1W/caewYh7+k9fVs3KKOlR5Ij+xS/GmXUb6EeOs2kOUocIj8xO009+ZUzg5+wOypHAz3rQTZSb3A+oT+hDZy/kf0CT5m/mmnygxxR8w9tQbdYgU5PQDtKU3OFHkMi/LF/eZ4gruZXUrLyLoFBghLv+ydkAv4UidKbxsXuxeOgZByaWXaYv4xh+pMelVZWFulvkcXS9gXtQecUeqHK4CJDwW7JdztKHCYamIzc9mxOhboaJrOqj2SJlJuj5jjlHtSHpEf6Rdg5Obi3iij1HcSOTwYkUHzbz0MxFHEKsn3b1R5/BCEBurcIBz5LHOoaTmybhE0JkahxEqWvtPlYKUFWpH0xJRCoeqHF5oPuTPETFUOIJM1q27kSGifKrMASVSvx8tMu7sKgsiKu4cBDWSWKyIjspniyxeom6Ym3Sp9iBdjxALJMZZjZdmTtVZlIA2+VjNDDUWzVcfaOHS9anq3J+IjI30uaqVUU0g64HuL1CnKgxZoD4xPk9xQ5mBBMZOvHMQRdCp0pymxqcn5iWFk2Q/FOcsZcXVtsKd/Ww054h/PCIDUfYnSWGsT3m+rG2/yh+vTYGvPQRExZ0kYqzOKTbtu1VZVHuuMqe52kPp09U5y6VDu6rx0sxJkNkqc56pvaTrs9itPAcmnZpVCx9o7sGgWOpTfQF1lHHQ5wzLPOLGA8XTuL065zmanhpuQUftfq/MgUPH6WZeUjhZZrBz4wUWKJ8m7CWGMFV1Hm9kLv4s7SAywM7oubwo7iw17hEHJuYT4Q6gyubP0Djc0NALyqJZphQ2VdJB5YAdwLP+Ji0MU4Y6QmEB3jXI1HjpXBV6T1kHiUnYrdoCmqnBHCE+KSwUU4fdEzJ79AS76h6IIGbAnaE9Z1wSVwT8pqY9qA8wq+mAHA6XH8CNvXi+sKnhDtJzZIDimNIxaL20yosqgE11f9Kfw8VyRH+SulxclXRphiND/dm+WjgpT6mLrjkaTDpHWi6sWryApcO9qD3VeEKPCUCG4gD8xspZX82v+ooYIxB2lo7qam41PFACRwKwMx3lpzigsn3ZVz6Lq9nVtEDzHBnAH+zMnFB/hhaO60/2RQx1MbPIMkA/kZ4qDwEYlqMA+NON9bm4GMuyMudo6l0zU7RWWtV0mZrrzzfUHV97QosXKY6M99vBBztXloo34dMA9k11c2mpsOqXLDqJf1MY6AnDAyWxpE11QL/xDE0gjCO/mg6on6QB5iVzZAHXnpIFWmSJmyqfAgMJ2Hrktno4SPqQWBofZ3aRZS6ehTZF7V0ER2GLjxUBjIf6pkgisoUHzNZ0PG1XTb8QFAM1Lv8Ay5ousjx1V1m90xyFyz7W4sLwlF197CyRy5ylVQ9Afiq/o20ZDmpM0E7ianigCN60ucaTefwD4cZd0kO0O8tCPA76Q/NS41N9B8XyVabKYmCc+JUs0MJTbQfVCTiezKJfYID+WNlB83yFiTqHgnniFnnln8pbCAKeqTIEesAuirKF4Z6KO+jgy1yJwXOYRU3VwXyMdgCBFJiIwRHomRabA9nHGoDwqO/LgKvMWSIfsQrNg8xj9XGdAMUW2eKcJspJWvXQPfkF5WkRWkYxUZ1SRD2Jq+HHhcfT0xKMBPGlKeKbbjhKei4C8E/KsDKai9pEIKKdhJXsdNT4HPWHFaHOlyY8h7+Tpb2iPs6LNMPG2PNAfybLyNDCCwrgnlSBh5Q9B4wTtyjKMvRXpK1Vy0ffsoCkvGUXNRXB8C8gwD6pPCdvmUXaMzc1wXCvaDD7Kk6AtpGALPknWrxM+4q6NS/BvItAkWzZYtlDi6CXJOgnZY6CX/uUZcqdB6oSW2k1fA8g8wrqtJmG13dBhHJjgCZPfWC6HsgvenbiUy9JiLYIAF12L67khqeItx2lIAQXrkPQdsKNnY6S3hcJRbnNkWDs+EWWkaO+sy5DUMvMAHPHLYqQpcU31tj0cg50VlOWoYU3VqX0Opa8ZRctFUF/Z5lNvelmmQF1yyx6rILh31hiKENtnf8E2harUBMM98YIAAk2uwwwdtJq+BZh2nfWZepSemC6HkBvrQq5gf6yvBVXsiOQZd5ZkSkjw76qbIUNTxbvPCNIZD/iX9W2/CLLTEdJby0uM9OrxpZbFCFLfW8EL5HCiOyL5pZd1JRlafG9NRkMuddkbZtFS1mGFt5bcRJxLLymPtFjkaG/uaRl1Ihe0/ZYhSoY/r0JjwzJvmRspdXwLcF0n0wP+R8TV9O1CNN+sD4WX6LtsJLtAfTJmvnUJZmf4hdZZniyzCezY+4V84EiMz3lo9WBJim8YjjqnbthOor4ZGEPEkC5s4uakKWmT9Y28otexCxazDK0+NHiXXpxi7DsocjQw2dqi3oSZOpNWg1fxadqMpeS7uILtEi7iavpWoLhP1HWU1ak34SNCNN9oinZS9YdvQki48avZFsA2Q9U9UR/gZbQQZbp/kNJkrkgc9feWIF25xZFNEeW+Txty54EgXFnFzXRLEV83CxJieXcqG+g2YruzaIlmqGmz9MubjXckWOrG6wi8ImyJEXOyjuwzbu06uHS4sfpF267v8sfLFPWfVwNf+nh0xRJcq8ITHUjrKa7DP9phqTEfQt36QM0T9vwK9nLdB+mSJJ9JH7yPH3DLbLMRZ9mSAps1vgAFEs7Kjf2sxRJYivd0YBjqRt2UQWQZT5Ll+S3yk7/BBY2zKKlSxEftUgS21kbbcCw1DtW8VLTZ+mS/A8ILNykVQ+XFj9KliQOZe7qABxLX8XVWIWP0iT5HwGWsgqr6S79o1RJ4nTauzLkOFj5lRbDf5IuyZ+5uzwEzdEXbpFl/ytguk8yJHE8ngp89sZMA/ooU/Jn3d+lMWiGsTCLIhb2w/CKOAE1Nxcsa0KGLPNZ/AMt3NFMmNM1rVq8FPFJh/hJ8DNlr4csQ02fxT9R40afgZloi7gaoQha/CidF7Up+LG5CDe+JOjhozxb0isAqA9Fa3/j6scrAcjaqCwAdMOou7EtwvCfrMWTwjVpb0wPMN0nmxdkfpbZ8CD7wbLSSV6CdaM7sswHa4qXae/SCukGmqOIDz4ULuNnxQ34cJJfuLu4Qthr6YNVyV26v6MV/EH8YEPiF3B7PXwwKS5a2OgL2L3hP1eV3FlbwOxN97maZBY1btQF2Jf9XFORZUk/Ke1lmY+VJf9AkYt7RXzsJplV1kaWC3v1g00lfgW/19LHypK/QeYuybm9Hj9WlewTUc7ujfCxhhL3096RnDnwH0sKG8P9IPan+1RVss90qXSgj9UlNrvfaFJxL8t+qqn4UJUKe0XmQxXJ7bTwc/xeFR+6SWzFjSLl9lr6VEPxxgF1J0vZvR4/VJb8qnigpJ/D/ggfqkp21cJJWmr6D9WVWPdL1kYUSgdyH2oq3Ay/MHckFL+CIrmb6QB+jh2LUGdqErda2Y0uY8bSqabiTZa9zJ0mo8cy6MySvykyl+E2qowaK+FMVbI3TSz8T6Hx6s/UlbjtadF3ikiYaO5Mkr8bcRU2soif6PZIRbJ3MyzaThJxEzBHahL38osaN6KIHYuHGop3WW6VfogZS9AnypK7K7KLskMieixDnahK5q7KPNAl1FgBnbgrcd8Sy6ydJhBoIhxpKmz0uEJmoAr4ieZPVCS7McLPcjPuRE1ic/qbaQeKgJ3o9kRDcSPLPZEFzATMiSS3UWRvhhtIAnosQh+oSmajytx0PxAF1FiCOlBTYrOJHxVoPIMOPBV2erprYYD4/EQJB8qS2xlxI450NjdR/YGqxO4Md3WrsdmJ5g40FLfk70oaqWxmotsDSX4nyz1T2PQEzHmKZHeKzF3WCjQeoc/TlNitYkcNZK4wkaDOMxS2WtpgK3H5iQw6bpbc1og7Uw9ELjtRwnmqZLZmeIi4zET15+mKbMtdqrkMM9KZ9ERz55nyW3nVVnakMamJbo9TJLtVZBb20ocqT+JQ7uNUie0qrn3RnFg8yLIfZyjstbQYDxSecFBkPo7k9npczEX1I5nHH1TxaYvE/ggrcylhJPHYg5Y+TlM6kF/ogchjDnr8OEN+L8td8ipjhHg4HJ9HsntFdsVKjXQOfzL9p6kS+1XmUtKCscbhTvRxmuJBE9d6p0cqhznIcp9myh/0tGhx1YcKhz4osh8mS/ZgxFVYNTOSOWgzG6jiw1YlDqdf9Ds7khjCSPPQPk5XOJFbDL+qQ5HBj3QPPX0ayR1k2ZVbFTdCDHZkeBjxwxTJHBSZxfwhZmR6mOHDNCUOm1jKrrIfanNqRB7kP8yQP+npxtyEoToVaMiRZT9LluzJiIt8l8bKlJ8pMp+lSJzOsChiHTGUp+xIlqWKz9oVj+RW6Zk0ZcYMLX2YKX+SZRf1jqBG4pQaQdA/TJbMSZFZtLihR2gm0HCCET9LVeK0ilW462N9wo/9KzDDZxkKRy2t+kYzQ23CjgFyn2XKHfV44zfsUJ3QM/nDFMkcjbAa7q6O5Qk1U2Qe+96WqhLH06/mRnFDaSzQbBVPJ7+lIX8mt5Ld8ENxzA39O0BLj5WwJckeFdkbc5fHaMwM/Rno8bGKHRWJ4yqzyFthrA2poQiM8AK1oaZ41sQNgL2kiToSaDRfpn+sbanBzvW0Kgmo/hIxlkfcULnIvUBvCNBzI67qpd2ooTRihmqEIvtQ2VNGoPkZVi1u0EQcUUM9QpV5qOktFXgG+Zuw0/UQDXgaHhGaeBhmSx1mLsut+qU/0z7ZsRmgp4ciXN9QBNRckVkNf3GLZsbKJzWmACM+5jvMdgoCzVdx44BxY8fSB0/DWQ5meCgh7KjCMbR0Mxd2USfogxkrsiD/GHYEGIYRb2R3ipto72i8ypDlHsoA9hMBxTDDKssA06z8RHljJ1qCIvtBCgIxyj+SZ+KLo8keocp8kAbLkOVWRQBapTBBGTQ/AjTxcNoSoBmK7KomIN9hhn6OQR56+izEWGUOWMY5xiwHI34Uz9HFusUtghIrsqDwVNyT5RjxLhxosSoDck/RnhTHDHd+r8t1QZH9KMQpf+cu6c6IjQRV5rG+o1/lyHI31QL8+aZZsRmhiccrAL0b1iJ7c1rl5KGn58oxzFNOqsjBiM+lQ1TxcPFSVRZmeC6eIj2VxZoMyD1Hp4iPBTkosi9ohwhPJUj1BFXmBRVQByj+qSgXoIkX5jNk+5yS8tDTK+IZXijnYMRXEEAn71rKwAwv6YczQg2Qf0kNR2tW6D+GLPeScrYqBRTZlyR/NidXxfdavFxLX0yWaZcev5gURLoBRvhmIDIsIP/FRBlZyHJfjeL6hihfiuwXQ3ydqFyqzDfTNReIqgy0xFdjmCKImoAev5pmmRKIegJG+GqqxIjA9N+N4wpE00OW+2qKF5CDIvvVZK7oKMlClflqUmAiQ1kGmvhuwEVUBIz03UQotpaAGb8bEugBUPh2NBs8FLkvpxuuCAdV9stpbAkWmsy3Y7kyDIzEl1sdVw3AjN9O8VzNAwrfTmbrDorc1xO4YKHKfjsJTAkGmvh2I8fPE1GGgpG+IDX3LREVEMz49RD0VAIRtUBk+e+nm6n80j1R5L6fcdYFWR4q0Bfkj0aCIgdV0P32cJKVoMpCLVxQO6qK0AXU/QXVeNLkYSaIsDeUToYcKEKCuaCiE8mQ5SFDXVA+KUpQ5aCCblhmrylAl4Ue7sjuDTkYAuCuaLo9yYISZNgrGn6rSlAUocJcUd8bitDkoUHdUdiSPHRZ6KArbnEnSxamDEx/RzXtFAmQALk7KltVEaoiFNlL0p6HLg9V+o6yzJaFKQdd6o6Q3QIkA0N0ydNtlAhVCVC8peE3soOuAFnhwq5TDorcLfWwlyUDTfaWWtyrSkAXt1zTXlcAZvqaivYkByh8Z0UyUOS/piyz05SAKvc1IbszFYAu8z1Nt5ElBwzxPQ+/0SQDKH5RPWwMJaDIf1PxLkseqHJfVEt3VbJAl/2i6kaXAKb4ootushQvSt9UlllVyQFF4ZtCdiXJAFXuu3KLKkWALvtVDb+Ykr9M8V2FS5NkgKz0XfUINEkRoCh8Vy0BXZK7NPnvqgoYkrgO2e+qyCzCQuK7zrILe8lKXxZy0BW5VoVva3pososh922NAC2xlOy31SNUtygS33ZL3DfFr6tqY8p/XUXmJkv268pyN03i+5a/mUpf2AyrKvkvbMRVl+wX1rWSxBfeZC5Nit9YlbtIct9YlgeGJL5yyTEkhe9sam2/s/ou0J2Xd/bS0jt1afTG0623F3VtBYCja49AoIuPP09f/f/V/1/9/9X/X/3/1f//0xU="
+                alt="hero image">
+        </div>
+    </div>
+</section>
+<section id="about" class="about">
+    <div class="about-container">
+        <div class="about-img">
+            <img src="{% static '/img/about/about.jpg' %}" alt="About Jeevan">
+        </div>
+        <div class="title">
+            About Jeevan
+        </div>
+        <div class="about-disc">
+            The Jeevan project aims to simplify the process of finding organ and blood donors in today's busy world.
+            Named after the Hindi word for "life". Jeevan is a platform designed to connect individuals in need with
+            willing donors swiftly and securely. By leveraging user-friendly interfaces,
+            Jeevan
+            ensures efficient coordination. This innovative approach aims to
+            overcome traditional barriers in donor matching, potentially saving numerous lives and enhancing
+            emergency
+            medical response capabilities.
+        </div>
+    </div>
+</section>
+<div class="squiggle">
+    <svg aria-hidden="true" width="100%" height="8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <pattern id="a" width="91" height="8" patternUnits="userSpaceOnUse">
+            <g>
+                <path
+                    d="M114 4c-5.067 4.667-10.133 4.667-15.2 0S88.667-.667 83.6 4 73.467 8.667 68.4 4 58.267-.667 53.2 4 43.067 8.667 38 4 27.867-.667 22.8 4 12.667 8.667 7.6 4-2.533-.667-7.6 4s-10.133 4.667-15.2 0S-32.933-.667-38 4s-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0"
+                    stroke="#E1E3E1" stroke-linecap="square">
+                </path>
+            </g>
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#a)"></rect>
+    </svg>
+</div>
+<section id="features" class="features">
+    <div class="features-title-wrapper">
+        <div class="title">Features of Jeevan</div>
+        <div class="features-disc">Jeevan simplifies healthcare accessibility with three core features. The
+            BloodVitality Network enhances blood donation logistics by allowing users to find nearby donation
+            centers easily, optimizing scheduling for emergency healthcare. OrganMatch streamlines organ donation
+            requests, providing a seamless platform for patients to request transplantations and match with
+            compatible donors. DonorConnect portal empowers donors to pledge organs and blood through intuitive
+            registration, maximizing their impact on lifesaving efforts.
+        </div>
+    </div>
+    <div class="features-container">
+        <div class="feature-img">
+            <img src="{% static '/img/features/BloodVitality.jpg' %}" alt=" Blood Vitality image">
+        </div>
+        <div class="feature-wrapper">
+            <div class="feature-title-wrapper">
+                <div class="feature-title">
+                    BloodVitality Network
+                </div>
+                <div class="feature-sub-title">
+                    Revolutionizing Blood Donation Logistics
+                </div>
+            </div>
+            <div class="feature-disc">
+                The BloodVitality Network on Jeevan optimizes the logistics of blood donation, enabling users to
+                easily locate nearby hospitals and donation centers. It facilitates direct contact for seamless
+                donation scheduling, addressing critical supply chain challenges in emergency healthcare.
+            </div>
+        </div>
+    </div>
+    <div class="features-container reverse">
+        <div class="feature-img">
+            <img src="{% static '/img/features/OrganMatch.jpg' %}" alt="organ match image">
+        </div>
+        <div class="feature-wrapper">
+            <div class="feature-title-wrapper">
+                <div class="feature-title">
+                    OrganMatch
+                </div>
+                <div class="feature-sub-title">Streamlined Organ Donation Requests</div>
+            </div>
+            <div class="feature-disc">
+                OrganMatch on Jeevan provides registered patients with a straightforward platform to request organ
+                transplantations. Through secure channels, patients can submit their needs, and help the hospital
+                match
+                them with suitable donors based on compatibility and urgency, ensuring timely and efficient access
+                to life-saving treatments.
+            </div>
+        </div>
+    </div>
+    <div class="features-container">
+        <div class="feature-img">
+            <img src="{% static '/img/features/DonorConnect.jpg' %}" alt="Donor Connect image">
+        </div>
+        <div class="feature-wrapper">
+            <div class="feature-title-wrapper">
+                <div class="feature-title">
+                    DonorConnect
+                </div>
+                <div class="feature-sub-title"> Empowering Organ and Blood Donors</div>
+            </div>
+            <div class="feature-disc">
+                DonorConnect feature on Jeevan empowers donors to pledge both organs and blood. Registered donors
+                can easily sign up, specify their donation preferences. This feature ensures that donors play a
+                crucial role in potentially
+                life-saving procedures, contributing to improved healthcare outcomes and emergency response
+                capabilities.
+            </div>
+        </div>
+    </div>
+</section>
+<div class="squiggle">
+    <svg aria-hidden="true" width="100%" height="8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <pattern id="a" width="91" height="8" patternUnits="userSpaceOnUse">
+            <g>
+                <path
+                    d="M114 4c-5.067 4.667-10.133 4.667-15.2 0S88.667-.667 83.6 4 73.467 8.667 68.4 4 58.267-.667 53.2 4 43.067 8.667 38 4 27.867-.667 22.8 4 12.667 8.667 7.6 4-2.533-.667-7.6 4s-10.133 4.667-15.2 0S-32.933-.667-38 4s-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0"
+                    stroke="#E1E3E1" stroke-linecap="square">
+                </path>
+            </g>
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#a)"></rect>
+    </svg>
+</div>
+<section id="reviews" class="carousal">
+    <div class="title">What people are saying about us?</div>
+    <div class="carousal-wrapper">
+        <div class="carousal-item carousal-item1">
+            <div class="review-img">
+                <img src="{% static '/img/reviews/person-1.jpg' %}" alt="">
+            </div>
+            <div class="review-text">
+                <div class="reviewer-name">
+                    Priya Menon
+                </div>
+                <div class="review">
+                    Jeevan made finding a blood donor so easy and quick. The interface is user-friendly, and I was
+                    able to connect with the nearest hospital in no time. Great job!
+                </div>
+            </div>
+        </div>
+        <div class="carousal-item carousal-item2">
+            <div class="review-img">
+                <img src="{% static '/img/reviews/person-2.jpeg' %}" alt="">
+            </div>
+            <div class="review-text">
+                <div class="reviewer-name">
+                    Princy Xavier
+                </div>
+                <div class="review">
+                    Finding a donor through Jeevan was a breeze. The platform's ability to locate nearby hospitals
+                    quickly is invaluable, especially in urgent situations. Excellent work!
+                </div>
+            </div>
+        </div>
+        <div class="carousal-item carousal-item3">
+            <div class="review-img">
+                <img src="{% static '/img/reviews/person-3.jpeg' %}" alt="">
+            </div>
+            <div class="review-text">
+                <div class="reviewer-name">
+                    Benoy Thomas
+                </div>
+                <div class="review">
+                    The Organ Match system on Jeevan is fantastic. It kept me updated on the status of my
+                    application and made the entire process much smoother. Highly recommended!
+                </div>
+            </div>
+        </div>
+        <div class="carousal-item carousal-item4">
+            <div class="review-img">
+                <img src="{% static '/img/reviews/person-4.jpg' %}" alt="">
+            </div>
+            <div class="review-text">
+                <div class="reviewer-name">
+                    Anil Raj
+                </div>
+                <div class="review">
+                    I was impressed by how efficiently Jeevan connected me with hospitals in need of organ donors.
+                    The real-time search feature is a game-changer in emergency situations.
+                </div>
+            </div>
+        </div>
+        <div class="carousal-item carousal-item5">
+            <div class="review-img">
+                <img src="{% static '/img/reviews/person-5.jpg' %}" alt="">
+            </div>
+            <div class="review-text">
+                <div class="reviewer-name">
+                    Sujatha Krishnan
+                </div>
+                <div class="review">
+                    Jeevan's platform is a lifesaver. I was able to quickly find a hospital for a critical blood
+                    donation. The ease of use and responsiveness are commendable.
+                </div>
+            </div>
+        </div>
+        <div class="carousal-item carousal-item6">
+            <div class="review-img">
+                <img src="{% static '/img/reviews/person-6.jpg' %}" alt="">
+            </div>
+            <div class="review-text">
+                <div class="reviewer-name">
+                    Rekha Srinivasan
+                </div>
+                <div class="review">
+                    Jeevan’s donor locator feature is fantastic. It allowed me to find the nearest hospital with
+                    available donors quickly. I’m thankful for this valuable resource.
+                </div>
+            </div>
+        </div>
+        <div class="carousal-item carousal-item7">
+            <div class="review-img">
+                <img src="{% static '/img/reviews/person-7.jpg' %}" alt="">
+            </div>
+            <div class="review-text">
+                <div class="reviewer-name">
+                    Aravind Nair
+                </div>
+                <div class="review">
+                    Jeevan’s efficient system for finding blood donors and coordinating with hospitals is excellent.
+                    It significantly simplified what could be a very complex process.
+                </div>
+            </div>
+        </div>
+        <div class="carousal-item carousal-item8">
+            <div class="review-img">
+                <img src="{% static '/img/reviews/person-8.jpg' %}" alt="">
+            </div>
+            <div class="review-text">
+                <div class="reviewer-name">
+                    Suresh Pillai
+                </div>
+                <div class="review">
+                    My experience with Jeevan was outstanding. The platform’s ability to quickly locate hospitals
+                    and facilitate donations is impressive and much needed.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="squiggle">
+    <svg aria-hidden="true" width="100%" height="8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <pattern id="a" width="91" height="8" patternUnits="userSpaceOnUse">
+            <g>
+                <path
+                    d="M114 4c-5.067 4.667-10.133 4.667-15.2 0S88.667-.667 83.6 4 73.467 8.667 68.4 4 58.267-.667 53.2 4 43.067 8.667 38 4 27.867-.667 22.8 4 12.667 8.667 7.6 4-2.533-.667-7.6 4s-10.133 4.667-15.2 0S-32.933-.667-38 4s-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0"
+                    stroke="#E1E3E1" stroke-linecap="square">
+                </path>
+            </g>
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#a)"></rect>
+    </svg>
+</div>
+<section class="tech-stack">
+    <div class="tech-stack-wrapper">
+        <div class="tech-stack-img">
+            <img src="{% static '/img/techstack/techstack.jpg' %}" alt="">
+        </div>
+        <div class="tech-stack-title">
+            Technologies We Used To Build Jeevan
+        </div>
+        <div class="tech-stack-disc">
+            Jeevan is built using a robust tech stack designed for efficiency and scalability. The backend is
+            powered by Python and Django, ensuring a reliable and scalable framework for handling complex data and
+            user interactions. MariaDB serves as the database management system, providing a reliable and
+            high-performance database solution. The frontend utilizes HTML, CSS, and JavaScript to create an
+            intuitive and responsive user interface. Together, these technologies enable Jeevan to deliver a
+            seamless experience to everyone utilizing Jeevan
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script lang="javascript" src="{% static '/js/home.js' %}" defer></script>
+{% endblock %}

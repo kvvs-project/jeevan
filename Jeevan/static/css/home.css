@@ -1,0 +1,465 @@
+.hero {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background-color: #fd0057;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-container {
+    display: flex;
+    flex-direction: row;
+    z-index: 1;
+}
+
+.hero-title {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    color: white;
+}
+
+.hero-title h1 {
+    font-size: max(48px, 8vmax);
+}
+
+.hero-title img {
+    width: 5vmax;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+.hero-disc {
+    color: rgba(255, 255, 255, 0.934);
+    font-size: clamp(16px, 4vmin, 1.5rem);
+}
+
+.hero-button {
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    padding-top: 15px;
+}
+
+.hero-button a {
+    width: 100%;
+    white-space: nowrap;
+}
+
+.hero-button button {
+    padding: 8px;
+    width: 100%;
+    border-radius: 16px;
+    font-size: 1rem;
+    color: #fd0057;
+}
+
+.hero-main {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    margin-left: 20px;
+}
+
+.hero-button button:active {
+    background-color: black;
+    color: #fd0057;
+}
+
+.hero-img {
+    box-sizing: border-box;
+}
+
+.hero-img img {
+    min-width: 200px;
+    width: auto;
+    max-width: 40vmax;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+.about {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.about-container {
+    display: inherit;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    width: 60%;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2.1rem;
+    font-weight: 400;
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+.about-disc {
+    font-size: 1rem;
+}
+
+.features {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.features-container {
+    display: flex;
+    flex-direction: row;
+    width: inherit;
+    box-sizing: border-box;
+}
+
+.features-title-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    width: 60%;
+    word-wrap: break-word;
+}
+
+.feature-title-wrapper {
+    padding-bottom: 1rem;
+}
+
+.feature-title {
+    font-size: 1.8rem;
+    font-weight: 400;
+}
+
+.feature-sub-title {
+    font-size: 1rem;
+}
+
+.feature-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 50%;
+}
+
+.feature-img {
+    box-sizing: border-box;
+}
+
+.reverse {
+    display: flex;
+    flex-flow: row-reverse;
+}
+
+.about-img {
+    box-sizing: border-box;
+}
+
+.about-img img {
+    border-radius: 30px;
+    min-width: 200px;
+    width: auto;
+    max-width: 40vmax;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+.feature-img img {
+    border-radius: 30px;
+    min-width: 200px;
+    width: auto;
+    max-width: 40vmax;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+.feature-disc {
+    font-size: 1rem;
+    word-wrap: normal;
+}
+
+.carousal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    flex-direction: column;
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.carousal-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-inline: auto;
+    position: relative;
+    height: max(250px, 65vmin);
+    overflow: hidden;
+    mask-image: linear-gradient(to right,
+            rgba(0, 0, 0, 0),
+            rgba(0, 0, 0, 1) 15%,
+            rgba(0, 0, 0, 1) 85%,
+            rgba(0, 0, 0, 0));
+    -webkit-mask-image: linear-gradient(to right,
+            rgba(0, 0, 0, 0),
+            rgba(0, 0, 0, 1) 15%,
+            rgba(0, 0, 0, 1) 85%,
+            rgba(0, 0, 0, 0));
+}
+
+@keyframes scrollLeft {
+    to {
+        left: -32vmax;
+    }
+}
+
+.carousal-item {
+    width: 28vmax;
+    height: max(200px, 30vmin);
+    display: flex;
+    justify-content: center;
+    box-shadow: 5px 5px 15px 5px rgba(255, 0, 76, 0.279);
+    align-items: center;
+    border-radius: 1rem;
+    position: absolute;
+    left: max(calc(32vmax * 8), 100%);
+    animation-name: scrollLeft;
+    animation-duration: 30s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    padding: 2vmax;
+}
+
+.carousal-item1 {
+    animation-delay: calc(30s / 8 * (8 - 1) * -1);
+}
+
+.carousal-item2 {
+    animation-delay: calc(30s / 8 * (8 - 2) * -1);
+}
+
+.carousal-item3 {
+    animation-delay: calc(30s / 8 * (8 - 3) * -1);
+}
+
+.carousal-item4 {
+    animation-delay: calc(30s / 8 * (8 - 4) * -1);
+}
+
+.carousal-item5 {
+    animation-delay: calc(30s / 8 * (8 - 5) * -1);
+}
+
+.carousal-item6 {
+    animation-delay: calc(30s / 8 * (8 - 6) * -1);
+}
+
+.carousal-item7 {
+    animation-delay: calc(30s / 8 * (8 - 7) * -1);
+}
+
+.carousal-item8 {
+    animation-delay: calc(30s / 8 * (8 - 8) * -1);
+}
+
+.review-img img {
+    border-radius: 50%;
+    width: clamp(20px, 15vmin, 300px);
+    object-fit: fill;
+    overflow: hidden;
+}
+
+.reviewer-name {
+    font-weight: 500;
+    font-size: clamp(12px, 4vmin, 1rem);
+    padding-top: 0.5vmax;
+    padding-bottom: 0.5vmax;
+}
+
+.review-text {
+    padding-left: 1vmax;
+}
+
+.review {
+    text-align: left;
+    font-size: clamp(8px, 3vmin, 0.8rem);
+}
+
+.squiggle {
+    position: relative;
+    width: 100%;
+    height: 1rem;
+}
+
+.tech-stack {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.tech-stack-img img {
+    border-radius: 30px;
+    min-width: 200px;
+    width: auto;
+    max-width: 40vmax;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+.tech-stack-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+}
+
+.tech-stack-title {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 400;
+    padding-bottom: 1rem;
+}
+
+.tech-stack-disc {
+    font-size: 1rem;
+    word-wrap: normal;
+    padding: 1rem;
+}
+
+@media screen and (orientation: portrait) {
+    .hero-container {
+        display: flex;
+        flex-flow: row wrap-reverse;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hero-main {
+        padding: 20px;
+        margin-left: 0px;
+    }
+
+    .hero-main {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hero-button {
+        width: 100%;
+    }
+
+    .hero-title img {
+        display: none;
+    }
+
+    .about-container {
+        width: 90%;
+    }
+
+    .features-title-wrapper {
+        width: 90%;
+    }
+
+    .features-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .hero-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .feature-wrapper {
+        width: 90%;
+    }
+
+    .feature-img img {
+        width: 35vmax;
+    }
+
+    .about-img img {
+        width: 35vmax;
+    }
+
+    .tech-stack-img img {
+        width: 35vmax;
+    }
+
+    .carousal-item {
+        width: 50vmin;
+        height: min(300px, 40vh);
+        left: max(calc(50vmin * 8), 100%);
+        display: flex;
+        flex-direction: column;
+        padding: 0.5vmax;
+    }
+
+    .review-text {
+        display: flex;
+        flex-direction: column;
+        padding: 0.5vmax;
+    }
+
+    .review {
+        text-align: center;
+        font-size: clamp(8px, 3vmin, 0.8rem);
+    }
+
+    .reviewer-name {
+        text-align: center;
+        font-size: clamp(12px, 8vmin, 1.2rem);
+        padding-top: 0.5vmax;
+        padding-bottom: 0.5vmax;
+    }
+
+    .carousal-wrapper {
+        height: max(250px, 50vmax);
+    }
+
+    @keyframes scrollLeft {
+        to {
+            left: -50vmin;
+        }
+    }
+
+    .tech-stack-wrapper {
+        width: 90%;
+    }
+}
