@@ -1,28 +1,31 @@
-<html>
-<header>
-    <title>
-        login
-    </title>
-</header>
-<body bgcolor="#008b8b" text="white">
-    <h1 align="center">User login</h1>
-    <form action="get_login" method="post">{% csrf_token %}
-        <table align="center" border="0" padding="10">
-            <tr>
-                <td>User ID</td>
-                <td><input type="textbox" name="uname"> </td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td><input type="textbox" name="pass"> </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="submit">
-                <td>
-                    {{ message }}
-                </td>
-            <tr>
-        </table>
-</body>
-<html>
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static '/css/login.css' %}">
+{% endblock %}
+
+{% block nav %}
+    <li><a href="/">Home</a></li>
+{% endblock %}
+
+{% block main %}
+    <div class="title">
+        <h1>User Login</h1>
+    </div>
+    <div class="login-container">
+        <form action="get_login" method="post">
+            {% csrf_token %}
+                <div class="login-wrapper">
+                <label for="userName">Enter your Username</label>
+                <input type="text" id="userName" placeholder="Username" name="uname" autofocus required/>
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" name="pass" required/>
+                <label class="msg">{{message}}</label>
+                <button type="submit" class="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

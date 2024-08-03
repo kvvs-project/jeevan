@@ -1,0 +1,62 @@
+.title {
+    display: flex;
+    color: black;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1vmax;
+    width: 50vmin;
+    font-size: 1rem;
+}
+
+input[type="text"] , input[type="password"]  {
+    padding: 0.5rem;
+    color: black;
+    border: solid rgba(0, 0, 0, 0) 2px;
+    background-color: #e9e9e9;
+    border-radius: 0.8rem;
+    width: inherit;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus , input[type="password"]:focus {
+    outline: none;
+    transition: 0.5s ease-out;
+    border: solid cyan 2px;
+}
+
+.submit{
+    padding: 8px;
+    background-color: #fd0057;
+    color: white;
+    width: 100%;
+    border-radius: 0.8rem;
+}
+
+.submit:hover {
+    transition: 0.5s ease-out;
+    color: white;
+    background-color: #0a96f4;
+}
+
+.msg {
+    font-size: 0.8rem;
+    text-align: center;
+    word-break: break-all;
+    width: 100%;
+    color: #fd0057;
+}
