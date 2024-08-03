@@ -1288,3 +1288,13 @@ def validate_patient_cancel_organ_request(request):
     print(records)
     msg = 'successfully cancelled'
     return render(request, "patientcancelorganrequest.html", {'RequestDetails': records, 'pid': pid, 'message': msg, })
+
+
+def serve_favicon(request):
+    file_path = "./static/favicon.ico"
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="image/x-icon")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    return Http404

@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Jeevan is an innovative platform designed to streamline the process of finding and connecting with organ and blood donors. Offering features for guest users to locate nearby hospitals, a request portal for patients, and a hub for donors, Jeevan simplifies life-saving connections and enhances the efficiency of organ and blood donation.">
+    <meta name="apple-mobile-web-app-status-bar" content="#fd0057" />
+    <meta name="theme-color" content="#fd0057" />
+    <link rel="stylesheet" href="/static/css/fonts.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    {% block links %}
+    {% endblock %}
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/static/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+    <link rel="manifest" href="/static/manifest.json">
+    <link rel="mask-icon" href="/static/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="theme-color" content="#ffffff">
+    <title>Jeevan</title>
+</head>
+
+<body>
+    <header class="nav-header">
+        <nav class="nav-container">
+            <div class="nav-img">
+                <a href="/"><img src="{% static '/img/misc/jeevan.webp' %}" width="58px" alt="navbar site icon"></a>
+            </div>
+            <div class="nav-title-wrapper">
+                <div class="nav-title">Jeevan</div>
+            </div>
+            <div class="hamburger">
+                <svg viewBox="0 0 100 100">
+                    <path class="line line1"
+                        d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058" />
+
+                    <path class="line line2" d="M 20,50 H 80" />
+
+                    <path class="line line3"
+                        d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942" />
+                </svg>
+            </div>
+            <ul class="nav-links">
+                {% block nav %}
+                {% endblock %}
+            </ul>
+        </nav>
+    </header>
+    <main>
+    {% block main %}
+    {% endblock %}
+    </main>
+    <footer class="footer">
+        <div class="footer-img">
+            <img src="{% static '/img/misc/jeevan.webp' %}" alt="jeevan logo">
+        </div>
+        <div class="footer-container">
+            <div class="footer-items">
+                <ul>
+                    <li><a href="/#about">About Jeevan</a></li>
+                    <li><a href="/#features">Features of Jeevan</a></li>
+                    <li><a href="/#reviews">Reviews of Jeevan</a></li>
+                </ul>
+            </div>
+            <div class="footer-text">
+                &copy;Jeevan 2023 - 24 all rights reserved
+            </div>
+        </div>
+    </footer>
+    <script lang="javascript" src="{% static '/js/base.js' %}" defer></script>
+    {% block scripts %}
+    {% endblock %}
+</body>
+
+</html>

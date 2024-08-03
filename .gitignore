@@ -157,8 +157,8 @@ cython_debug/
 #MacOS
 .DS_Store
 
-# django static folder
-static/
+# user data folder
+Jeevan/static/data/
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
