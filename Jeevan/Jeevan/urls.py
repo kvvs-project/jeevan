@@ -32,11 +32,13 @@ from JeevanApp.views import home_page, validate_login, user_login, admin_validat
     hospital_organ_transplantation, hospital_organ_transplantation_details, hospital_organ_transplantation_entry, \
     validate_hospital_organ_transplantation_entry, guest_find_blood_donor, guest_get_blood_donor_list, \
     hospital_find_blood_donor, hospital_get_blood_donor_list, hospital_get_blood_donor_details, \
-    hospital_validate_blood_donation, serve_favicon
+    hospital_validate_blood_donation, serve_favicon , find_donors , signup_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('favicon.ico', serve_favicon),
+    path('find', find_donors),
+    path('signup', signup_page),
     path('pwa', home_page),
     path('', home_page),
     path('login', user_login),

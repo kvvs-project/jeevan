@@ -1,0 +1,28 @@
+{% load static %}
+
+<div class="base-card-wrapper">
+    <div class="base-card">
+        {% if card_img %}
+        <div class="base-card-img">
+            <img src="{% static card_img %}" alt="{{ card_alt }} img">
+        </div>
+        {% endif %}
+        <div class="base-card-text-container">
+            <div class="base-card-name">
+                {{ card_name }}
+            </div>
+            {% if card_text %}
+            <div class="base-card-text">
+                {{ card_text }}
+            </div>
+            {% endif %}
+        </div>
+        {% if card_btn %}
+        <div class="base-card-button">
+            <a href="{{card_link}}">
+            <input type="button" value="{{ card_btn }}">
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>

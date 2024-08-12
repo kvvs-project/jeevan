@@ -10,6 +10,14 @@ def home_page(request):
     return render(request, "home.html")
 
 
+def find_donors(request):
+    return render(request, "find.html")
+
+
+def signup_page(request):
+    return render(request, "signup.html")
+
+
 def user_login(request):
     return render(request, "login.html")
 
@@ -1232,7 +1240,7 @@ def patient_organ_request_details(request):
     query = f"select ID,name,place,Location,pin,phone,District,Email,type from Hospital where id in (select HospitalID from PatientOrganRequest where requestID = '{rid}')"
     cur.execute(query)
     HospitalDetails = cur.fetchall()
-    query = f"select status from PatientOrganRequestApproval where RequestID = '{rid}'"
+    query = f"select status,comment,Date from PatientOrganRequestApproval where RequestID = '{rid}'"
     cur.execute(query)
     ApprovalDetails = cur.fetchall()
     msg = ""

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static '/css/base-card.css' %}">
+{% endblock links %}
+
+{% block nav %}
+    <li><a href="/">Home</a></li>
+    <li><a href="/login">Login</a></li>
+{% endblock nav %}
+
+{% block main %}
+    <div class="title"><h1>Sign Up For Jeevan</h1></div>
+    <div class="base-card-container">
+        {% include "base_card.html" with card_img="/img/signup/Patient-SignUP.jpg" card_alt="Patient" card_name="Sign Up As A Patient" card_link="/patient_pre_reg" card_btn="Sign Up" only %}
+        {% include "base_card.html" with card_img="/img/signup/Donor-SignUP.jpg" card_alt="Donor" card_name="Sign Up As A Donor" card_link="/donor_pre_reg" card_btn="Sign Up" only %}
+        {% include "base_card.html" with card_img="/img/signup/Hospital-SignUP.jpg" card_alt="Hospital" card_name="Sign Up As A Hospital" card_link="/hospital_reg" card_btn="Sign Up" only %}
+    </div>
+{% endblock main %}

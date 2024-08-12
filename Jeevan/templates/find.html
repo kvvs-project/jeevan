@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static '/css/base-card.css' %}">
+{% endblock links %}
+
+{% block nav %}
+    <li><a href="/">Home</a></li>
+    <li><a href="/signup">Sign UP</a></li>
+    <li><a href="/login">Login</a></li>
+{% endblock nav %}
+
+{% block main %}
+    <div class="title"><h1>Find A Donor Now</h1></div>
+    <div class="base-card-container">
+        {% include "base_card.html" with card_img="/img/features/BloodVitality.jpg" card_alt="Blood Match" card_text="Discover Nearby Blood Donation Centers" card_name="Blood Match" card_link="guest_find_blood_donor" card_btn="Find" %}
+        {% include "base_card.html" with card_img="/img/features/OrganMatch.jpg" card_alt="Organ Match" card_text="Discover Nearby Organ Donation Centers" card_name="Organ Match" card_link="guest_find_organ_donor" card_btn="Find" %}
+    </div>
+{% endblock main %}

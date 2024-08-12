@@ -1,0 +1,160 @@
+* {
+    border: 0px;
+    margin: 0px;
+    font-family: Roboto;
+}
+
+.base-title {
+    display: flex;
+    color: black;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.base-card-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    max-height: max-content;
+    width: 100%;
+    box-sizing: border-box;
+    padding-bottom: 2rem;
+    gap: 1rem;
+}
+
+.base-card-wrapper {
+    box-shadow: 0.5rem 1rem 2rem 0rem rgba(255, 0, 76, 0.279);
+    transform: scale(1);
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 1rem;
+    transition: transform 350ms ease-in-out 120ms, box-shadow 500ms ease-in-out 120ms;
+}
+
+.base-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    width: clamp(50px, 35vmin, 800px);
+}
+
+.base-card-wrapper:hover,
+.base-card-wrapper:active {
+    box-shadow: 0.5rem 1rem 2rem 0rem rgba(0, 94, 255, 0.396);
+    transform: scale(1.04);
+}
+
+.base-card-img {
+    display: flex;
+    overflow: hidden;
+    width: inherit;
+    align-content: center;
+    justify-content: center;
+}
+
+.base-card-img img {
+    border-radius: 1rem;
+    min-width: 20px;
+    width: auto;
+    height: 15vw;
+    object-fit: scale-down;
+    overflow: hidden;
+}
+
+.base-card-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    padding: 0.5rem;
+    width: inherit;
+    text-align: center;
+}
+
+.base-card-button {
+    display: flex;
+    align-content: flex-end;
+    justify-content: center;
+    width: 100%;
+    padding-top: 0.5rem;
+}
+
+.base-card-button input[type=button] {
+    padding: 0.5rem;
+    border-radius: 0.8rem;
+    width: 98%;
+    font-size: 1rem;
+}
+
+.base-card-button input[type=button]:hover {
+    background-color: #0a96f4;
+    color: white;
+    transition: ease-in 350ms;
+}
+
+.base-card-button input[type=button]:active {
+    background-color: #fd0057;
+    color: white;
+    transition: ease-out 350ms;
+}
+
+.base-card-button a {
+    width: 100%;
+}
+
+.base-card-text {
+    word-wrap: break-word;
+    font-size: clamp(0.7rem, 3.5vmin, 1rem);
+}
+
+.base-card-name {
+    font-weight: 400;
+    word-wrap: break-word;
+    text-align: center;
+    font-size: clamp(12px, 4vmin, 1.2rem);
+    text-transform: capitalize;
+    padding-bottom: 0.8rem;
+    padding-top: 0.8rem;
+}
+
+@media screen and ((max-width: 1024px) or (orientation: portrait)) {
+    .base-card-button input[type=button]:hover {
+        background-color: rgb(240, 240, 240);
+        color: black;
+    }
+
+    .base-card-button input[type=button]:active {
+        background-color: rgb(255, 0, 123);
+        color: white;
+        animation: ease-out 0.5s;
+    }
+
+    .base-card-wrapper {
+        width: 60vmin;
+    }
+    
+    .base-card {
+        width: 100%;
+        height: auto;
+    }
+    .base-card-container {
+        flex-flow: column wrap;
+        justify-content: flex-start;
+        max-height: fit-content;
+        min-height: 100vh;
+    }
+    .base-title {
+        font-size: 1.2rem;
+    }
+
+    .base-card-img img {
+        height: auto;
+    }
+}

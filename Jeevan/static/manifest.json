@@ -66,20 +66,6 @@
 ],
   "screenshots": [
     {
-      "src": "/static/img/screenshots/desktop.png",
-      "sizes": "2796x1290",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Homescreen of Jeevan"
-    },
-    {
-      "src": "/static/img/screenshots/desktop2.png",
-      "sizes": "2796x1290",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Features of Jeevan"
-    },
-    {
       "src": "/static/img/screenshots/mobile.png",
       "sizes": "1290x2796",
       "type": "image/png",

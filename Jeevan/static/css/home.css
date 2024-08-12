@@ -1,3 +1,7 @@
+main {
+    margin-top: 0px;
+}
+
 .hero {
     display: flex;
     flex-flow: column wrap;
@@ -164,6 +168,7 @@
     justify-content: center;
     align-items: flex-start;
     width: 50%;
+    padding: 5vmin;
 }
 
 .feature-img {
@@ -333,6 +338,11 @@
     max-width: 40vmax;
     object-fit: contain;
     overflow: hidden;
+}
+
+.tech-stack-img {
+    padding-top: 5vmin;
+    padding-bottom: 5vmin;
 }
 
 .tech-stack-wrapper {
