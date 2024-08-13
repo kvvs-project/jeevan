@@ -91,7 +91,7 @@ urlpatterns = [
     path('patient_validate_organ_donation_request', patient_validate_organ_donation_request),
     path('download_patient_report', download_patient_report),
     path('guest_find_organ_donor', guest_find_organ_donor),
-    path('guest_get_hospital_list', guest_get_organ_hospital_list),
+    path('guest_get_organ_hospital_list', guest_get_organ_hospital_list),
     path('guest_find_blood_donor', guest_find_blood_donor),
     path('guest_get_blood_donor_list', guest_get_blood_donor_list),
     path('patient_organ_request_status', patient_organ_request_status),

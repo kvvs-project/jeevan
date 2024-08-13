@@ -42,7 +42,7 @@
     justify-content: space-around;
     align-items: center;
     position: relative;
-    width: clamp(50px, 35vmin, 800px);
+    width: clamp(200px, 35vmin, 800px);
 }
 
 .base-card-wrapper:hover,
@@ -57,14 +57,16 @@
     width: inherit;
     align-content: center;
     justify-content: center;
+    height: 15vmax;
+    border-radius: 1rem;
 }
 
 .base-card-img img {
     border-radius: 1rem;
-    min-width: 20px;
+    min-width: 100px;
+    height: fit-content;
     width: auto;
-    height: 15vw;
-    object-fit: scale-down;
+    object-fit: contain;
     overflow: hidden;
 }
 
@@ -118,10 +120,16 @@
     font-weight: 400;
     word-wrap: break-word;
     text-align: center;
-    font-size: clamp(12px, 4vmin, 1.2rem);
+    font-size: clamp(1rem, 4vmin, 1.2rem);
     text-transform: capitalize;
     padding-bottom: 0.8rem;
     padding-top: 0.8rem;
+}
+
+.base-card-items {
+    display: flex;
+    flex-flow: column wrap;
+    gap: 0.3rem;
 }
 
 @media screen and ((max-width: 1024px) or (orientation: portrait)) {
@@ -135,6 +143,7 @@
         color: white;
         animation: ease-out 0.5s;
     }
+    
 
     .base-card-wrapper {
         width: 60vmin;

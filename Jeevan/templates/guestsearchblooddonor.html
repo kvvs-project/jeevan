@@ -1,76 +1,144 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organ Availability Index</title>
-    <style>
-        main {
-            display: flex;
-            justify-content: center;
-        }
+{% load static %}
 
-        .inner {
-            padding: 5px;
-        }
-    </style>
-</head>
+{% block links %}
+<link rel="stylesheet" href="{% static '/css/search.css' %}">
+<link rel="stylesheet" href="{% static '/css/base-card.css' %}">
+{% endblock links %}
 
-<body>
-    <h1 align="center">Find Blood donors</h1>
-    <main>
-        <div class="container">
-            <form action="/guest_get_blood_donor_list" method="post">{% csrf_token %}
-                <div class="inner">
-                    <label for="dist">District</label>
-                    <select id="dist" name="dist">
-                        <option value="">select</option>
-                        <option value="Alappuzha">Alappuzha</option>
-                        <option value="Ernakulam">Ernakulam</option>
-                        <option value="Idukki">Idukki</option>
-                        <option value="Kannur">Kannur</option>
-                        <option value="Kasaragod">Kasaragod</option>
-                        <option value="Kollam">Kollam</option>
-                        <option value="Kottayam">Kottayam</option>
-                        <option value="Kozhikode">Kozhikode</option>
-                        <option value="Malappuram">Malappuram</option>
-                        <option value="Palakkad">Palakkad</option>
-                        <option value="Pathanamthitta">Pathanamthitta</option>
-                        <option value="Thiruvananthapuram">Thiruvananthapuram</option>
-                        <option value="Thrissur">Thrissur</option>
-                        <option value="Wayanad">Wayanad</option>
-                    </select>
-                </div>
-                <div class="inner">
-                    <label for="blood">Blood group</label>
-                    <select id="blood" name="blood">
-                        <option value="">select</option>
-                        <option value="A+">A+</option>
-                        <option value="A-">A-</option>
-                        <option value="B+">B+</option>
-                        <option value="B-">B-</option>
-                        <option value="AB+">AB+</option>
-                        <option value="AB-">AB-</option>
-                        <option value="O+">O+</option>
-                        <option value="O-">O-</option>
-                    </select>
-                </div>
-                <div class="inner">
-                    <label>Gender</label>
+{% block nav %}
+<li><a href="/">Home</a></li>
+<li><a href="/signup">Sign up</a></li>
+<li><a href="/login">Login</a></li>
+{% endblock nav %}
+
+{% block main %}
+<div class="title">
+    <h1>Blood Match</h1>
+</div>
+<div class="search-container">
+    <form action="/guest_get_blood_donor_list" method="post">
+        {% csrf_token %}
+        <div class="search-wrapper">
+            <div class="search-options">
+                <label for="dist">District</label>
+                <select id="dist" name="dist" required>
+                    <option value="">select</option>
+                    <option value="Alappuzha">Alappuzha</option>
+                    <option value="Ernakulam">Ernakulam</option>
+                    <option value="Idukki">Idukki</option>
+                    <option value="Kannur">Kannur</option>
+                    <option value="Kasaragod">Kasaragod</option>
+                    <option value="Kollam">Kollam</option>
+                    <option value="Kottayam">Kottayam</option>
+                    <option value="Kozhikode">Kozhikode</option>
+                    <option value="Malappuram">Malappuram</option>
+                    <option value="Palakkad">Palakkad</option>
+                    <option value="Pathanamthitta">Pathanamthitta</option>
+                    <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                    <option value="Thrissur">Thrissur</option>
+                    <option value="Wayanad">Wayanad</option>
+                </select>
+            </div>
+            <div class="search-options">
+                <label for="blood">Blood group</label>
+                <select id="blood" name="blood" required>
+                    <option value="">select</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                </select>
+            </div>
+            <div class="search-options">
+                <div>Gender</div>
+                <div class="search-rdios">
                     <div>
-                        <input type="radio" name="gender" id="male" value='m'>
+                        <input type="radio" name="gender" id="male" value="m" checked>
                         <label for="male">Male</label>
-                        <input type="radio" name="gender" id="female" value='f'>
+                    </div>
+                    <div>
+                        <input type="radio" name="gender" id="female" value="f">
                         <label for="female">Female</label>
                     </div>
                 </div>
-                <div>
-                    <input type="submit" value="search">
-                </div>
-            </form>
+            </div>
+            <div class="search-btn-wrapper">
+                <button type="submit" class="search-btn">Search</button>
+            </div>
         </div>
-    </main>
-</body>
+    </form>
+</div>
+{% if results %}
+{% if records %}
+<div class="base-card-container">    
+    {% for Image,Name,Place,District,Phone,Email,Location,Pin in records %}
 
-</html>
+    <div class="base-card-wrapper">
+        <div class="base-card">
+            <div class="base-card-img">
+                <img src="/static/data/hospital/photo/{{Image}}" alt="{{ Name }} img">
+            </div>
+            <div class="base-card-text-container">
+                <div class="base-card-name">
+                    {{ Name }}
+                </div>
+                <div class="base-card-items">
+                    <div class="items">
+                        <div class="item-name">Place</div>
+                        <div class="item-content">{{Place}}</div>
+                    </div>
+                    <div class="items">
+                        <div class="item-name">District</div>
+                        <div class="item-content">{{District}}</div>
+                    </div>
+                    <div class="items">
+                        <div class="item-name">Phone</div>
+                        <div class="item-content">{{Phone}}</div>
+                    </div>
+                    <div class="items">
+                        <div class="item-name">Email</div>
+                        <div class="item-content">{{Email}}</div>
+                    </div>
+                    <div class="items">
+                        <div class="item-name">Pin</div>
+                        <div class="item-content">{{Pin}}</div>
+                    </div>
+                    <div class="items">
+                        <div class="item-name">Location</div>
+                        <div class="item-content">{{Location}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div id="not-found" class="div-not-found"></div>
+<div class="div-not-found"></div>
+<div class="search-not-found">
+    <div class="not-found-wrapper">
+        <div class="not-found-text">
+            Sorry we are unable to find a match
+        </div>
+        <div class="not-found-img">
+            <img src="{% static 'img/search/sorry.jpg' %}" alt="">
+        </div>
+    </div>
+</div>
+
+<script>
+    location.href = "#"
+    location.href = "#not-found"
+</script>
+
+{% endif %}
+{% endif %}
+
+{% endblock main %}
