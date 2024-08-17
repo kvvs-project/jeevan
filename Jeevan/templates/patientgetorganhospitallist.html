@@ -27,7 +27,7 @@
                     <td>{{Phone}}</td>
                     <td>{{Email}}</td>
                     <td align="center">
-                        <form action="patient_make_organ_donation_request" method="post">{%csrf_token%}
+                        <form action="{% url 'patient_make_organ_donation_request' %}" method="post">{%csrf_token%}
                             <input type="hidden" value="{{id}}" name="hid" />
                             <input type="hidden" value="{{organ}}" name="organ">
                             <input type="submit" value="Request" />

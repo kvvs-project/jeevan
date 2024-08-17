@@ -21,7 +21,7 @@
     <h1 align="center">Find Blood donors</h1>
     <main>
         <div class="container">
-            <form action="/hospital_get_blood_donor_list" method="post">{% csrf_token %}
+            <form action="{% url 'hospital_get_blood_donor_list' %}" method="post">{% csrf_token %}
                 <div class="inner">
                     <label for="dist">District</label>
                     <select id="dist" name="dist">

@@ -32,7 +32,7 @@
             name="send_data"
             id="send-data"
             method="post"
-            action="show_hospital_details"
+            action="{% url 'show_hospital_details' %}"
             enctype="multipart/form-data"
           >
             {% csrf_token %}

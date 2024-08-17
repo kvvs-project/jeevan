@@ -9,8 +9,8 @@
 
 {% block nav %}
 <li><a href="/">Home</a></li>
-<li><a href="/signup">Sign up</a></li>
-<li><a href="/login">Login</a></li>
+<li><a href="{% url 'signup' %}">Sign up</a></li>
+<li><a href="{% url 'login' %}">Login</a></li>
 {% endblock nav %}
 
 {% block main %}
@@ -18,7 +18,7 @@
     <h1>Organ Match</h1>
 </div>
 <div class="search-container">
-    <form action="/guest_get_organ_hospital_list" method="post">
+    <form action="{% url 'guest_get_organ_hospital_list' %}" method="post">
         {% csrf_token %}
         <div class="search-wrapper">
             <div class="search-options">

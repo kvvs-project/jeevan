@@ -19,7 +19,7 @@
 
   <body>
     <h1 align="center">Hospital Registration</h1>
-    <form action="/get_hreg" method="post" enctype="multipart/form-data" name="h_reg" onsubmit="return validateForm();">
+    <form action="{% url 'get_hreg' %}" method="post" enctype="multipart/form-data" name="h_reg" onsubmit="return validateForm();">
       {% csrf_token %}
       <table border="0" align="center" cellpadding="15">
         <tr>

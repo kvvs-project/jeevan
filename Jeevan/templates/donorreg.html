@@ -19,7 +19,7 @@
     <body>
         <h1 align="center">Donor Registration</h1>
         <div class="main">
-            <form action="/validate_donor_reg" method="post" enctype="multipart/form-data" style="padding: 50px">
+            <form action="{% url 'validate_donor_reg' %}" method="post" enctype="multipart/form-data" style="padding: 50px">
                 {%csrf_token%} {% if records %}
                 <div class="inner">
                     <label for="Name">Full Name:</label>

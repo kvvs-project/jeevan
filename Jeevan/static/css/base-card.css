@@ -53,6 +53,7 @@
 
 .base-card-img {
     display: flex;
+    flex-wrap: wrap;
     overflow: hidden;
     width: inherit;
     align-content: center;

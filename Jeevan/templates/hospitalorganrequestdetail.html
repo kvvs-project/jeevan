@@ -42,7 +42,7 @@
                     {% for patientID,HospitalID,Name,Gender,BloodGroup,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport,RegDate in records %}
                     <tr>
                         <td>
-                            <img src="./static/data/patient/photo/{{ photo }}" width="300px" />
+                            <img src="/static/data/patient/photo/{{ photo }}" width="300px" />
                         </td>
                     </tr>
                     <tr>
@@ -109,7 +109,7 @@
                     <tr>
                         <td>Medicak Report</td>
                         <td>
-                            <form nam="report_form" method="post" action="download_patient_report">
+                            <form nam="report_form" method="post" action="{% url 'download_patient_report' %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="report" value="{{ MedicalReport }}" />
                                 <input type="submit" value="Download Report" />
@@ -127,7 +127,7 @@
             <td>&nbsp;</td>
             <td>&nbsp;</td>
         <td colspan="2" valign="top"><h2 align="center"><u>A</u>pp<u>roval</u></h2>
-            <form name="approval_form" method="post" action="hospital_validate_organ_request_approval">
+            <form name="approval_form" method="post" action="{% url 'hospital_validate_organ_request_approval' %}">
               {% csrf_token %}
               <table width="300" height="290" border="0" cellpadding="5">
                 <tr>

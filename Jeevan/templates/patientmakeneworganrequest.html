@@ -38,7 +38,7 @@
         {% for ID,photoName,id,name,place,Location,pin,phone,District,Email,type in records %}
         <tr>
           <td>
-            <img src="./static/data/hospital/photo/{{ photoName }}" width="300px">
+            <img src="/static/data/hospital/photo/{{ photoName }}" width="300px">
           </td>
         </tr>
         <tr>
@@ -92,7 +92,7 @@
       </table>        </td>
       <td>&nbsp;</td>
       <td colspan="2" valign="top"><h2>Make a request</h2>
-        <form name="approval_form" method="post" action="patient_validate_organ_donation_request">
+        <form name="approval_form" method="post" action="{% url 'patient_validate_organ_donation_request' %}">
           {% csrf_token %}
           <table border="0" cellpadding="5">
                 <tr>

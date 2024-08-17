@@ -23,7 +23,7 @@
                 <td>{{place}}</td>
                 <td>{{regdate}}</td>
                 <td>
-                    <form name="send_data" id="send-data" method="post" action="show_patient_details" enctype="multipart/form-data">
+                    <form name="send_data" id="send-data" method="post" action="{% url 'show_patient_details' %}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="text" name="patientid" value="{{patientid}}" hidden />
                         <input type="submit" name="Submit" value="Show More" />

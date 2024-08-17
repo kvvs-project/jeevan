@@ -7,8 +7,8 @@
 {% endblock %}
 
 {% block nav %}
-<li><a href="/signup">Sign up</a></li>
-<li><a href="/login">Login</a></li>
+<li><a href="{% url 'signup' %}">Sign up</a></li>
+<li><a href="{% url 'login' %}">Login</a></li>
 {% endblock %}
 
 {% block main %}
@@ -23,7 +23,7 @@
                 Uniting Hearts and Healing Hands for Life
             </div>
             <div class="hero-button">
-                <a href="/find"><button>Find A Donation Center Now</button></a>
+                <a href="{% url 'find' %}"><button>Find A Donation Center Now</button></a>
             </div>
         </div>
         <div class="hero-img">

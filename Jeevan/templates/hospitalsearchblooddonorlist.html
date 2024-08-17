@@ -27,7 +27,7 @@
                 <td>{{Phone}}</td>
                 <td>{{Email}}</td>
                 <td>
-                    <form name="send_data" method="post" action="/hospital_get_blood_donor_details">
+                    <form name="send_data" method="post" action="{% url 'hospital_get_blood_donor_details' %}">
                         {% csrf_token %}
                         <input type="text" name="did" value="{{DonorID}}" hidden />
                         <input type="submit" name="Submit" value="Show Details" />

@@ -10,7 +10,7 @@
 
 <body>
     <h1 align="center">Patient Registration</h1>
-    <form action="/validate_patient_reg" method="post" align="center" enctype="multipart/form-data"
+    <form action="{% url 'validate_patient_reg' %}" method="post" align="center" enctype="multipart/form-data"
         style="padding: 50px;"> {%csrf_token%}
 
         <div>

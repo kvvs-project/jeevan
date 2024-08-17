@@ -8,8 +8,8 @@
 
 {% block nav %}
     <li><a href="/">Home</a></li>
-    <li><a href="/signup">Sign up</a></li>
-    <li><a href="/login">Login</a></li>
+    <li><a href="{% url 'signup' %}">Sign up</a></li>
+    <li><a href="{% url 'login' %}">Login</a></li>
 {% endblock nav %}
 
 {% block main %}

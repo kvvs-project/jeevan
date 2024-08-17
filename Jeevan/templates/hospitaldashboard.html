@@ -40,7 +40,7 @@
                         {% for photoName,id,name,place,Location,pin,phone,District,Email,type,hasbloodbank,proofName,regdate in records %}
                         <tr>
                             <td>
-                                <img src="./static/data/hospital/photo/{{ photoName }}" width="300px" />
+                                <img src="/static/data/hospital/photo/{{ photoName }}" width="300px" />
                             </td>
                         </tr>
                         <tr>
@@ -107,7 +107,7 @@
                         <tr>
                             <td>Proof</td>
                             <td>
-                                <form nam="h_proof" method="post" action="download_hospital_proof">
+                                <form name="h_proof" method="post" action="{% url 'download_hospital_proof' %}">
                                     {% csrf_token %}
                                     <input type="hidden" name="h_proof" value="{{ proofName }}" />
                                     <input type="submit" value="Download Proof" />
@@ -130,7 +130,7 @@
                           <tr>
                             <td>Donor Approval</td>
                             <td>
-                                <form name="send_data" method="post" action="/donor_approval">
+                                <form name="send_data" method="post" action="{% url 'donor_approval' %}">
                                     {% csrf_token %}
                                     <input type="text" name="id" value="{{id}}" hidden />
                                     <input type="submit" name="Submit" value="View Details" />
@@ -139,7 +139,7 @@
                         <tr>
                             <td>Patient Approval</td>
                             <td>
-                                <form name="send_data" method="post" action="/patient_approval">
+                                <form name="send_data" method="post" action="{%  url 'patient_approval' %}">
                                     {% csrf_token %}
                                     <input type="text" name="id" value="{{id}}" hidden />
                                     <input type="submit" name="Submit" value="View Details" />
@@ -149,7 +149,7 @@
                         <tr>
                           <td>Organ donation Request Approval</td>
                           <td>
-                              <form name="send_data" method="post" action="/hospital_organ_request_approval">
+                              <form name="send_data" method="post" action="{% url 'hospital_organ_request_approval' %}">
                                   {% csrf_token %}
                                   <input type="text" name="id" value="{{id}}" hidden />
                                   <input type="submit" name="Submit" value="View Details" />
@@ -159,7 +159,7 @@
                         <tr>
                             <td>Cancel organ donation request</td>
                             <td>
-                                <form name="send_data" method="post" action="/hospital_cancel_patient_organ_request">
+                                <form name="send_data" method="post" action="{% url 'hospital_cancel_patient_organ_request' %}">
                                     {% csrf_token %}
                                     <input type="text" name="id" value="{{id}}" hidden />
                                     <input type="submit" name="Submit" value="View Details" />
@@ -169,7 +169,7 @@
                         <tr>
                             <td>Organ transplantation Entry</td>
                             <td>
-                                <form name="send_data" method="post" action="/hospital_organ_transplantation">
+                                <form name="send_data" method="post" action="{% url 'hospital_organ_transplantation' %}">
                                     {% csrf_token %}
                                     <input type="text" name="id" value="{{id}}" hidden />
                                     <input type="submit" name="Submit" value="View Details" />
@@ -179,7 +179,7 @@
                         <tr>
                             <td>Blood Donation entry</td>
                             <td>
-                                <form name="send_data" method="post" action="/hospital_find_blood_donor">
+                                <form name="send_data" method="post" action="{% url 'hospital_find_blood_donor' %}">
                                     {% csrf_token %}
                                     <input type="text" name="id" value="{{id}}" hidden />
                                     <input type="submit" name="Submit" value="View Details" />

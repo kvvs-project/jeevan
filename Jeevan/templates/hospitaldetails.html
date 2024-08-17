@@ -38,7 +38,7 @@
         {% for photoName,id,name,place,Location,pin,phone,District,Email,type,hasbloodbank,proofName,regdate in records %}
         <tr>
           <td>
-            <img src="./static/data/hospital/photo/{{ photoName }}" width="300px">
+            <img src="/static/data/hospital/photo/{{ photoName }}" width="300px">
           </td>
         </tr>
         <tr>
@@ -104,7 +104,7 @@
         </tr>
         <tr>
           <td>Proof</td>
-          <td><form nam="h_proof" method="post" action="download_hospital_proof">
+          <td><form nam="h_proof" method="post" action="{% url 'download_hospital_proof' %}">
             {% csrf_token %}
             <input type="hidden" name="h_proof" value="{{ proofName }}">
             <input type="submit" value="Download Proof">
@@ -120,7 +120,7 @@
       </table>        </td>
       <td>&nbsp;</td>
       <td colspan="2" valign="top"><h2 align="center"><u>A</u>pp<u>roval</u></h2>
-        <form name="approval_form" method="post" action="validate_hospital_approval">
+        <form name="approval_form" method="post" action="{% url 'validate_hospital_approval' %}">
           {% csrf_token %}
           <table width="300" height="290" border="0" cellpadding="5">
             <tr>

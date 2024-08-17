@@ -21,7 +21,7 @@
     <h1 align="center">Find Hospitals with Available Organs</h1>
     <main>
         <div class="container">
-            <form action="patient_get_organ_hospital_list" method="post">{% csrf_token %}
+            <form action="{% url 'patient_get_organ_hospital_list' %}" method="post">{% csrf_token %}
                 <div class="inner">
                     <label for="dist">District</label>
                     <select id="dist" name="dist">
