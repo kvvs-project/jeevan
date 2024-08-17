@@ -42,7 +42,7 @@
                     {% for donorID,HospitalID,Name,Gender,BloodGroup,TypeOfDonation,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport,RegDate in records %}
                     <tr>
                         <td>
-                            <img src="./static/data/donor/photo/{{ photo }}" width="300px" />
+                            <img src="/static/data/donor/photo/{{ photo }}" width="300px" />
                         </td>
                     </tr>
                     <tr>
@@ -115,7 +115,7 @@
                     <tr>
                         <td>Medicak Report</td>
                         <td>
-                            <form nam="report_form" method="post" action="download_donor_report">
+                            <form nam="report_form" method="post" action="{%  url 'download_donor_report' %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="report" value="{{ MedicalReport }}" />
                                 <input type="submit" value="Download Report" />
@@ -139,7 +139,7 @@
                                 Make a new organ donation
                             </td>
                             <td>
-                                <a name="new_donation" href="/donor_new_organ_Donation">
+                                <a name="new_donation" href="{% url 'donor_new_organ_donation' %}">
                                     <button> Donate Now </button>
                                 </a>
                             </td>
@@ -149,7 +149,7 @@
                                 Your organ donation status
                             </td>
                             <td>
-                                <form name="donation_staus" method="post" action="/donor_organ_donation_status">
+                                <form name="donation_staus" method="post" action="{% url 'donor_organ_donation_status' %}">
                                     {% csrf_token %}
                                 <div>
                                     <input type="hidden" name="id" value="{{donorID}}">
@@ -163,7 +163,7 @@
                                 Cancel your organ donation
                             </td>
                             <td>
-                                <form name="cancel_donation" method="post" action="/donor_cancel_organ_donation">
+                                <form name="cancel_donation" method="post" action="{% url 'donor_cancel_organ_donation' %}">
                                     {% csrf_token %}
                                 <div>
                                     <input type="hidden" name="id" value="{{donorID}}">

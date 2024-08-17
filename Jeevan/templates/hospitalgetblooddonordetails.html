@@ -95,7 +95,7 @@
                 {% for donorID,HospitalID,Name,Gender,BloodGroup,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport in DonorDetails %}
                 <tr>
                     <td colspan="2">
-                        <img src="./static/data/donor/photo/{{ photo }}" width="300px" />
+                        <img src="/static/data/donor/photo/{{ photo }}" width="300px" />
                     </td>
                 </tr>
                 <tr>
@@ -161,7 +161,7 @@
                 <tr>
                     <td>Medical Report</td>
                     <td>
-                        <form nam="report_form" method="post" action="download_donor_report">
+                        <form name="report_form" method="post" action="{% url 'download_donor_report' %}">
                             {% csrf_token %}
                             <input type="hidden" name="report" value="{{ MedicalReport }}" />
                             <input type="submit" value="Download Report" />
@@ -206,7 +206,7 @@
                     <h3>Confirm New Blood Donation</h3>
                 </div>
                 <table cellspacing="0px" cellpadding="5px">
-                    <form method="post" action="/hospital_validate_blood_donation"> {%csrf_token%}
+                    <form method="post" action="{% url 'hospital_validate_blood_donation' %}"> {%csrf_token%}
                         {%if Date%}
                         <tr>
                             <td>Last donated date</td>

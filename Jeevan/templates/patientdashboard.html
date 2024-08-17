@@ -42,7 +42,7 @@
                     {% for patientID,HospitalID,Name,Gender,BloodGroup,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport,RegDate in records %}
                     <tr>
                         <td>
-                            <img src="./static/data/patient/photo/{{ photo }}" width="300px" />
+                            <img src="/static/data/patient/photo/{{ photo }}" width="300px" />
                         </td>
                     </tr>
                     <tr>
@@ -109,7 +109,7 @@
                     <tr>
                         <td>Medicak Report</td>
                         <td>
-                            <form nam="report_form" method="post" action="download_patient_report">
+                            <form nam="report_form" method="post" action="{% url 'download_patient_report' %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="report" value="{{ MedicalReport }}" />
                                 <input type="submit" value="Download Report" />
@@ -135,7 +135,7 @@
                                 Make a new organ donation request
                             </td>
                             <td>
-                                <a name="new_donation" href="/patient_make_new_organ_request">
+                                <a name="new_donation" href="{% url 'patient_make_new_organ_request' %}">
                                     <button>Request</button>
                                 </a>
                             </td>
@@ -145,7 +145,7 @@
                                 Check your organ donation request status
                             </td>
                             <td>
-                                <form name="send_data" id="send-data" method="post" action="patient_organ_request_status" enctype="multipart/form-data">
+                                <form name="send_data" id="send-data" method="post" action="{% url 'patient_organ_request_status' %}" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <input type="text" name="id" value="{{patientID}}" hidden />
                                     <input type="submit" name="Submit" value="View Details" />
@@ -157,7 +157,7 @@
                                 Cancel your organ donation request
                             </td>
                             <td>
-                                <form name="send_data" id="send-data" method="post" action="patient_cancel_organ_request" enctype="multipart/form-data">
+                                <form name="send_data" id="send-data" method="post" action="{% url 'patient_cancel_organ_request' %}" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <input type="text" name="pid" value="{{patientID}}" hidden />
                                     <input type="submit" name="Submit" value="Cancel" />

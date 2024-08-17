@@ -24,7 +24,7 @@
         <td >{{OrganName}}</td>
         <td >{{Date}}</td>
         <td>
-            <form method="post" action="/validate_donor_cancel_organ_donation">
+            <form method="post" action="{% url 'validate_donor_cancel_organ_donation' %}">
               {%csrf_token%}
                 <input type="hidden" name="donorID" value="{{ID}}">
                 <input type="hidden" name="organ" value="{{OrganName}}">

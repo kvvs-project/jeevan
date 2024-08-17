@@ -10,7 +10,7 @@
 <body>
     <h1 align="center">Patient Registration</h1>
     <div align="center">
-        <form method="post" align="left" action="/patient_reg"> {% csrf_token%}
+        <form method="post" align="left" action="{% url 'patient_reg' %}"> {% csrf_token%}
             <label for="dist">Select your district : </label>
             <select name="dist">
                 <option value="">Select a District</option>

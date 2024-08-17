@@ -20,7 +20,7 @@
     <body>
         <h1 align="center">New Organ Donation Registration</h1>
         <div class="form-wrapper">
-        <form method="post" align="center" action="/validate_donor_new_organ_donation">
+        <form method="post" align="center" action="{% url 'validate_donor_new_organ_donation' %}">
             {% csrf_token%}
             <div class="inner">
             <label for="name">Select the organ you want to donate :</label>

@@ -37,7 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'JeevanApp.apps.JeevanappConfig',
+    'Main.apps.MainConfig',
+    'Hospital.apps.HospitalConfig',
+    'Donor.apps.DonorConfig',
+    'Patient.apps.PatientConfig',
+    'Guest.apps.GuestConfig',
+    'Admin.apps.AdminConfig'
 ]
 
 MIDDLEWARE = [
@@ -55,8 +60,7 @@ ROOT_URLCONF = 'Jeevan.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

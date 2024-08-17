@@ -25,7 +25,7 @@
                 <td>{{Request}}</td>
                 <td>{{RequestDate}}</td>
                 <td align="center">
-                    <form method="post" action="validate_patient_cancel_organ_request">{%csrf_token%}
+                    <form method="post" action="{% url 'validate_patient_cancel_organ_request' %}">{%csrf_token%}
                         <input type="hidden" name="rid" value="{{RequestID}}">
                         <input type="hidden" name="pid" value="{{pid}}">
                         <input type="submit" value="Cancel">

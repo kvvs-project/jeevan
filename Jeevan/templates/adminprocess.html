@@ -3,16 +3,16 @@
         <h1 align="center">Welcome admin</h1>
         <div>
             <div>
-                <a href="change_admin_pass">change password</a>
+                <a href="{% url 'change_admin_pass' %}">change password</a>
             </div>
             <div>
-                <a href="hospital_approval">Hospital Approval</a>
+                <a href="{% url 'hospital_approval' %}">Hospital Approval</a>
             </div>
             <div>
-                <a href="admin_add_new_organ">Add new organ</a>
+                <a href="{% url 'admin_add_new_organ' %}">Add new organ</a>
             </div>
             <div>
-                <a href="admin_organ_list">View list of current organs</a>
+                <a href="{% url 'admin_organ_list' %}">View list of current organs</a>
             </div>
         </div>
     </body>

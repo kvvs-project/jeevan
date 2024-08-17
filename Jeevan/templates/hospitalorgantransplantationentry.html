@@ -50,7 +50,7 @@
                     <table cellspacing="0" cellpadding="15">
                         <tr>
                             <td colspan="2">
-                                <img src="./static/data/patient/photo/{{Photo}}" width="300px" />
+                                <img src="/static/data/patient/photo/{{Photo}}" width="300px" />
                             </td>
                         </tr>
                         <tr>
@@ -122,7 +122,7 @@
                         <tr>
                             <td>Medical Report</td>
                             <td>
-                                <form nam="report_form" method="post" action="download_patient_report">
+                                <form name="report_form" method="post" action="{% url 'download_patient_report' %}">
                                     {% csrf_token %}
                                     <input type="hidden" name="report" value="{{MedicalReport}}" />
                                     <input type="submit" value="Download Report" />
@@ -186,7 +186,7 @@
                             <td>{{DOD}}</td>
                             <td>{{regdate}}</td>
                             <td>
-                                <form name="send_data" id="send-data" method="post" action="hospital_organ_transplantation_entry">
+                                <form name="send_data" id="send-data" method="post" action="{% url 'hospital_organ_transplantation_entry' %}">
                                     {% csrf_token %}
                                     <input type="hidden" name="rid" value="{{RequestID}}" />
                                     <input type="hidden" name="pid" value="{{PatientID}}" />

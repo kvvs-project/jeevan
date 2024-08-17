@@ -23,7 +23,7 @@
                 <td>{{Request}}</td>
                 <td>{{RequestDate}}</td>
                 <td>
-                    <form name="send_data" id="send-data" method="post" action="hospital_show_organ_approval_details" enctype="multipart/form-data">
+                    <form name="send_data" id="send-data" method="post" action="{% url 'hospital_show_organ_approval_details' %}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="hidden" name="rid" value="{{RequestID}}" />
                         <input type="hidden" name="id" value="{{PatientID}}"  />
