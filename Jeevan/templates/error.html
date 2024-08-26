@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static '/css/error.css' %}">
+{% endblock links %}
+
+{% block nav %}
+    <li><a href="/">Home</a></li>
+{% endblock nav %}
+
+{% block main %}
+    <div class="error-title"><h1>Sorry Something Went Wrong</h1></div>
+    <div class="error-container">
+        <div class="error-wrapper">
+            <div class="error-img">
+                <img src="{% static '/img/misc/error.jpg' %}" alt="">
+            </div>
+            <div class="error-btn-wrapper">
+                <button class="error-btn">View details</button>
+                <a href="/">
+                    <button class="home-btn">Go Home</button>
+                </a>
+            </div>
+            
+            <div class="error-message" style="display: none;">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class={{ message.tags }}>{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock main %}
+
+{% block scripts %}
+<script lang="javascript" src="{% static '/js/error.js' %}" defer></script>
+{% endblock scripts %}

@@ -1,8 +1,9 @@
 import os
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
+from django.contrib import messages
 from Jeevan import db_connect
-
+from django.shortcuts import redirect
 
 def home_page(request):
     return render(request, "home.html")
@@ -148,3 +149,10 @@ def validate_login(request):
                         return render(request, "patientdashboard.html", {'records': records})
         msg = "Invalid serId or Password"
         return render(request, "login.html", {'message': msg})
+
+
+def error_msg(request):
+    if not request.session.get('has_error', False):
+        return redirect('/')
+    request.session['has_error'] = False
+    return render(request, "error.html")

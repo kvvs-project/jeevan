@@ -1,0 +1,74 @@
+.error-title {
+    display: block;
+    color: black;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.error-img img {
+    border-radius: 30px;
+    min-width: 200px;
+    width: auto;
+    max-width: 35vmax;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 2rem;
+    width: 100%;
+}
+
+.error-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    width: 35vmax;
+}
+
+.error-text {
+    font-size: 1.2rem;
+}
+
+.error-btn-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    box-sizing: border-box;
+    flex-direction: row;
+    width: 100%;
+}
+
+.error-btn,
+.home-btn {
+    font-size: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 0.8rem;
+    height: -webkit-fill-available;
+    height: fill-available;
+    height: -moz-available;
+}
+
+.error-btn , .error-wrapper a{
+    width: -webkit-fill-available;
+    width: fill-available;
+    width: -moz-available;
+}
+
+.home-btn {
+    width: 100%;
+}
+
+.error-message {
+    display: none;
+    padding: 0.5rem;
+}

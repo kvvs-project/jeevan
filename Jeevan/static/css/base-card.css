@@ -58,16 +58,16 @@
     width: inherit;
     align-content: center;
     justify-content: center;
-    height: 15vmax;
+    height: 25vmin;
     border-radius: 1rem;
 }
 
 .base-card-img img {
     border-radius: 1rem;
     min-width: 100px;
-    height: fit-content;
-    width: auto;
-    object-fit: contain;
+    height: inherit;
+    width: 100%;
+    object-fit: cover;
     overflow: hidden;
 }
 
@@ -133,7 +133,7 @@
     gap: 0.3rem;
 }
 
-@media screen and ((max-width: 1024px) or (orientation: portrait)) {
+@media screen and (max-width: 550px) {
     .base-card-button input[type=button]:hover {
         background-color: rgb(240, 240, 240);
         color: black;
@@ -164,7 +164,11 @@
         font-size: 1.2rem;
     }
 
-    .base-card-img img {
+    .base-card-img {
         height: auto;
+    }
+
+    .base-card-img img {
+        height: 25vmax;
     }
 }

@@ -15,4 +15,5 @@ urlpatterns = [
     path('patient/', include('Patient.urls')),
     path('hospital/', include('Hospital.urls')),
     path('favicon.ico', views.serve_favicon),
+    path('error', views.error_msg, name="error")
 ]
