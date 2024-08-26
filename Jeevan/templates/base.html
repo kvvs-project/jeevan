@@ -59,20 +59,24 @@
     {% endblock %}
     </main>
     <footer class="footer">
-        <div class="footer-img">
-            <img src="{% static '/img/misc/jeevan.webp' %}" alt="jeevan logo">
+        <div class="footer-img-wrapper">
+            <div class="footer-img">
+                <img src="{% static '/img/misc/jeevan.webp' %}" alt="jeevan logo">
+            </div>
         </div>
         <div class="footer-container">
-            <div class="footer-items">
-                <ul>
-                    <li><a href="/#about">About Jeevan</a></li>
-                    <li><a href="/#features">Features of Jeevan</a></li>
-                    <li><a href="/#reviews">Reviews of Jeevan</a></li>
-                </ul>
+            <div class="footer-items-wrapper">
+                <div class="footer-items"><a href="/#about">About</a></div>
+                <div class="footer-items"><a href="/#features">Features</a></div>
+                <div class="footer-items"><a href="/#reviews">Reviews</a></div>
             </div>
             <div class="footer-text">
                 &copy;Jeevan 2023 - 24 all rights reserved
             </div>
+        </div>
+        <div class="footer-socials">
+            <div class="email"><a href="mailto:jeevanproject@proton.me?subject=Hello 👋&body=Hi"></a></div>
+            <div class="github"><a href="https://github.com/kvvs-project/jeevan"></a></div>
         </div>
     </footer>
     {% block scripts %}
