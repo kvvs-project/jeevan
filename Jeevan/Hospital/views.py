@@ -353,9 +353,11 @@ def hospital_organ_transplantation_details(request):
             cur.execute(query)
             con.commit()
         elif status == 'P':
-            query = f"select * from OrganTransplantation where did = '{did}' and RequestID in ( select RequestID from PatientOrganRequest where organName = '{organName})'"
+            query = f"select * from OrganTransplantation where DonorID = '{did}' and RequestID in ( select RequestID from PatientOrganRequest where organName = '{organName}')"
+            print(query)
             cur.execute(query)
-            if cur.rowcount(0):
+            print("row ", cur.rowcount)
+            if cur.rowcount == 0:
                 query = f"insert into OrganDonorListCache values ('{row[0]}','{row[1]}','{row[2]}','{row[3]}','{row[4]}')"
                 print("if partial : ", query)
                 cur.execute(query)
