@@ -58,7 +58,7 @@
     width: inherit;
     align-content: center;
     justify-content: center;
-    height: 25vmin;
+    height: max(200px ,25vmin);
     border-radius: 1rem;
 }
 
@@ -133,7 +133,7 @@
     gap: 0.3rem;
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 550px)  {
     .base-card-button input[type=button]:hover {
         background-color: rgb(240, 240, 240);
         color: black;
@@ -169,6 +169,7 @@
     }
 
     .base-card-img img {
-        height: 25vmax;
+        height: fit-content;
+        object-fit: contain;
     }
 }

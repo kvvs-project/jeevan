@@ -2,20 +2,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const navTitle = document.querySelector(".nav-title");
     const carousalWrapper = document.querySelector(".carousal-wrapper")
-    const carousalItems = carousalWrapper.children;
-    function pauseCarousalSpin() {
-        for (let i = 0; i < carousalItems.length; i++) {
-            if (carousalItems[i].style.animationPlayState === "" || carousalItems[i].style.animationPlayState === "running") {
-                carousalItems[i].style.animationPlayState = "paused"
-            }
-            else {
-                carousalItems[i].style.animationPlayState = "running";
-            }
-        }
-    }
+    const carousalItems = document.querySelectorAll(".carousal-item")
 
     carousalWrapper.addEventListener('click', (event) => {
-        pauseCarousalSpin()
+        carousalItems.forEach(element => {
+            if (element.style.animationPlayState === "" || element.style.animationPlayState === "running") {
+                element.style.animationPlayState = "paused"
+            }
+            else {
+                element.style.animationPlayState = "running";
+            }
+        });
     });
 
     // enable service worker for pwa support

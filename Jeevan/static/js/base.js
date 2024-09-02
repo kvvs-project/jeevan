@@ -1,6 +1,18 @@
 const navTitle = document.querySelector(".nav-title");
 navTitle.classList.add('scrolled');
 
+const allSkeleton = document.querySelectorAll('.skeleton')
+const allRedSkeleton = document.querySelectorAll('.skeleton-red')
+
+window.addEventListener('load', function() {
+  allSkeleton.forEach(item=> {
+    item.classList.remove('skeleton')
+  });
+  allRedSkeleton.forEach(item=> {
+    item.classList.remove('skeleton-red')
+  });
+});
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const hamburger = document.querySelector(".hamburger");
