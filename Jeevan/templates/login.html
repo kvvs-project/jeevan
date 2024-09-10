@@ -19,10 +19,10 @@
         <form action="{% url 'get_login' %}" method="post">
             {% csrf_token %}
                 <div class="login-wrapper">
-                <label for="userName">Enter your Username</label>
-                <input type="text" id="userName" placeholder="Username" name="uname" autofocus autocomplete="username" autocapitalize="characters" required/>
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" name="pass" required/>
+                <label for="userName">Enter your User ID</label>
+                <input type="text" id="userName" placeholder="User ID" name="uname" autofocus autocomplete="username" autocapitalize="characters" required/>
+                <label for="password">Enter your Password</label>
+                <input type="password" id="password" placeholder="Password" autocomplete="current-password" name="pass" required/>
                 <div class="msg">{{message}}</div>
                 <button type="submit" class="submit">Submit</button>
             </div>

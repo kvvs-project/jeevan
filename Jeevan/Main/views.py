@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from Jeevan import db_connect
 from django.shortcuts import redirect
+import time
 
 def home_page(request):
     return render(request, "home.html")
@@ -28,127 +29,161 @@ def serve_favicon(request):
 
 
 def validate_login(request):
-    con = db_connect()
-    cur = con.cursor()
+    try :
+        con = db_connect()
+        cur = con.cursor()
 
-    userName = request.POST["uname"]
-    userPass = request.POST["pass"]
+        userName = request.POST["uname"]
+        userPass = request.POST["pass"]
 
-    query = "select * from UserLogin where userID = '" + userName + "' and password ='" + userPass + "'"
+        query = """
+            SELECT * FROM UserLogin 
+            WHERE userID = %s AND password = %s
+        """
+        cur.execute(query, (userName, userPass))
 
-    cur.execute(query)
+        if cur.rowcount == 0:
+            msg = "Invalid User ID or Password"
+            return render(request, "login.html", {'message': msg})
 
-    if cur.rowcount == 0:
-        msg = "Invalid UserID or Password"
+        userType = userName[0].upper()
+
+        if userName == "admin":
+            return render(request, "adminDash.html")
+
+        if userType == 'H':
+            query = """
+                SELECT *
+                FROM HospitalApproval 
+                WHERE id = %s
+            """
+            cur.execute(query, (userName,))
+            records = cur.fetchall()
+            print(records, type(records))
+
+            if cur.rowcount == 0:
+                msg = "Please wait for Approval"
+                return render(request, "login.html", {'message': msg})
+            else : 
+                if records[0][1] == "No":
+
+                    msg = "Approval Rejected"
+                    return render(request, "login.html", {'message': msg})
+
+                query = """
+                    SELECT photoName, id, name, place, Location, pin, phone, District, Email, type, hasbloodbank, proofName, regdate
+                    FROM Hospital
+                    WHERE id = %s
+                """
+                cur.execute(query, (userName,))
+                records = cur.fetchall()
+
+                query = """
+                    DELETE FROM UserSession WHERE type = 'H'
+                """
+                cur.execute(query)
+                con.commit()
+
+                query = """
+                    INSERT INTO UserSession (ID, type) VALUES (%s, 'H')
+                """
+                cur.execute(query, (userName,))
+                con.commit()
+
+                return render(request, "hospitaldashboard.html", {'records': records})
+
+        elif userType == 'D':
+            query = """
+                SELECT *
+                FROM DonorApproval 
+                WHERE id = %s
+            """
+            cur.execute(query, (userName,))
+            records = cur.fetchall()
+            print(records, type(records))
+
+            if cur.rowcount == 0:
+                msg = "Please wait for Approval"
+                return render(request, "login.html", {'message': msg})
+            else : 
+                if records[0][1] == "No":
+                    msg = "Approval Rejected"
+                    return render(request, "login.html", {'message': msg})
+
+                query = """
+                    SELECT DonorID, HospitalID, Name, Gender, BloodGroup, TypeOfDonation, DOB, Pin, Place, District, Address, Phone, Email, photo, MedicalReport, RegDate
+                    FROM Donor
+                    WHERE donorid = %s
+                """
+                cur.execute(query, (userName,))
+        
+                records = cur.fetchall()
+                query = """
+                    DELETE FROM UserSession WHERE type = 'D'
+                """
+                cur.execute(query)
+                con.commit()
+        
+                query = """
+                    INSERT INTO UserSession (ID, type) VALUES (%s, 'D')
+                """
+                cur.execute(query, (userName,))
+                con.commit()
+        
+                return render(request, "donordashboard.html", {'records': records})
+
+        elif userType == 'P':
+            query = """
+                SELECT *
+                FROM PatientApproval 
+                WHERE id = %s
+            """
+            cur.execute(query, (userName,))
+            records = cur.fetchall()
+            print(records, type(records))
+
+            if cur.rowcount == 0:
+                msg = "Please wait for Approval"
+                return render(request, "login.html", {'message': msg})
+            else : 
+                if records[0][1] == "No":
+                    msg = "Approval Rejected"
+                    return render(request, "login.html", {'message': msg})
+
+                query = """
+                    SELECT * FROM Patient
+                    WHERE patientid = %s
+                """
+                cur.execute(query, (userName,))
+                records = cur.fetchall()
+                query = """
+                    DELETE FROM UserSession WHERE type = 'P'
+                """
+                cur.execute(query)
+                con.commit()
+
+                query = """
+                    INSERT INTO UserSession (ID, type) VALUES (%s, 'P')
+                """
+                cur.execute(query, (userName,))
+                con.commit()
+
+            return render(request, "patientdashboard.html", {'records': records})
+
+        msg = "Invalid User ID or Password"
         return render(request, "login.html", {'message': msg})
-    elif userName == "admin":
-        return render(request, "adminprocess.html")
-    else:
-        unSuffix = userName[0]
-        if unSuffix == 'H':
-            query = " select * from UserLogin where userID ='" + userName + "' and password = '" + userPass + "'"
-            cur.execute(query)
-            if cur.rowcount == 0:
-                msg = "Invalid UserId or Password"
-                return render(request, "login.html", {'message': msg})
-            else:
-                query = "select * from HospitalApproval where id = '" + userName + "'"
-                cur.execute(query)
-                status = ""
-                if cur.rowcount == 0:
-                    msg = "Please wait for Approval"
-                    return render(request, "login.html", {'message': msg})
-                else:
-                    records = cur.fetchall()
-                    for row in records:
-                        status = row[1]
-                    print(status)
-
-                    if status == "No":
-                        msg = "Your Approval is rejected"
-                        return render(request, "login.html", {'message': msg})
-                    else:
-                        query = "delete from UserSession where type = 'H'"
-                        cur.execute(query)
-                        con.commit()
-                        query = "insert into UserSession values ('" + userName + "','" + unSuffix + "')"
-                        cur.execute(query)
-                        con.commit()
-                        query = "select photoName,id,name,place,Location,pin,phone,District,Email,type,hasbloodbank,proofName,regdate from Hospital where id = '" + userName + "'"
-                        cur.execute(query)
-                        records = cur.fetchall()
-                        return render(request, "hospitaldashboard.html", {'records': records})
-        elif unSuffix == 'D':
-            query = " select * from UserLogin where userID ='" + userName + "' and password = '" + userPass + "'"
-            cur.execute(query)
-            if cur.rowcount == 0:
-                msg = "Invalid UserId or Password"
-                return render(request, "login.html", {'message': msg})
-            else:
-                query = "select * from DonorApproval where id = '" + userName + "'"
-                cur.execute(query)
-                status = ""
-                if cur.rowcount == 0:
-                    msg = "Please wait for Approval"
-                    return render(request, "login.html", {'message': msg})
-                else:
-                    records = cur.fetchall()
-                    for row in records:
-                        status = row[1]
-                    print(status)
-
-                    if status == "No":
-                        msg = "Your Approval is rejected"
-                        return render(request, "login.html", {'message': msg})
-                    else:
-                        query = "delete from UserSession where type = 'D'"
-                        cur.execute(query)
-                        con.commit()
-                        query = "insert into UserSession values ('" + userName + "','" + unSuffix + "')"
-                        cur.execute(query)
-                        con.commit()
-                        did = userName
-                        query = "select DonorID,HospitalID,Name,Gender,BloodGroup,TypeOfDonation,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport,RegDate from Donor where donorid = '" + did + "'"
-                        cur.execute(query)
-                        records = cur.fetchall()
-                        return render(request, "donordashboard.html", {'records': records})
-        elif unSuffix == 'P':
-            query = " select * from UserLogin where userID ='" + userName + "' and password = '" + userPass + "'"
-            cur.execute(query)
-            if cur.rowcount == 0:
-                msg = "Invalid serId or Password"
-                return render(request, "login.html", {'message': msg})
-            else:
-                query = "select * from PatientApproval where id = '" + userName + "'"
-                cur.execute(query)
-                status = ""
-                if cur.rowcount == 0:
-                    msg = "Please wait for approval"
-                    return render(request, "login.html", {'message': msg})
-                else:
-                    records = cur.fetchall()
-                    for row in records:
-                        status = row[1]
-                    print(status)
-
-                    if status == "No":
-                        msg = "Your registration is rejected"
-                        return render(request, "login.html", {'message': msg})
-                    else:
-
-                        query = "delete from UserSession where type = 'P'"
-                        cur.execute(query)
-                        con.commit()
-                        query = "insert into UserSession values ('" + userName + "','" + unSuffix + "')"
-                        cur.execute(query)
-                        con.commit()
-                        did = userName
-                        query = "select * from Patient where patientid = '" + did + "'"
-                        cur.execute(query)
-                        records = cur.fetchall()
-                        return render(request, "patientdashboard.html", {'records': records})
-        msg = "Invalid serId or Password"
-        return render(request, "login.html", {'message': msg})
+    except BaseException as e: # catch logs all kind of exceptions like db to request
+        errorMsg = f'''
+        " time {time.strftime('%H:%M:%S')} "," {type(e).__name__}: ", " {str(e)} ",
+        '''
+        storage = messages.get_messages(request)
+        for message in storage:
+            print(message) # print old message and clear them
+        request.session['has_error'] = True # set a session token to show error page
+        messages.error(request, errorMsg)
+        return redirect("error") # incase of an exception redirect user to the error page
+    finally:
+        con.close()
 
 
 def error_msg(request):

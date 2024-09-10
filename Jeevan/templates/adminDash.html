@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static '/css/base-card.css' %}">
+{% endblock links %}
+
+{% block main %}
+    <div class="title"><h1>Welcome to Jeevan</h1></div>
+    <div class="base-card-container">
+        {% include "base_card.html" with card_img="/img/dash/pass.jpg" card_alt="Change password" card_text="change your authentication password" card_name="change password" card_link="change_admin_pass" card_btn="Change" %}
+        {% include "base_card.html" with card_img="/img/dash/hospital.jpg" card_alt="Hospital Approval" card_text="Approve or reject hospital waiting for verification" card_name="Hospital Approval" card_link="hospital_approval" card_btn="Verify" %}
+        {% include "base_card.html" with card_img="/img/dash/organ.png" card_alt="Add new organ" card_text="Add new organ to the list of available organs" card_name="Add new organ" card_link="admin_add_new_organ" card_btn="Add" %}
+        {% include "base_card.html" with card_img="/img/dash/organ-list.jpg" card_alt="Change password" card_text="View the current organs available for donation" card_name="View List of organs" card_link="admin_organ_list" card_btn="View" %}
+    </div>
+{% endblock main %}
