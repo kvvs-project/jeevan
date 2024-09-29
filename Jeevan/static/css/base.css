@@ -119,8 +119,8 @@ main {
 
 .nav-img>a {
     display: inherit;
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: 90%;
 }
 
 .nav-img img {
@@ -342,6 +342,107 @@ main {
     background: linear-gradient(90deg, #fd0057, #ffffff, #fd0057);
     background-size: 200%;
     animation: skeleton 1s infinite reverse;
+}
+
+.table-name {
+    font-weight: 400;
+    word-wrap: break-word;
+    text-align: left;
+    width: 80%;
+    font-size: max(2vmax, 1.5rem);
+    padding: 1rem;
+    text-transform: capitalize;
+}
+
+.table-container {
+    display: flex;
+    justify-content: center;
+    flex-flow: column wrap;
+    align-items: center;
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.table-wrapper {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 80%;
+    overflow-x: scroll;
+    padding: 1rem;
+}
+
+.table-wrapper::-webkit-scrollbar {
+    width: 0.25rem;
+    height: 0.3rem;
+    background-color: white;
+    border-radius: 2rem;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+    background: white;
+    width: 0.250rem;
+    border-radius: 2rem;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background-color: #0a96f4;
+    border-radius: 2rem;
+}
+
+.table-wrapper::-webkit-scrollbar-track-piece:end {
+    background-color: white;
+    border-radius: 2rem;
+}
+
+.table-wrapper table {
+    max-width: max-content;
+    border-spacing: 0;
+}
+
+.table-wrapper td,
+.table-wrapper th {
+    border-block-start: 0.125rem solid #eee;
+    border-inline-start: 0.125rem solid #eee;
+    padding: 0.5rem 1rem;
+}
+
+.table-wrapper tr:last-of-type td,
+.table-wrapper tr:last-of-type th {
+    border-block-end: 0.125rem solid #eee;
+}
+
+.table-wrapper tr td:last-of-type,
+.table-wrapper tr th:last-of-type {
+    border-inline-end: 0.125rem solid #eee ;
+}
+
+.table-wrapper th {
+    background-color: #fd0057;
+    color: white;
+    font-weight: 400;
+    font-size: 0.8rem;
+}
+
+.table-wrapper td {
+    font-size: 0.8rem;
+}
+
+.table-wrapper tr th:first-of-type {
+    border-start-start-radius: 1rem;
+}
+
+.table-wrapper tr th:last-of-type {
+    border-start-end-radius: 1rem;
+}
+
+.table-wrapper tr:last-of-type td:first-of-type {
+    border-end-start-radius: 1rem;
+}
+
+.table-wrapper tr:last-of-type td:last-of-type {
+    border-end-end-radius: 1rem;
 }
 
 @keyframes skeleton {
