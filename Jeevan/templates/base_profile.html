@@ -1,0 +1,127 @@
+{% load static %}
+<div class="profile-wrapper">
+    <div class="profile-img">
+        <img src="{% static photoName %}" alt="Profile Photo">
+    </div>
+    <div class="profile-items-wrapper">
+        <div class="profile-name">
+            {{name}}
+        </div>
+    <div class="profile-items">
+        {% if id %}
+        <div class="items">
+            <div class="item-name">User ID</div>
+            <div class="item-content">{{id}}</div>
+        </div>
+        {% endif %}
+        {% if hid %}
+        <div class="items">
+            <div class="item-name">Hospital ID</div>
+            <div class="item-content">{{hid}}</div>
+        </div>
+        {% endif %}
+        {% if dob %}
+        <div class="items">
+            <div class="item-name">Date of birth</div>
+            <div class="item-content">{{dob}}</div>
+        </div>
+        {% endif %}
+        {% if gender %}
+        <div class="items">
+            <div class="item-name">Gender</div>
+            <div class="item-content">{{gender}}</div>
+        </div>
+        {% endif %}
+        {% if bloodGroup %}
+        <div class="items">
+            <div class="item-name">Blood Group</div>
+            <div class="item-content">{{bloodGroup}}</div>
+        </div>
+        {% endif %}
+        {% if donorType %}
+        <div class="items">
+            <div class="item-name">Type of Donor</div>
+            <div class="item-content">{{donorType}}</div>
+        </div>
+        {% endif %}
+        {% if hasBloodBank %}
+        <div class="items">
+            <div class="item-name">Does Hospital have a blood Bank</div>
+            <div class="item-content">{{hasBloodBank}}</div>
+        </div>
+        {% endif %}
+        {% if hospitalType %}
+        <div class="items">
+            <div class="item-name">Type of hospital</div>
+            <div class="item-content">{{hospitalType}}</div>
+        </div>
+        {% endif %}
+        {% if place %}
+        <div class="items">
+            <div class="item-name">Place</div>
+            <div class="item-content">{{place}}</div>
+        </div>
+        {% endif %}
+        {% if address %}
+        <div class="items">
+            <div class="item-name">Address</div>
+            <div class="item-content">{{address}}</div>
+        </div>
+        {% endif %}
+        {% if location %}
+        <div class="items">
+            <div class="item-name">Location</div>
+            <div class="item-content">{{location}}</div>
+        </div>
+        {% endif %}
+        {% if pin %}
+        <div class="items">
+            <div class="item-name">Pin</div>
+            <div class="item-content">{{pin}}</div>
+        </div>
+        {% endif %}
+        {% if phone %}
+        <div class="items">
+            <div class="item-name">Phone</div>
+            <div class="item-content">{{phone}}</div>
+        </div>
+        {% endif %}
+        {% if email %}
+        <div class="items">
+            <div class="item-name">Email</div>
+            <div class="item-content">{{email}}</div>
+        </div>
+        {% endif %}
+        {% if district %}
+        <div class="items">
+            <div class="item-name">District</div>
+            <div class="item-content">{{district}}</div>
+        </div>
+        {% endif %}
+        {% if regDate %}
+        <div class="items">
+            <div class="item-name">Registration Date</div>
+            <div class="item-content">{{regDate}}</div>
+        </div>
+        {% endif %}
+        {% if hospitalProofName %}
+        <form method="post" action="{% url hospitalProofUrl %}">
+            <div class="proof-button">
+                {% csrf_token %}
+                <input type="hidden" name="h_proof" value="{{ hospitalProofName }}" />
+                <input type="submit" value="Download Proof" />
+            </div>
+        </form>
+        {% endif %}
+        {% if proofName %}
+        <form method="post" action="{% url proofUrl %}">
+            <div class="proof-button">
+                {% csrf_token %}
+                <input type="hidden" name="proof" value="{{ proofName }}" />
+                <input type="submit" value="Download Proof" />
+            </div>
+        </form>
+        {% endif %}
+    </div>
+    </div>
+</div>
