@@ -452,6 +452,10 @@ def validate_hospital_organ_transplantation_entry(request):
     query = f"insert into OrganTransplantation values ('{tid}','{rid}','{did}','{pid}','{surgeryDate}','{patientCondition}','{donorCondition}','{operationStatus}','{operationResult}','{doctorName}','{remarks}','{date}')"
     cur.execute(query)
     con.commit()
+    
+    query = f"delete from PatientOrganRequest where requestID = {rid}"
+    cur.execute(query)
+    con.commit()
 
     query = f"select patientID, HospitalID, Name, Gender, BloodGroup, DOB, Pin, Place, District, Address, Phone, Email, Photo, MedicalReport from Patient where patientID = '{pid}'"
     cur.execute(query)
