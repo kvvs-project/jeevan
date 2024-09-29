@@ -168,7 +168,7 @@ def validate_login(request):
                 cur.execute(query, (userName,))
                 con.commit()
 
-            return render(request, "patientdashboard.html", {'records': records})
+                return render(request, "patientdashboard.html", {'records': records})
 
         msg = "Invalid User ID or Password"
         return render(request, "login.html", {'message': msg})
