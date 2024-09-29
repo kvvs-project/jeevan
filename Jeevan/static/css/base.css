@@ -3,17 +3,20 @@ img {
 }
 
 :root {
-    --nav-height: calc(clamp(2.5rem, 7vmin, 128px) + 0.5rem);
+    --nav-height: clamp(2.5rem, 7vmin, 128px);
 }
 
 *::-webkit-scrollbar {
     width: 0.25rem;
+    height: 0.25rem;
     background-color: white;
+    border-radius: 2rem;
+    opacity: 0;
 }
 
 *::-webkit-scrollbar-track {
-    background: #fd0057;
-    width: 0.5rem;
+    background: linear-gradient(to bottom, #fd0057 0%, #fd0057 calc(var(--nav-height) + 0.3rem), white calc(var(--nav-height) + 0.5rem), white 100%);
+    width: 0.250rem;
 }
 
 *::-webkit-scrollbar-thumb {
@@ -24,6 +27,7 @@ img {
 *::-webkit-scrollbar-track-piece:end {
     background-color: white;
 }
+
 
 * {
     border: 0px;
