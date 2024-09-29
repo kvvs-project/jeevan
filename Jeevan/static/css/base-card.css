@@ -58,16 +58,15 @@
     width: inherit;
     align-content: center;
     justify-content: center;
-    height: max(200px ,25vmin);
+    height: max(200px, 25vmin);
     border-radius: 1rem;
 }
 
 .base-card-img img {
     border-radius: 1rem;
     min-width: 100px;
-    height: inherit;
-    width: 100%;
-    object-fit: cover;
+    width: fit-content;
+    object-fit: contain;
     overflow: hidden;
 }
 
@@ -76,7 +75,6 @@
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    padding: 0.5rem;
     width: inherit;
     text-align: center;
 }
@@ -89,20 +87,26 @@
     padding-top: 0.5rem;
 }
 
-.base-card-button input[type=button] {
+.base-card-button input[type=button],
+.base-card-button input[type=submit],
+.base-card-button button {
     padding: 0.5rem;
     border-radius: 0.8rem;
     width: 98%;
     font-size: 1rem;
 }
 
-.base-card-button input[type=button]:hover {
+.base-card-button input[type=button]:hover,
+.base-card-button input[type=submit]:hover,
+.base-card-button button:hover {
     background-color: #0a96f4;
     color: white;
     transition: ease-in 350ms;
 }
 
-.base-card-button input[type=button]:active {
+.base-card-button input[type=button]:active,
+.base-card-button input[type=submit]:active,
+.base-card-button button:active {
     background-color: #fd0057;
     color: white;
     transition: ease-out 350ms;
@@ -128,12 +132,13 @@
 }
 
 .base-card-items {
+    word-wrap: break-word;
     display: flex;
     flex-flow: column wrap;
     gap: 0.3rem;
 }
 
-@media screen and (max-width: 550px)  {
+@media screen and (max-width: 550px) {
     .base-card-button input[type=button]:hover {
         background-color: rgb(240, 240, 240);
         color: black;
@@ -144,22 +149,24 @@
         color: white;
         animation: ease-out 0.5s;
     }
-    
+
 
     .base-card-wrapper {
         width: 60vmin;
     }
-    
+
     .base-card {
         width: 100%;
         height: auto;
     }
+
     .base-card-container {
         flex-flow: column wrap;
         justify-content: flex-start;
         max-height: fit-content;
         min-height: 100vh;
     }
+
     .base-title {
         font-size: 1.2rem;
     }
