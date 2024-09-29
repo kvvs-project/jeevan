@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static '/css/base-profile.css' %}">
+{% endblock links %}
+
+{% block nav %}
+<li><a href="/">Home</a></li>
+{% endblock nav %}
+
+{% block main %}
+
+<div class="profile-title">
+    Donor Details
+</div>
+<div class="profile-container">
+
+    {% for DonorID, HospitalID, Name, Gender, BloodGroup, TypeOfDonation, DOB, Pin, Place, District, Address, Phone, Email, photoName, MedicalReport, RegDate in records %}
+
+    {% with photo="/data/donor/photo/"|add:photoName %}
+
+    {% include "base_profile.html" with name=Name id=DonorID hid=HospitalID photoName=photo bloodGroup=BloodGroup gender=Gender address=Address donorType=TypeOfDonation dob=DOB place=Place pin=Pin phone=Phone email=Email district=District regDate=Regdate proofName=MedicalReport proofUrl='download_donor_report' only %}
+
+    {% endwith %}
+
+    {%endfor%}
+
+</div>
+
+<div class="table-container">
+    {% if BloodDonationRecords %}
+    <div class="table-name">
+        Past Blood Donation Records
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Hospital ID</th>
+                <th>Hospital Name</th>
+                <th>Hospital Place</th>
+                <th>Time</th>
+                <th>Unit</th>
+                <th>Remarks</th>
+            </tr>
+            {% for Date,Time,Unit,Remarks,ID,HospitalName,HospitalPlace in BloodDonationRecords %}
+            <tr>
+                <td>{{Date}}</td>
+                <td>{{ID}}</td>
+                <td>{{HospitalName}}</td>
+                <td>{{HospitalPlace}}</td>
+                <td>{{Time}}</td>
+                <td>{{Unit}}</td>
+                <td>{{Remarks}}</td>
+            </tr>
+            {%endfor%}
+        </table>
+    </div>
+    {% endif %}    
+    {% if OrganDonationRecords %}
+    <div class="table-name">
+        Past Blood Donation Records
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <tr>
+                <th>Surgery Date</th>
+                <th>Transplantation ID</th>
+                <th>Organ Name</th>
+                <th>Hospital ID</th>
+                <th>Patient ID</th>
+                <th>Donor Condition</th>
+                <th>Operation Status</th>
+                <th>Remarks</th>
+            </tr>
+            {% for TransplantationID, PatientID, SurgeryDate, DonorCondition, OperationStatus, Remarks, OrganName, HospitalID in OrganDonationRecords %}
+            <tr>
+                <td>{{SurgeryDate}}</td>
+                <td>{{TransplantationID}}</td>
+                <td>{{OrganName}}</td>
+                <td>{{HospitalID}}</td>
+                <td>{{PatientID}}</td>
+                <td>{{DonorCondition}}</td>
+                <td>{{OperationStatus}}</td>
+                <td>{{Remarks}}</td>
+            </tr>
+            {%endfor%}
+        </table>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock main %}

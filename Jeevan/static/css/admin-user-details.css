@@ -1,0 +1,40 @@
+.graph-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: max-content;
+}
+
+.graph-wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 95%;
+    height: max-content;
+}
+
+.graph-title {
+    font-weight: 300;
+    word-wrap: break-word;
+    text-align: center;
+    font-size: 1.5rem;
+    text-transform: capitalize;
+    padding-bottom: 0.8rem;
+    padding-top: 0.8rem;
+}
+
+.graph-items-wrapper {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+}
+
+.user-count-stats, .blood-donation-stats, .organ-donation-stats {
+    position: relative;
+    height: max(230px,40vmin);
+    width: max(260px, 50vmin);
+}
