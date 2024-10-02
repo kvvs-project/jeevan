@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static '/css/base-card.css' %}">
+    <link rel="stylesheet" href="{% static '/css/admin-user-details.css' %}">
+{% endblock links %}
+
+{% block main %}
+
+<div class="base-title">
+    <h1>User Statistics</h1>
+</div>
+
+<div class="graph-container">
+    <div class="graph-wrapper">
+        <div class="graph-items-wrapper">
+            <div class="graph-title">Total User Count</div>
+            <div class="user-count-stats" data-hospital="{{hospitalCount}}" data-donor="{{donorCount}}" data-patient="{{patientCount}}"> 
+                <canvas id="user-chart"></canvas>
+            </div>
+        </div>
+        <div class="graph-items-wrapper">
+            <div class="graph-title">Blood Donation In This Week</div>
+            <div class="blood-donation-stats" data-blood='{{BloodRecords}}'> 
+                <canvas id="blood-donation-chart"></canvas>
+            </div>
+        </div>
+        <div class="graph-items-wrapper">
+            <div class="graph-title">Organ Donation In This Week</div>
+            <div class="organ-donation-stats" data-organ="{{OrganRecords}}"> 
+                <canvas id="organ-donation-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="base-title" id="user-details">
+    <h1 id="user-details-title">User Details</h1>
+</div>
+<div class="base-card-container">
+    {% include "base_card.html" with card_img="/img/users/Hospital.jpg" card_alt="Hospital Users" card_text="Search and find the details of Hospital in the app" card_name="View Hospital Details" card_link="admin_hospital_list" card_btn="View" %}
+    {% include "base_card.html" with card_img="/img/users/Donor.jpg" card_alt="Donor Users" card_text="Search and find the details of Donors in the app" card_name="View Donor Details" card_link="admin_donor_list" card_btn="View" %}
+    {% include "base_card.html" with card_img="/img/users/Patient.jpg" card_alt="Patient Users" card_text="Search and find the details of Patients in the app" card_name="View Patient Details" card_link="admin_patient_list" card_btn="View" %}
+</div>
+
+{% endblock main %}
+
+
+{% block scripts %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="{% static '/js/admin-user-list.js' %}" defer></script>
+{% endblock scripts %}

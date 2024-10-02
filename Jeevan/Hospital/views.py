@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from Jeevan import db_connect
 import time
-
+from django.views.decorators.csrf import csrf_exempt
 
 def hospital_reg(request):
     return render(request, "hospitalreg.html")
@@ -113,7 +113,7 @@ def validate_patient_approval(request):
     print(records, msg)
     return render(request, "patientdetails.html", {'records': records, 'message': msg})
 
-
+@csrf_exempt
 def download_patient_report(request):
     report = request.POST["report"]
 
@@ -176,6 +176,7 @@ def validate_donor_approval(request):
     return render(request, "donordetails.html", {'records': records, 'message': msg})
 
 
+@csrf_exempt
 def download_donor_report(request):
     report = request.POST["report"]
 

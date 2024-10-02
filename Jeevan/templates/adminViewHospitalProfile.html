@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static '/css/base-profile.css' %}">
+{% endblock links %}
+
+{% block nav %}
+<li><a href="/">Home</a></li>
+{% endblock nav %}
+
+{% block main %}
+
+<div class="profile-title">
+    Hospital Details
+</div>
+<div class="profile-container">
+
+{% for photoName,id,name,place,Location,pin,phone,District,Email,type,hasbloodbank,proof,regdate in records %}
+
+{% with photo="/data/hospital/photo/"|add:photoName %}
+
+{% include "base_profile.html" with name=name photoName=photo hasBloodBank=hasbloodbank hospitalType=type place=place location=Location pin=pin phone=phone email=Email district=District regDate=regdate hospitalProofName=proof hospitalProofUrl='download_hospital_proof' %}
+
+{% endwith %}
+
+{%endfor%}
+
+</div>
+
+{% endblock main %}

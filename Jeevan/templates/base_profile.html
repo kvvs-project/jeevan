@@ -117,7 +117,7 @@
         <form method="post" action="{% url proofUrl %}">
             <div class="proof-button">
                 {% csrf_token %}
-                <input type="hidden" name="proof" value="{{ proofName }}" />
+                <input type="hidden" name="report" value="{{ proofName }}" />
                 <input type="submit" value="Download Proof" />
             </div>
         </form>
