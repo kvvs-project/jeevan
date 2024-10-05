@@ -1,11 +1,12 @@
 const navTitle = document.querySelector(".nav-title");
 const allSkeleton = document.querySelectorAll('.skeleton')
 const allRedSkeleton = document.querySelectorAll('.skeleton-red')
+const showPassBtnList = document.querySelectorAll(".show-pass-btn")
 
 navTitle.classList.add('scrolled');
 
 // show the skeleton animation until elements are loaded
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     allSkeleton.forEach(item => {
         item.classList.remove('skeleton')
     });
@@ -21,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // hide the menu if there is no nav items
     if (navLinks.childElementCount == 0) {
-        hamburger.style.display = "none" 
+        hamburger.style.display = "none"
     }
 
     function closeMenuOnClickOutside(event) {
@@ -52,3 +53,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+// check if show password button is available
+if (typeof (showPassBtnList) != 'undefined' && showPassBtnList != null) {
+    const showPassBtnList = document.querySelectorAll(".show-pass-btn")
+    const passwordInputList = document.querySelectorAll('.input-box input[type="password"]')
+
+    for (let i = 0; i < showPassBtnList.length; i++) {
+        showPassBtnList[i].addEventListener("click", () => {
+            // add click listener to each button and toggle visibility of the input box when clicked
+            showPassBtnList[i].classList.toggle("active");
+            if (passwordInputList[i].type == "text") {
+                passwordInputList[i].type = "password";
+            }
+            else {
+                passwordInputList[i].type = "text";
+            }
+        })
+    }
+}

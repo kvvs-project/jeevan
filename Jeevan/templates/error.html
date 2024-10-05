@@ -18,19 +18,20 @@
                 <img src="{% static '/img/misc/error.jpg' %}" alt="">
             </div>
             <div class="error-btn-wrapper">
+                {% if messages %} 
                 <button class="error-btn">View details</button>
+                {% endif %}
                 <a href="/">
                     <button class="home-btn">Go Home</button>
                 </a>
             </div>
-            
-            <div class="error-message" style="display: none;">
-                {% if messages %}
+            {% if messages %} 
+            <div class="error-message">
                     {% for message in messages %}
                         <div class={{ message.tags }}>{{ message }}</div>
                     {% endfor %}
-                {% endif %}
             </div>
+            {% endif %}
         </div>
     </div>
 

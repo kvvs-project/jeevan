@@ -6,10 +6,14 @@
     <link rel="stylesheet" href="{% static '/css/base-card.css' %}">
 {% endblock links %}
 
+{% block nav %}
+    <li><a href="/logout">Log out</a></li>
+{% endblock nav %}
+
 {% block main %}
     <div class="title"><h1>Welcome to Jeevan</h1></div>
     <div class="base-card-container">
-        {% include "base_card.html" with card_img="/img/dash/pass.jpg" card_alt="Change password" card_text="change your authentication password" card_name="Change password" card_link="change_admin_pass" card_btn="Change" %}
+        {% include "base_card.html" with card_img="/img/dash/pass.jpg" card_alt="Change password" card_text="change your authentication password" card_name="Change password" card_link="change_pass" card_btn="Change" %}
         {% include "base_card.html" with card_img="/img/dash/hospital.jpg" card_alt="Hospital Approval" card_text="Approve or reject hospital waiting for verification" card_name="Hospital Approval" card_link="hospital_approval" card_btn="Verify" %}
         {% include "base_card.html" with card_img="/img/dash/stats.jpg" card_alt="User Stats And details" card_text="View users statistics and details about them" card_name="User statistics and details " card_link="admin_view_users" card_btn="View" %}
         {% include "base_card.html" with card_img="/img/dash/organ.png" card_alt="Add new organ" card_text="Add new organ to the list of available organs" card_name="Add new organ" card_link="admin_add_new_organ" card_btn="Add" %}

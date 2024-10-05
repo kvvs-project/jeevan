@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static '/css/legal.css' %}" />
+{% endblock %}
+
+{% block nav %}
+<li>
+    <a href="/">Home</a>
+</li>
+{% endblock %}
+
+{% block main %}
+    <div class="legal-container">
+    <div class="legal-wrapper">
+    <div class="title">
+        <h1 id="legal-policy">Privacy Policy</h1>
+    </div>
+    <div class="legal-img">
+        <img src="{% static '/img/misc/privacy.jpg' %}" alt="">
+    </div>
+    <section class="legal-sections">
+        At Jeevan, we understand the importance of protecting sensitive personal and health-related information. Our commitment
+        to privacy is paramount, especially given the nature of our service involving organ and blood donations. This privacy
+        policy outlines how we collect, use, protect, and share your information when you use our website and services.
+    </section>
+    <section class="legal-sections">
+        <h3 id="information-collection">Information Collection</h3><h4>
+        We may collect various types of information from you, including but not limited to:</h4><ul>
+            <li>Personal identification information (name, email address, phone number)</li>
+            <li>Health-related information (blood type, medical history relevant to donation)</li>
+            <li>Location information (for finding nearby donation centers)</li>
+            <li>User-generated content (donation pledges, organ/blood donation preferences)</li>
+        </ul><h4>This information is collected through:</h4><ol>
+            <li>Direct input during registration or profile creation</li>
+            <li>Interactions with our website and mobile application</li>
+            <li>Cookies and other tracking technologies</li>
+        </ol>
+    </section>
+    <section class="legal-sections">
+        <h3 id="purpose-of-data-collection">Purpose of Data Collection</h3><h4>
+        We collect and use your information primarily for the following purposes:</h4><ol>
+            <li>Facilitating organ and blood donation processes</li>
+            <li>Matching donors with recipients</li>
+            <li>Providing location-based services for finding donation centers</li>
+            <li>Improving our platform and services</li>
+            <li>Communicating with users regarding donations and system updates</li>
+        </ol>
+    </section>
+    <section class="legal-sections">
+        <h3 id="data-protection">Data Protection</h3><h4>
+        Jeevan employs robust security measures to protect your sensitive information:</h4><ul>
+            <li>Encryption of data in transit and at rest</li>
+            <li>Secure authentication protocols</li>
+            <li>Regular security audits and penetration testing</li>
+            <li>Compliance with relevant healthcare data protection regulations</li>
+        </ul>
+    </section>
+    <section class="legal-sections">
+        <h3 id="data-sharing">Data Sharing</h3><h4>
+        Your information may be shared under the following circumstances:</h4><ol>
+            <li>With medical institutions and healthcare providers for the purpose of facilitating donations</li>
+            <li>When required by law or to comply with legal processes</li>
+        </ol>We will never sell or trade your personal information to third parties for marketing purposes.    
+    </section>
+    <section class="legal-sections">
+        <h3 id="user-rights">User Rights</h3><h4>
+        As a user of Jeevan, you have the following rights regarding your data:</h4><ol>
+            <li>Right to access and review your personal information</li>
+            <li>Right to opt-out of certain communications</li>
+        </ol>Please contact our privacy officer at <div class="mail-link"><a href="mailto:jeevanproject@proton.me">jeevanproject@proton.me</a></div> to exercise these
+        rights.
+    </section>
+    <section class="legal-sections">
+        <h3 id="data-retention">Data Retention</h3>
+        We retain your information for as long as necessary to fulfill the purposes outlined above. After termination of your
+        account, we may retain some information for legal and regulatory compliance purposes.
+    </section>
+    <section class="legal-sections">
+        <h3 id="changes-to-legal-policy">Changes to Privacy Policy</h3>
+        Jeevan reserves the right to modify this privacy policy at any time. Any significant changes will be communicated
+        through our website and/or email notifications.
+    </section>
+    <section class="legal-sections">
+    <h3 id="contact-us">Contact Us</h3>
+        If you have any questions or concerns regarding this privacy policy, please don&#39;t hesitate to contact us at <div class="mail-link">
+        <a href="mailto:jeevanproject@proton.me">jeevanproject@proton.me</a></div>. By using Jeevan&#39;s services, you acknowledge
+        that you have read, understood, and agree to this privacy policy. Last updated: 05-10-24
+    </section>
+</div>  
+</div>
+{% endblock %}

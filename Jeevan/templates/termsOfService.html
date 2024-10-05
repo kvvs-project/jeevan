@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static '/css/legal.css' %}" />
+{% endblock %}
+
+{% block nav %}
+<li>
+    <a href="/">Home</a>
+</li>
+{% endblock %}
+
+{% block main %}
+<div class="legal-container">
+    <div class="legal-wrapper">
+        <div class="title">
+            <h1 id="legal-policy">Terms of Service</h1>
+        </div>
+        <div class="legal-img">
+            <img src="{% static '/img/misc/tos.jpg' %}" alt="">
+        </div>
+        <section class="legal-sections">
+            Welcome to Jeevan, a platform connecting individuals in need with willing organ and blood donors. These
+            Terms of Service (&quot;Terms&quot;) govern your use of our website, mobile applications, and all related services
+            (collectively, the &quot;Service&quot;). Please read these Terms carefully before using the Service.
+        </section>
+        <section class="legal-sections">
+            <h3 id="acceptance-of-terms">Acceptance of Terms</h3>
+            <ol>
+                <li>By accessing or using the Service, you agree to be bound by these Terms.</li>
+                <li>If you do not accept these Terms, please do not use the Service.</li>
+            </ol>
+        </section>
+        <section class="legal-sections">
+            <h3 id="eligibility">Eligibility</h3>
+            <ol>
+                <li>You must be at least 18 years old to use the Service.</li>
+                <li>You represent that you have the authority to enter into these Terms.</li>
+            </ol>
+        </section>
+        <section class="legal-sections">
+            <h3 id="account-registration">Account Registration</h3>
+            <ol>
+                <li>To fully utilize the Service, you may need to create an account.</li>
+                <li>You agree to provide accurate, current, and complete information during registration.</li>
+                <li>You are responsible for maintaining the confidentiality of your account credentials.</li>
+            </ol>
+        </section>
+        <section class="legal-sections">
+            <h3 id="user-conduct">User Conduct</h3>
+            <ol>
+                <li>You agree to use the Service only for lawful purposes and in compliance with these Terms.</li>
+                <li>You shall not:<ul>
+                        <li>Interfere with or disrupt the operation of the Service</li>
+                        <li>Upload or transmit viruses or malicious software</li>
+                        <li>Attempt to gain unauthorized access to the Service or other users&#39; accounts</li>
+                        <li>Use the Service for commercial purposes without prior written consent from Jeevan</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+        <section class="legal-sections">
+            <h3 id="content-ownership-and-license">Content Ownership and License</h3>
+            <ol>
+                <li>All content on the Service, except for User Content (as defined below), remains the property of
+                    Jeevan
+                    or its licensors.</li>
+                <li>By submitting content to the Service (&quot;User Content&quot;), you grant Jeevan a worldwide,
+                    perpetual, irrevocable, royalty-free license to use, reproduce, modify, adapt, publish, translate,
+                    create derivative works from, distribute, perform, and display such User Content.</li>
+            </ol>
+        </section>
+        <section class="legal-sections">
+            <h3 id="donor-pledges-and-organ-blood-requests">Donor Pledges and Organ/Blood Requests</h3>
+            <ol>
+                <li>All pledges made through the Service are voluntary and non-binding.</li>
+                <li>Jeevan does not guarantee the availability of donors or recipients.</li>
+                <li>Users understand that organ and blood donations involve medical procedures and risks, and Jeevan is
+                    not
+                    responsible for any medical outcomes.</li>
+            </ol>
+        </section>
+        <section class="legal-sections">
+            <h3 id="disclaimer-of-warranties">Disclaimer of Warranties</h3>
+            The Service is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis. Jeevan disclaims all
+            warranties, express or implied, including but not limited to implied warranties of merchantability, fitness
+            for a particular purpose, and non-infringement.
+        </section>
+        <section class="legal-sections">
+            <h3 id="limitation-of-liability">Limitation of Liability</h3>
+            In no event shall Jeevan be liable for any damages arising out of or related to the use of the Service,
+            including but not limited to incidental, consequential, punitive, or special damages.
+        </section>
+        <section class="legal-sections">
+            <h3 id="termination">Termination</h3>
+            Jeevan may terminate or suspend your access to the Service at any time, without notice, for any reason.
+        </section>
+        <sections class="legal-sections">
+            <h3 id="governing-law">Governing Law</h3>
+            These Terms shall be governed by and construed in accordance with the laws of [Your Country/State].
+        </sections>
+        <section class="legal-sections">
+            <h3 id="changes-to-terms">Changes to Terms</h3>
+            We reserve the right to modify these Terms at any time. Any changes will be effective upon posting on our
+            website.
+        </section>
+        <section class="legal-sections">
+            <h3 id="contact-us">Contact Us</h3>
+            If you have any questions about these Terms, please contact us at <div class="mail-link"><a href="jeevanproject@proton.me">jeevanproject@proton.me</a></div>. By using the Service, you acknowledge that you have read, understood, 
+            and agree to be bound by these Terms of Service.<br>
+            Last updated: 05-10-24
+        </section>
+
+    </div>
+</div>
+{% endblock %}

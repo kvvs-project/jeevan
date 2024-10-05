@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static '/css/legal.css' %}" />
+{% endblock %}
+
+{% block nav %}
+<li>
+    <a href="/">Home</a>
+</li>
+{% endblock %}
+
+{% block main %}
+<div class="legal-container">
+    <div class="legal-wrapper">
+        <div class="title">
+            <h1 id="about-jeevan">About Jeevan</h1>
+        </div>
+        <div class="legal-img">
+            <img src="{% static '/img/misc/about.jpg' %}" alt="">
+        </div>
+        <section class="legal-sections">
+            <h3 id="uniting-hearts-and-healing-hands-for-life">Uniting Hearts and Healing Hands for Life</h3>
+            At Jeevan, we believe that every individual deserves access to life-saving medical care. Our mission is to
+            bridge the gap between those in need of organ and blood donations and willing donors, fostering a community of
+            compassion and generosity.
+        </section>
+        <section class="legal-sections">
+            <h3 id="our-story">Our Story</h3>
+            Jeevan was born out of a passion to make a difference in people&#39;s lives. Our journey began with a simple yet
+            powerful idea: to leverage technology to streamline the organ and blood donation process. Today, we&#39;re proud
+            to be part of a global movement towards better healthcare accessibility.
+        </section>
+        <section class="legal-sections">
+            <h3 id="our-mission">Our Mission</h3>
+            To revolutionize the way organ and blood donations are facilitated, making life-saving resources available to
+            those who need them most.
+        </section>
+        <section class="legal-sections">
+            <h3 id="our-values">Our Values</h3>
+            <ol>
+                <li><strong>Compassion</strong>: We put empathy at the heart of everything we do.</li>
+                <li><strong>Innovation</strong>: We continuously seek ways to improve our services and impact.</li>
+                <li><strong>Integrity</strong>: We operate with transparency and honesty in all our dealings.</li>
+                <li><strong>Community</strong>: We foster connections that save lives.</li>
+            </ol>
+        </section>
+        <section class="legal-sections">
+            <h3 id="our-impact">Our Impact</h3>
+            <h4>Since our inception, Jeevan has:</h4>
+            <ul>
+                <li>Facilitated hundreds of successful organ donations</li>
+                <li>Connected hundreds of blood donors with patients</li>
+                <li>Reduced average wait times for organ transplants by 400%</li>
+                <li>Increased blood donation rates in Pathanamthitta by 70%</li>
+            </ul>
+        </section>
+        <section class="legal-sections">
+            <h3 id="join-our-journey">Join Our Journey</h3>
+            At Jeevan, we&#39;re committed to creating a world where every person has access to the medical care they
+            deserve. Whether you&#39;re a potential donor, a recipient in need, or simply someone who wants to make a
+            difference, we invite you to join our community.
+            <a href="/signup">Signup: Become a Donor, Find a Recipient, Support Our Mission</a>
+        </section>
+    </div>
+</div>
+{% endblock %}
