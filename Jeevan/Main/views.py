@@ -1,7 +1,7 @@
 import os
 from django.http import HttpResponse, Http404
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
-from django.contrib import messages
 from Jeevan import db_connect, auth_check
 from django.shortcuts import redirect
 import time
@@ -73,6 +73,7 @@ def serve_favicon(request):
 def user_login(request):
     token = request.COOKIES.get("user-token", 0)
     userId = request.COOKIES.get("user-id", 0)
+    
     if auth_check(userId, token):
         return redirect("/")
     
@@ -171,10 +172,8 @@ def change_pass(request):
 
     if auth_check(userId, token):
         return render(request, "changePass.html")
-    msg = "auth error"
-    request.session['has_error'] = True 
-    messages.error(request, msg)
-    return redirect("error")
+
+    raise PermissionDenied("403 forbidden")
 
 
 def validate_change_pass(request):
@@ -203,11 +202,8 @@ def validate_change_pass(request):
             con.close()
             return render(request, "changePass.html", {'message': msg, 'disabled': "disabled"})
         return render(request, "changePass.html", {'message': msg})
-    msg = "authentication error"
-    request.session['has_error'] = True 
-    messages.error(request, msg)
-    con.close()
-    return redirect("error")
+    
+    raise PermissionDenied("403 forbidden")
 
 
 def privacy_policy(request):

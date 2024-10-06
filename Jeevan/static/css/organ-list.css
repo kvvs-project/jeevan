@@ -1,0 +1,13 @@
+.title {
+    padding: 2rem;
+}
+
+.table-container {
+    flex-flow: row wrap;
+    align-items: first baseline;
+}
+
+.table-wrapper {
+    width: fit-content;
+    justify-content: center;
+}

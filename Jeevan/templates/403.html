@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static '/css/legal.css' %}">
+{% endblock links %}
+
+{% block nav %}
+    <li><a href="/">Home</a></li>
+{% endblock nav %}
+
+{% block main %}
+
+<div class="legal-container">
+    <div class="legal-wrapper">
+        <div class="title">
+            <h1>You are not authorized to do that!!</h1>
+        </div>
+        <div class="legal-img">
+            <img src="{% static '/img/misc/403.png' %}" alt="">
+        </div>
+    </div>
+</div>
+{% endblock main %}

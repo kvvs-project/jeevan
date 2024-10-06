@@ -1,0 +1,23 @@
+.input-box {
+    justify-content: space-between;
+}
+.form-wrapper {
+    width: max-content;
+    justify-content: center;
+}
+.form-wrapper > .profile-name {
+    margin-top: 3rem;
+    padding: 1rem;
+}
+.form-wrapper textarea {
+    border: solid #0a96f4 0.15rem;
+    border-radius: 1rem;
+    padding: 1rem;
+    resize: none;
+}
+.profile-container {
+    align-items: flex-start;
+}
+.profile-img img {
+    max-width: 28vmax;
+}

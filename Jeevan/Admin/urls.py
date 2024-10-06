@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('organs', views.admin_view_or_edit_organ_list, name="admin_view_or_edit_organ_list"),
     path('view-organ-list', views.admin_organ_list, name="admin_organ_list"),
     path('add-new-organ', views.admin_add_new_organ, name="admin_add_new_organ"),
     path('validate-add-new_organ', views.admin_validate_add_new_organ, name="admin_validate_add_new_organ"),

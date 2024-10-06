@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static '/css/base-profile.css' %}">
+<link rel="stylesheet" href="{% static '/css/form.css' %}">
+<link rel="stylesheet" href="{% static '/css/approval.css' %}">
+{% endblock links %}
+
+{% block nav %}
+<li><a href="/">Home</a></li>
+{% endblock nav %}
+
+{% block main %}
+
+<div class="profile-title">
+    Hospital Details
+</div>
+<div class="profile-container">
+
+    {% for photoName,id,name,place,Location,pin,phone,District,Email,type,hasbloodbank,proof,regdate in records %}
+
+    {% with photo="/data/hospital/photo/"|add:photoName %}
+
+    {% include "base_profile.html" with name=name photoName=photo hasBloodBank=hasbloodbank hospitalType=type place=place location=Location pin=pin phone=phone email=Email district=District regDate=regdate hospitalProofName=proof hospitalProofUrl='download_hospital_proof' %}
+
+    {% endwith %}
+
+    {%endfor%}
+
+    <form name="approval_form" method="post" action="{% url 'validate_hospital_approval' %}">
+        {% csrf_token %}
+        <div class="form-wrapper">
+            <div class="profile-name">Approve Hospital</div>
+            <div class="input-box">
+                <div>Approve</div>
+                <div>
+                    <input name="approve_status" type="radio" id="status-yes" value="Yes" checked {{disabled}}>
+                    <label for="status-yes">Yes</label>
+                    <input name="approve_status" type="radio" id="status-no" value="No" {{disabled}}>
+                    <label for="status-no">No</label>
+                </div>
+            </div>
+            <div class="input-options">
+                <textarea name="comment" maxlength="200" cols="30" required {{disabled}}></textarea>
+                <input type="text" name="hid" value="{{hid}}" hidden>
+            </div>
+            {% if message %}
+            <div class="msg">
+                {{message}}
+            </div>
+            {% endif %}
+            <div class="input-box">
+                <input type="submit"  class="submit" value="Submit">
+            </div>
+      </div>
+  </div>
+</form>
+
+</div>
+
+{% endblock main %}

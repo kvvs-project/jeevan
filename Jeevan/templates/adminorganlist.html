@@ -1,33 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <h1 align="center">Organ Donation List</h1>
-  {%if records%}
-  <table align="center" border="1px" cellpadding="5px" cellspacing="0">
-  <tr>
-    <th>
-      Name of organs
-    </th>
-    <th>
-      Type of donation
-    </th>
-  </tr>
-  {% for OrganName, Type in records %}
-  <tr>
-      <td align="center">
-        {{OrganName}}
-      </td>
-      <td align="center">
-        {{Type}}
-      </td>
-  </tr>
-  {% endfor %}
-</table>
-{% else %}<b>No organs found in DB</b>{%endif%}
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block nav %}
+<li><a href="/">Home</a></li>
+{% endblock nav %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static '/css/organ-list.css' %}">
+{% endblock links %}
+
+{% block main %}
+<div class="title">
+    <h1>Organ Donation List</h1>
+</div>
+<div class="table-container">
+    <div class="table-wrapper">
+        {%if records%}
+        <table>
+            <tr>
+                <th>
+                    Name of organs
+                </th>
+                <th>
+                    Type of donation
+                </th>
+            </tr>
+            {% for OrganName, Type in records %}
+            <tr>
+                <td>
+                    {{OrganName}}
+                </td>
+                <td>
+                    {{Type}}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}<b>No organs found in DB</b>{%endif%}
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <tr>
+                <th>Type of donation</th>
+                <th>Frequency of donation</th>
+            </tr>
+            <tr>
+                <td>P</td>
+                <td>Organ can donated once <br> when donor is alive</td>
+            </tr>
+            <tr>
+                <td>D</td>
+                <td>Organ can be donated <br> only after death</td>
+            </tr>
+            <tr>
+                <td>A</td>
+                <td>Organ can be donated <br> multiple times donor is alive</td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endblock main %}
