@@ -118,7 +118,7 @@ const userGraphContext = {
     data: {
     labels: ['Hospitals', 'Donors', 'Patients'],
     datasets: [{
-        label: 'My First Dataset',
+        label: 'count',
         data: [hospitalCount, donorCount, patientCount],
         backgroundColor: [
             'rgb(54, 162, 235)',
