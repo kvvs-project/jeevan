@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static '/css/search.css' %}">
+<link rel="stylesheet" href="{% static '/css/base-card.css' %}">
+{% endblock links %}
+
+{% block nav %}
+<li><a href="/">Home</a></li>
+{% endblock nav %}
+
+{% block main %}
+<div class="title">
+    <h1>View Patient Details</h1>
+</div>
+<div class="search-container">
+    <form action="{% url 'hospital_validate_patient_list' %}" method="post">
+        {% csrf_token %}
+        <div class="search-wrapper">
+            <div class="input-box">
+                <input type="search" name="name" id="search" placeholder="" autocomplete="additional-name" autofocus>
+                <label class="input-label" for="search">Enter Patient Name</label>
+            </div>
+            <div class="advanced-search">
+                <button class="advanced-search-btn" title="advanced search" type="button"><div class="search-text"> Advanced Search</div></button>
+                <div class="advanced-search-wrapper">
+                    <div class="input-box">
+                        <input type="search" name="pid" id="pid" placeholder="">
+                        <label class="input-label" for="pid">Enter Patient ID</label>
+                    </div>
+                    <div class="search-options">
+                        <label for="blood-list">Blood group</label>
+                        <select id="blood-list" name="blood" >
+                            <option value="">select</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <div class="search-options" id="organ-search">
+                        <label for="organ-list">Organ Request</label>
+                        <select name="organ" id="organ-list" >
+                            <option value="">select</option>
+                            {%for OrganName,DonationType in organRecords%}
+                            <option value="{{OrganName}}">{{OrganName}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <div class="search-options">
+                        <div>Gender</div>
+                        <div class="search-rdios">
+                            <input type="radio" name="gender" hidden checked value="">
+                            <div>
+                                <input type="radio" name="gender" id="male" value="m">
+                                <label for="male"> Male</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="gender" id="female" value="f">
+                                <label for="female"> Female</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="search-btn-wrapper">
+                <button type="submit" class="search-btn" title="search">Search</button>
+            </div>
+    </form>
+</div>
+{% if results %}
+{% if records %}
+<div class="base-card-container">    
+    {% for ID,Image,Name,Place,District,Phone,Email in records %}
+
+    <div class="base-card-wrapper">
+        <div class="base-card">
+            <div class="base-card-img skeleton">
+                <img src="/static/data/patient/photo/{{Image}}" alt="{{ Name }} img">
+            </div>
+            <div class="base-card-text-container">
+                <div class="base-card-name">
+                    {{ Name }}
+                </div>
+                <div class="base-card-items">
+                    <div class="items">
+                        <div class="item-name">Place</div>
+                        <div class="item-content">{{Place}}</div>
+                    </div>
+                    <div class="items">
+                        <div class="item-name">District</div>
+                        <div class="item-content">{{District}}</div>
+                    </div>
+                    <div class="items">
+                        <div class="item-name">Phone</div>
+                        <div class="item-content">{{Phone}}</div>
+                    </div>
+                    <div class="items">
+                        <div class="item-name">Email</div>
+                        <div class="item-content">{{Email}}</div>
+                    </div>
+                    <form action="{% url 'hospital_patient_details' %}" method="post">
+                    <div class="base-card-button">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{ID}}">
+                            <input type="submit" value="Show">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div id="not-found" class="div-not-found"></div>
+<div class="div-not-found"></div>
+<div class="search-not-found">
+    <div class="not-found-wrapper">
+        <div class="not-found-text">
+            Sorry we are unable to find a match
+        </div>
+        <div class="not-found-img">
+            <img src="{% static 'img/search/sorry.jpg' %}" alt="">
+        </div>
+    </div>
+</div>
+<script>
+    location.href = "#not-found"
+</script> 
+{% endif %}
+{% endif %}
+
+{% endblock main %}
+
+{% block scripts %}
+
+<script src="{% static '/js/search.js' %}" defer></script>
+
+{% endblock scripts %}

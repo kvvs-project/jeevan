@@ -2,9 +2,12 @@ import os
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
-from Jeevan import db_connect
-import time
+from Jeevan import db_connect, auth_check
+from django.core.exceptions import PermissionDenied
 from django.views.decorators.csrf import csrf_exempt
+import time
+import pymysql
+import json
 
 def hospital_reg(request):
     return render(request, "hospitalreg.html")
@@ -599,3 +602,277 @@ def hospital_validate_blood_donation(request):
         return render(request, "hospitalgetblooddonordetails.html", {'DonorDetails': DonorDetails, 'DonationRecords': DonationRecords, 'Date': lastDate, 'Day': diffInDays, 'message': msg, 'btnStatus': btnStatus})
 
     return render(request, "hospitalgetblooddonordetails.html", {'DonorDetails': DonorDetails, 'message': msg, 'btnStatus': btnStatus})
+
+
+
+def view_users_and_stats(request):
+    token = request.COOKIES.get("user-token", 0)
+    userId = request.COOKIES.get("user-id", 0)
+
+    if auth_check(userId, token, userType="H"):
+        con = db_connect()
+        cur = con.cursor()
+        dictCur = con.cursor(pymysql.cursors.DictCursor)
+
+        query = """
+            SELECT COUNT(donorid) FROM donor WHERE hospitalID = %s
+        """
+        cur.execute(query, userId)
+        records = cur.fetchall()
+        donorCount = records[0][0]
+        print(donorCount)
+
+        query = """
+            SELECT COUNT(patientid) FROM patient WHERE hospitalID = %s
+        """
+        cur.execute(query, userId)
+        records = cur.fetchall() 
+        patientCount = records[0][0]
+
+        query = """
+            SELECT CONVERT(date, char) as date, COUNT(BDonationID) as value
+            FROM blooddonation
+            WHERE hospitalID = %s 
+            AND Date >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+            GROUP BY DATE(Date) ORDER BY Date DESC;
+        """
+        dictCur.execute(query, userId)
+        records = dictCur.fetchall()
+        BloodRecords = json.dumps(records)
+
+        query = """
+            SELECT CONVERT(SurgeryDate, char) as date, COUNT(TransplantationID) as value
+            FROM organtransplantation 
+            WHERE donorID IN ( SELECT donorID FROM Donor WHERE hospitalID = %s ) 
+            AND SurgeryDate >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+            GROUP BY DATE(SurgeryDate) ORDER BY SurgeryDate DESC;
+        """
+        dictCur.execute(query, userId)
+        records = dictCur.fetchall()
+        OrganRecords = json.dumps(records)
+        hospitalCount = 0
+
+        return render(request, "hospitalViewUserDetails.html", {'donorCount': donorCount, 'patientCount': patientCount,'BloodRecords': BloodRecords ,'OrganRecords': OrganRecords })
+    raise PermissionDenied("403 forbidden")
+
+
+def donor_list(request):
+    token = request.COOKIES.get("user-token", 0)
+    userId = request.COOKIES.get("user-id", 0)
+
+    if auth_check(userId, token, userType="H"):
+        con = db_connect()
+        cur = con.cursor()
+        query = "select * from OrganDonationTypes"
+        cur.execute(query)
+        records = cur.fetchall()
+        return render(request, "hospitalSearchDonors.html", {'organRecords': records})
+    raise PermissionDenied("403 forbidden")
+
+    
+def validate_donor_list(request):
+    token = request.COOKIES.get("user-token", 0)
+    userId = request.COOKIES.get("user-id", 0)
+
+    if auth_check(userId, token, userType="H"):
+        con = db_connect()
+        cur = con.cursor()
+
+        name = request.POST["name"]
+        did = request.POST["did"]
+        bloodGroup = request.POST["blood"]
+        organName = request.POST["organ"]
+        gender = request.POST["gender"]
+        donationType = request.POST["type"]
+
+        did = did.upper()
+        condition = []
+        params = ()
+
+        query = "select * from OrganDonationTypes"
+        cur.execute(query)
+        organRecords = cur.fetchall()
+
+        base_query = """ 
+            SELECT DonorID,photo,Name,Place,District,Phone,Email FROM Donor WHERE hospitalID = %s
+        """
+
+        params += (userId,)
+
+        if name is not None and name != '':
+            condition.append("MATCH (name)  AGAINST (%s IN NATURAL LANGUAGE MODE)")
+            params += (name,)
+        if did is not None and did != '':
+            condition.append("DonorID = %s")
+            params += (did,)
+        if bloodGroup is not None and bloodGroup != '':
+            condition.append("BloodGroup = %s")
+            params += (bloodGroup,)
+        if organName is not None and organName != '':
+            condition.append("donorID in (select ID from DonorApproval where status = 'Yes') and donorID in ( select ID from DonorOrganStatus where organName = %s and status = 'Y')")
+            params += (organName,)
+        if gender is not None and gender != '':
+            condition.append("Gender = %s")
+            params += (gender,)
+        if donationType is not None and donationType != '':
+            condition.append("TypeOfDonation = %s")
+            params += (donationType,)
+
+        if condition:
+            query = f"{base_query} AND {' AND '.join(str(c) for c in condition)}"
+        else:
+            query = base_query
+
+        print(name, query, params)
+        cur.execute(query, params)
+        records = cur.fetchall()
+        return render(request, "hospitalSearchDonors.html", {'records': records,'organRecords': organRecords, 'results': True})
+    raise PermissionDenied("403 forbidden")
+
+
+def view_donor_details(request):
+    token = request.COOKIES.get("user-token", 0)
+    userId = request.COOKIES.get("user-id", 0)
+
+    if auth_check(userId, token, userType="H"):
+        did = request.POST["id"]
+        con = db_connect()
+        cur = con.cursor()
+        query = """
+            SELECT DonorID, HospitalID, Name, Gender, BloodGroup, TypeOfDonation, DOB, Pin, Place, District, Address, Phone, Email, photo, MedicalReport, RegDate
+            FROM donor
+            WHERE DonorID = %s
+        """
+        cur.execute(query, (did,))
+        records = cur.fetchall()
+
+        query = """
+            SELECT Blood.Date, Blood.Time, Blood.UnitOfBlood, Blood.Remarks, Hosp.ID, Hosp.Name, Hosp.Place 
+            FROM BloodDonation Blood Join Hospital Hosp 
+            WHERE Blood.DonorID = %s
+            AND Hosp.Id = Blood.HospitalID order by Blood.Date DESC 
+        """
+        cur.execute(query, (did,))
+        BloodDonationRecords = cur.fetchall()
+
+        query = """
+            SELECT OT.TransplantationID, OT.PatientID, OT.SurgeryDate, OT.DonorCondition, OT.OperationStatus, OT.Remarks, PO.OrganName, PO.HospitalID
+            FROM organtransplantation OT Join patientorganrequest PO 
+            WHERE OT.DonorID = %s
+            AND OT.RequestID = PO.RequestID ORDER BY OT.SurgeryDate DESC 
+        """
+        cur.execute(query, (did,))
+        OrganDonationRecords = cur.fetchall()
+
+        return render(request, "adminViewDonorProfile.html", {'records': records, 'BloodDonationRecords': BloodDonationRecords, 'OrganDonationRecords': OrganDonationRecords})
+    raise PermissionDenied("403 forbidden")
+
+
+def patient_list(request):
+    token = request.COOKIES.get("user-token", 0)
+    userId = request.COOKIES.get("user-id", 0)
+
+    if auth_check(userId, token, userType="H"):
+        con = db_connect()
+        cur = con.cursor()
+        query = "select * from OrganDonationTypes"
+        cur.execute(query)
+        records = cur.fetchall()
+        return render(request, "hospitalSearchPatients.html", {'organRecords': records})
+    raise PermissionDenied("403 forbidden")
+
+    
+def validate_patient_list(request):
+    token = request.COOKIES.get("user-token", 0)
+    userId = request.COOKIES.get("user-id", 0)
+
+    if auth_check(userId, token, userType="h"):
+        con = db_connect()
+        cur = con.cursor()
+
+        name = request.POST["name"]
+        pid = request.POST["pid"]
+        bloodGroup = request.POST["blood"]
+        organName = request.POST["organ"]
+        gender = request.POST["gender"]
+
+        pid = pid.upper()
+        condition = []
+        params = ()
+
+        query = "select * from OrganDonationTypes"
+        cur.execute(query)
+        organRecords = cur.fetchall()
+
+        base_query = """ 
+            SELECT patientID,photo,Name,Place,District,Phone,Email FROM patient WHERE hospitalID = %s
+        """
+
+        params += (userId,)
+
+        if name is not None and name != '':
+            condition.append("MATCH (name)  AGAINST (%s IN NATURAL LANGUAGE MODE)")
+            params += (name,)
+        if pid is not None and pid != '':
+            condition.append("patientID = %s")
+            params += (pid,)
+        if bloodGroup is not None and bloodGroup != '':
+            condition.append("BloodGroup = %s")
+            params += (bloodGroup,)
+        if organName is not None and organName != '':
+            condition.append("patientID IN ( SELECT patientID from patientorganrequest WHERE organName = %s )")
+            params += (organName, )
+        if gender is not None and gender != '':
+            condition.append("Gender = %s")
+            params += (gender,)
+
+        if condition:
+            query = f"{base_query} AND {' AND '.join(str(c) for c in condition)}"
+        else:
+            query = base_query
+
+        cur.execute(query, params)
+        records = cur.fetchall()
+        print(name, query, params)
+        return render(request, "hospitalSearchPatients.html", {'records': records,'organRecords': organRecords, 'results': True})
+    raise PermissionDenied("403 forbidden")
+
+
+def view_patient_details(request):
+    token = request.COOKIES.get("user-token", 0)
+    userId = request.COOKIES.get("user-id", 0)
+
+    if auth_check(userId, token, userType="H"):
+        pid = request.POST["id"]
+        con = db_connect()
+        cur = con.cursor()
+        query = """
+            SELECT patientID, HospitalID, Name, Gender, BloodGroup, DOB, Pin, Place, District, Address, Phone, Email, photo, MedicalReport, RegDate
+            FROM patient 
+            WHERE patientID = %s
+        """
+        cur.execute(query, (pid,))
+        records = cur.fetchall()
+
+        query = """
+            SELECT OT.TransplantationID, OT.DonorID, OT.SurgeryDate, OT.PatientCondition, OT.OperationStatus, OT.Remarks, PO.OrganName, PO.HospitalID, HO.Name
+            FROM organtransplantation OT JOIN patientorganrequest PO JOIN hospital HO
+            WHERE OT.PatientID = %s
+            AND HO.ID = PO.HospitalID
+            AND OT.RequestID = PO.RequestID ORDER BY OT.SurgeryDate DESC 
+        """
+        cur.execute(query, (pid,))
+        OrganDonationRecords = cur.fetchall()
+
+        query = """
+            SELECT PO.RequestID, PO.HospitalID, HO.Name, PO.OrganName, PO.Request, PO.RequestDate
+            FROM patientorganrequest PO JOIN hospital HO
+            WHERE PatientID = %s
+            AND HO.ID = PO.HospitalID
+        """
+        cur.execute(query, (pid,))
+        PendingOrganDonationRecords = cur.fetchall()
+        print(query, " :    : ", PendingOrganDonationRecords)
+
+        return render(request, "adminViewPatientProfile.html", {'records': records, 'OrganDonationRecords': OrganDonationRecords, 'PendingOrganDonationRecords': PendingOrganDonationRecords})
+    raise PermissionDenied("403 forbidden")
