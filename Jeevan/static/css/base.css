@@ -627,6 +627,10 @@ main {
     background-color: #0a96f4;
 }
 
+.spacer {
+    height: 2rem;
+}
+
 @keyframes skeleton {
     0% {
         background-position: -100% 0;
