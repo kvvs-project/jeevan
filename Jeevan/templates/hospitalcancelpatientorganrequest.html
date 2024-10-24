@@ -1,45 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Patient organ request cancellation</title>
-    </head>
-    <body>
-        <h1 align="center">Patient organ request cancellation</h1>
-        <table border="1" cellspacing="0" align="center" cellpadding="10">
-            {%if RequestDetails%}
-            <tr>
-                <td>Request ID</td>
-                <td>Patient ID</td>
-                <td>Organ Name</td>
-                <td>Request</td>
-                <td>Date</td>
-                <td>Cancel Request</td>
-            </tr>
-            {% for RequestID,PatientID,OrganName,Request,RequestDate in RequestDetails %}
-            <tr>
-                <td>{{RequestID}}</td>
-                <td>{{PatientID}}</td>
-                <td>{{OrganName}}</td>
-                <td>{{Request}}</td>
-                <td>{{RequestDate}}</td>
-                <td align="center">
-                    <form method="post" action="{% url 'validate_hospital_cancel_patient_organ_request' %}">{%csrf_token%}
-                        <input type="hidden" name="rid" value="{{RequestID}}">
-                        <input type="submit" value="Cancel">
-                    </form>
-                </td>
-            </tr>
-            {%endfor%}
-        </table>
-        {%else%}
-        <div style="text-align: center;">
-            <b>No Request available for cancellation</b>
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static '/css/search.css' %}">
+<link rel="stylesheet" href="{% static '/css/base-card.css' %}">
+{% endblock links %}
+
+{% block nav %}
+<li><a href="/">Home</a></li>
+{% endblock nav %}
+
+{% block main %}
+<div class="title">
+    <h1>Organ Match Request Cancellation</h1>
+</div>
+
+<div class="base-card-name">
+    {{message}}
+</div>
+
+{% if records %}
+<div class="base-card-container">    
+    {% for RequestID,PatientID,OrganName,Request,RequestDate in records %}
+    <div class="base-card-wrapper">
+        <div class="base-card">
+            <div class="base-card-text-container">
+                <div class="base-card-items">
+                    <div class="base-card-name">
+                        {{Request}}
+                    </div>
+                    <div class="items">
+                        <div class="item-name">Request ID</div>
+                        <div class="item-content">{{RequestID}}</div>
+                    </div>
+                    <div class="items">
+                        <div class="item-name">Patient ID</div>
+                        <div class="item-content">{{PatientID}}</div>
+                    </div>
+                    <div class="items">
+                        <div class="item-name">Organ Name</div>
+                        <div class="item-content">{{OrganName}}</div>
+                    </div>
+                    <div class="items">
+                        <div class="item-name">Registration date</div>
+                        <div class="item-content">{{RequestDate}}</div>
+                    </div>
+                    <form action="{% url 'validate_hospital_cancel_patient_organ_request' %}" method="post">
+                    <div class="base-card-button">
+                            {% csrf_token %}
+                            <input type="hidden" name="rid" value="{{RequestID}}" />
+                            <input type="hidden" name="id" value="{{PatientID}}"  />
+                            <input type="submit" value="Aprove Now">
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        {%endif%}
-        <div style="text-align: center;">
-            <b>{{message}}</b>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div id="not-found" class="div-not-found"></div>
+<div class="div-not-found"></div>
+<div class="search-not-found">
+    <div class="not-found-wrapper">
+        <div class="not-found-text">
+            No Request available for cancellation
         </div>
-    </body>
-</html>
+        <div class="not-found-img">
+            <img src="{% static 'img/search/sorry.jpg' %}" alt="">
+        </div>
+    </div>
+</div>
+<script>
+    location.href = "#not-found"
+</script> 
+{% endif %}
+
+{% endblock main %}
+

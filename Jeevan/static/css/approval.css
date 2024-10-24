@@ -21,3 +21,12 @@
 .profile-img img {
     max-width: 28vmax;
 }
+.profile-wrapper {
+    gap: 5vw;
+}
+
+@media screen and (min-width: 1024px){ 
+    .profile-items-wrapper {
+        width: fit-content;
+    }
+}

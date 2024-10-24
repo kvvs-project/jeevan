@@ -1,49 +1,77 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <title>Untitled Document</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-  </head>
+{% extends 'base.html' %}
 
-  <body>
-    <h1 align="center">Donor Approval</h1>
-    {% if records %}
-    <table
-      border="1px"
-      cellspacing="0"
-      align="center"
-      cellpadding="15"
-    >
-      <tr>
-        <td>ID</td>
-        <td>Name</td>
-        <td>Place</td>
-        <td>reg date</td>
-        <td>fetch data</td>
-      </tr>
-      {% for donorid,name,place,regdate in records %}
-      <tr>
-        <td >{{donorid}}</td>
-        <td >{{name}}</td>
-        <td >{{place}}</td>
-        <td >{{regdate}}</td>
-        <td >
-          <form
-            name="send_data"
-            id="send-data"
-            method="post"
-            action="{% url 'show_donor_details' %}"
-            enctype="multipart/form-data"
-          >
-            {% csrf_token %}
-            <input type="text" name="donorid" value="{{donorid}}" hidden />
-            <input type="submit" name="Submit" value="Show More" />
-          </form>
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
-    {% else %}<br /><b>No Donors are waiting for approval</b>
-    {% endif %}
-  </body>
-</html>
+{% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static '/css/search.css' %}">
+<link rel="stylesheet" href="{% static '/css/base-card.css' %}">
+{% endblock links %}
+
+{% block nav %}
+<li><a href="/home">Home</a></li>
+{% endblock nav %}
+
+{% block main %}
+<div class="title">
+    <h1>View Donors Witing For Approval</h1>
+</div>
+{% if records %}
+<div class="base-card-container">
+    {% for photo,donorid,name,place,regdate in records %}
+    <div class="base-card-wrapper">
+        <div class="base-card">
+            <div class="base-card-img skeleton">
+                <img src="/static/data/donor/photo/{{photo}}" alt="{{ Name }} img">
+            </div>
+            <div class="base-card-text-container">
+                <div class="base-card-name">
+                    {{ name }}
+                </div>
+                <div class="base-card-items">
+                    <div class="items">
+                        <div class="item-name">donorid ID</div>
+                        <div class="item-content">{{donorid}}</div>
+                    </div>
+                    <div class="items">
+                        <div class="item-name">Place</div>
+                        <div class="item-content">{{place}}</div>
+                    </div>
+                    <div class="items">
+                        <div class="item-name">Reg date</div>
+                        <div class="item-content">{{regdate}}</div>
+                    </div>
+                    <form action="{% url 'show_donor_details' %}" method="post">
+                        <div class="base-card-button">
+                            {% csrf_token %}
+                            <input type="hidden" name="donorid" value="{{donorid}}">
+                            <input type="submit" value="Show">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+</div>
+{% else %}
+<div id="not-found" class="div-not-found"></div>
+<div class="div-not-found"></div>
+<div class="search-not-found">
+    <div class="not-found-wrapper">
+        <div class="not-found-text">
+            No Donors Waiting for Approval
+        </div>
+        <div class="not-found-img">
+            <img src="{% static 'img/search/sorry.jpg' %}" alt="">
+        </div>
+    </div>
+</div>
+
+<script>
+    location.href = "#"
+    location.href = "#not-found"
+</script>
+
+
+{% endif %}
+{% endblock main %}

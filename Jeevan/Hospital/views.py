@@ -72,7 +72,7 @@ def patient_approval(request):
     con = db_connect()
     cursor = con.cursor()
     hid = request.COOKIES['user-id']
-    query = f"select patientid,Name,place,regdate from Patient where patientid not in(select id from PatientApproval) and HospitalID = '{hid}'"
+    query = f"select photo,patientid,Name,place,regdate from Patient where patientid not in(select id from PatientApproval) and HospitalID = '{hid}'"
     cursor.execute(query)
     records = cursor.fetchall()
     return render(request, "patientapproval.html", {'records': records})
@@ -86,7 +86,7 @@ def show_patient_details(request):
     cursor.execute(query)
     records = cursor.fetchall()
     print(query, records)
-    return render(request, "patientdetails.html", {'records': records})
+    return render(request, "patientdetails.html", {'records': records, 'pid': pid})
 
 
 def validate_patient_approval(request):
@@ -114,7 +114,7 @@ def validate_patient_approval(request):
     else:
         msg = "Patient not approved"
     print(records, msg)
-    return render(request, "patientdetails.html", {'records': records, 'message': msg})
+    return render(request, "patientdetails.html", {'records': records, 'message': msg, 'disabled': "disabled"})
 
 @csrf_exempt
 def download_patient_report(request):
@@ -133,10 +133,10 @@ def donor_approval(request):
     con = db_connect()
     cursor = con.cursor()
     hid = request.COOKIES['user-id']
-    query = f"select donorid,Name,place,regdate from Donor where HospitalID = '{hid}' and donorid not in(select id from DonorApproval)"
+    query = f"select photo,donorid,Name,place,regdate from Donor where HospitalID = '{hid}' and donorid not in(select id from DonorApproval)"
     cursor.execute(query)
     records = cursor.fetchall()
-    return render(request, "donorapproval.html", {'records': records})
+    return render(request, "donorApproval.html", {'records': records})
 
 
 def show_donor_details(request):
@@ -147,7 +147,7 @@ def show_donor_details(request):
     cursor.execute(query)
     records = cursor.fetchall()
     print(query, records)
-    return render(request, "donordetails.html", {'records': records})
+    return render(request, "donorDetails.html", {'records': records, 'did': did})
 
 
 # noinspection PyUnusedLocal
@@ -176,7 +176,7 @@ def validate_donor_approval(request):
     else:
         msg = "Donor not approved"
     print(records, msg)
-    return render(request, "donordetails.html", {'records': records, 'message': msg})
+    return render(request, "donorDetails.html", {'records': records, 'message': msg, 'disabled': "disabled"})
 
 
 @csrf_exempt
@@ -195,12 +195,12 @@ def download_donor_report(request):
 def hospital_organ_request_approval(request):
     con = db_connect()
     cur = con.cursor()
-    hid = request.POST['id']
+    hid = request.COOKIES['user-id']
 
     query = f"select RequestID,PatientID,OrganName,Request,RequestDate from PatientOrganRequest where HospitalID = '{hid}' and requestID not in (select requestID from PatientOrganRequestApproval )"
     cur.execute(query)
     records = cur.fetchall()
-    return render(request, "hospitalorganrequestapproval.html", {'records': records})
+    return render(request, "hospitalOrganRequestApproval.html", {'records': records})
 
 
 def hospital_show_organ_approval_details(request):
@@ -213,7 +213,7 @@ def hospital_show_organ_approval_details(request):
     cur.execute(query)
     records = cur.fetchall()
     print(query, records)
-    return render(request, "hospitalorganrequestdetail.html", {'records': records, 'RequestID': rid})
+    return render(request, "hospitalOrganRequestDetail.html", {'records': records, 'RequestID': rid, 'PatientID': pid})
 
 
 # noinspection PyUnusedLocal
@@ -231,7 +231,7 @@ def hospital_validate_organ_request_approval(request):
     query = f"select RequestID from PatientOrganRequestApproval where RequestID = '{rid}' "
     print(query)
     cur.execute(query)
-    print(cur.fetchall())
+    print(cur.fetchall(),"p:", pid)
 
     if cur.rowcount == 0:
         query = "insert into PatientOrganRequestApproval values ('" + rid + "','" + status + "','" + comment + "','" + date + "')"
@@ -252,21 +252,22 @@ def hospital_validate_organ_request_approval(request):
     query = "select patientID,HospitalID,Name,Gender,BloodGroup,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport,RegDate from Patient where patientid = '" + pid + "'"
     cur.execute(query)
     records = cur.fetchall()
+    print(records,pid,query)
 
-    return render(request, "hospitalorganrequestdetail.html", {'records': records, 'RequestID': rid, 'message': msg})
+    return render(request, "hospitalOrganRequestDetail.html", {'records': records, 'RequestID': rid, 'message': msg, 'disabled': "disabled"})
 
 
 def hospital_cancel_patient_organ_request(request):
     con = db_connect()
     cur = con.cursor()
-    hid = request.POST['id']
+    hid = request.COOKIES['user-id']
 
     query = f"select RequestID,PatientID,OrganName,Request,RequestDate from PatientOrganRequest where HospitalID  = '{hid}' and RequestID in (select RequestID from PatientOrganRequestApproval where status = 'Yes' )"
     cur.execute(query)
     records = cur.fetchall()
     print(records)
 
-    return render(request, "hospitalcancelpatientorganrequest.html", {'RequestDetails': records})
+    return render(request, "hospitalcancelpatientorganrequest.html", {'records': records})
 
 
 def validate_hospital_cancel_patient_organ_request(request):
@@ -278,28 +279,25 @@ def validate_hospital_cancel_patient_organ_request(request):
     print(query)
     cur.execute(query)
     con.commit()
-    msg = "successfully canceled the request"
+    msg = f"successfully canceled the request {rid}"
     query = "select id from UserSession where type = 'H'"
     cur.execute(query)
     records = cur.fetchall()
-    hid = ""
-    for row in records:
-        hid = row[0]
-        break
+    hid = request.COOKIES['user-id']
 
     query = f"select RequestID,PatientID,OrganName,Request,RequestDate from PatientOrganRequest where HospitalID  = '{hid}' and RequestID in (select RequestID from PatientOrganRequestApproval where status = 'Yes' )"
     print(query)
     cur.execute(query)
     records = cur.fetchall()
     print(records)
-    return render(request, "hospitalcancelpatientorganrequest.html", {'message': msg, 'RequestDetails': records})
+    return render(request, "hospitalcancelpatientorganrequest.html", {'message': msg, 'records': records})
 
 
 def hospital_organ_transplantation(request):
     con = db_connect()
     cur = con.cursor()
 
-    hid = request.POST['id']
+    hid = request.COOKIES['user-id']
 
     query = f"select RequestID,PatientID,OrganName,Request,RequestDate from PatientOrganRequest where HospitalID  = '{hid}' and RequestID in (select RequestID from PatientOrganRequestApproval where status = 'Yes' )"
 

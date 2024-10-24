@@ -1,184 +1,63 @@
-<html>
- <head>
-    <title>Donor Approval</title>
- </head>
+{% extends 'base.html' %}
 
- <body>
+{% load static %}
 
- <table width="913" border="0" cellpadding="0" cellspacing="0" align="center">
-    <!--DWLayoutTable-->
-    <tr>
-      <td width="47" height="41">&nbsp;</td>
-      <td width="156">&nbsp;</td>
-      <td width="340">&nbsp;</td>
-      <td width="41">&nbsp;</td>
-      <td width="107">&nbsp;</td>
-      <td width="150">&nbsp;</td>
-      <td width="72">&nbsp;</td>
-    </tr>
-    <tr>
-      <td height="55">&nbsp;</td>
-      <td>&nbsp;</td>
-      <td colspan="3" valign="top"><h1 align="center">Donor Details</h1></td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td height="60">&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td height="329">&nbsp;</td>
-      <td colspan="2" rowspan="2" valign="top">
-        {% comment %} {% if records %} {% endcomment %}
-        <table border="0" align="center" cellpadding="15">
-        {% for donorID,HospitalID,Name,Gender,BloodGroup,TypeOfDonation,DOB,Pin,Place,District,Address,Phone,Email,photo,MedicalReport,RegDate in records %}
-        <tr>
-          <td>
-            <img src="/static/data/donor/photo/{{ photo }}" width="300px">
-          </td>
-        </tr>
-        <tr>
-          <td>Donor ID</td>
-          <td>
-            <label>{{donorID}}</label>
-          </td>
-        </tr>
-        <tr>
-          <td>Donor name</td>
-          <td>
-            <label>{{Name}}</label>
-          </td>
-        </tr>
-        <tr>
-            <td>date of birth</td>
-            <td>
-              <label>{{DOB}}</label>
-            </td>
-          </tr>
-        <tr>
-          <td>Place</td>
-          <td>
-            <label>{{Place}}</label>
-          </td>
-        </tr>
-        <tr>
-          <td>Address</td>
-          <td>
-            <label>{{Address}}</label>
-          </td>
-        </tr>
-        <tr>
-          <td>Pin</td>
-          <td>
-            <label>{{Pin}}</label>
-          </td>
-        </tr>
-        <tr>
-          <td>Phone</td>
-          <td>
-            <label>{{Phone}}</label>
-          </td>
-        </tr>
-        <tr>
-          <td>District</td>
-          <td>
-            <label>{{District}}</label>
-          </td>
-        </tr>
-        <tr>
-          <td>Email</td>
-          <td>
-            <label>{{Email}}</label>
-          </td>
-        </tr>
-        <tr>
-          <td>Type of the Donation</td>
-          <td>
-            <label>{{TypeOfDonation}}</label>
-          </td>
-        </tr>
-        <tr>
-          <td>Blood Group</td>
-          <td>
-            <input type="radio" name="h_bb" id="h-bb" checked disabled/>
-            <label for="h-bb">{{BloodGroup}}</label>
-          </td>
-        </tr>
-        <tr>
-          <td>Medicak Report</td>
-          <td><form nam="report_form" method="post" action="{% url 'download_donor_report' %}">
-            {% csrf_token %}
-            <input type="hidden" name="report" value="{{ MedicalReport }}">
-            <input type="submit" value="Download Report">
-          </form>
-          </td>
-        </tr>
-        <tr>
-          <td>Registration date</td>
-          <td>
-            <label>{{RegDate}}</label>
-          </td>
-        </tr>
-      </table>        </td>
-      <td>&nbsp;</td>
-      <td colspan="2" valign="top"><h2 align="center"><u>A</u>pp<u>roval</u></h2>
-        <form name="approval_form" method="post" action="{% url 'validate_donor_approval' %}">
-          {% csrf_token %}
-          <table width="300" height="290" border="0" cellpadding="5">
-            <tr>
-              <td width="161">Approval Status</td>
-              <td width="119"><p>
+{% block links %}
+<link rel="stylesheet" href="{% static '/css/base-profile.css' %}">
+<link rel="stylesheet" href="{% static '/css/form.css' %}">
+<link rel="stylesheet" href="{% static '/css/approval.css' %}">
+{% endblock links %}
+
+{% block nav %}
+<li><a href="/">Home</a></li>
+{% endblock nav %}
+
+{% block main %}
+
+<div class="profile-title">
+    Donor Details
+</div>
+<div class="profile-container">
+
+    {% for donorID,HospitalID,Name,Gender,BloodGroup,TypeOfDonation,DOB,Pin,Place,District,Address,Phone,Email,photoName,MedicalReport,RegDate in records %}
+
+    {% with photo="/data/donor/photo/"|add:photoName %}
+
+    {% include "base_profile.html" with id=donorID hid=HospitalID name=Name gender=Gender bloodGroup=BloodGroup donorType=TypeOfDonation dob=DOB pin=Pin place=Place district=District address=Address phone=Phone email=Email photoName=photo proofName=MedicalReport regDate=RegDate proofUrl='download_donor_report' %}
+
+    {% endwith %}
+
+    {%endfor%}
+
+    <form name="approval_form" method="post" action="{% url 'validate_donor_approval' %}">
+        {% csrf_token %}
+        <div class="form-wrapper">
+            <div class="profile-name">Approve Donor</div>
+            <div class="input-box">
+                <div>Approve</div>
                 <div>
-                <input name="approve_status" type="radio" id="status-yes" value="Yes" checked>
-                <label for="status-yes">Yes</label> 
+                    <input name="approve_status" type="radio" id="status-yes" value="Yes" checked {{disabled}}>
+                    <label for="status-yes">Yes</label>
+                    <input name="approve_status" type="radio" id="status-no" value="No" {{disabled}}>
+                    <label for="status-no">No</label>
                 </div>
-                <div>
-                 <input name="approve_status" type="radio" value="No" id="status-no">
-                 <label for="status-no">No</label></td> </div>
-                </tr>
-                <tr>
-                 <td height="55" colspan="2">Comment</td>
-                </tr>
-                <tr>
-                 <td height="74" colspan="2"><textarea name="comment" maxlength="200"></textarea></td>
-                 <input type="text" name="donorID" value="{{donorID}}" hidden>
-                </tr>
-                <tr>
-                 <td colspan="2"><input type="submit" name="Submit" value="Approve"></td>
-                </tr>
-                                      {% endfor %}
-              {% comment %} {% else %}<br><b>No Hospitals are waiting for approval</b>{% endif %} {% endcomment %}
-      <tr>
-        <td>
-          {{ message }}
-        </td>
-      </tr>
-          </table>
-        </form>        <p align="center"><u></u></p></td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td height="603">&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td height="38">&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
- </table>
- </body>
-</html>
+            </div>
+            <div class="input-options">
+                <textarea name="comment" maxlength="200" cols="30" required {{disabled}}></textarea>
+                <input type="text" name="donorID" value="{{did}}" hidden>
+            </div>
+            {% if message %}
+            <div class="msg">
+                {{message}}
+            </div>
+            {% endif %}
+            <div class="input-box">
+                <input type="submit"  class="submit" value="Submit">
+            </div>
+      </div>
+  </div>
+</form>
+
+</div>
+
+{% endblock main %}
