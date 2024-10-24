@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static '/css/thank-you.css' %}">
+{% endblock links %}
+
+{% block nav %}
+<li><a href="/">Home</a></li>
+<li><a href="/login">Login</a></li>
+{% endblock nav %}
+
+{% block main %}
+
+<div class="title">
+    <h1>Thanks For Joining Jeevan</h1>
+</div>
+
+<div class="thanks-container">
+    <div class="thanks-wrapper">
+        <div class="thanks-img">
+            <img src="{% static '/img/misc/thanks.jpg' %}" alt="">
+        </div>
+        <div class="thanks-title">Thank You for Making a Difference</div>
+        <div class="thanks-text">Please wait for approval. Once you are approved you can use the following user id to login</div>
+        <div class="thanks-id-wrapper">
+            <div class="user-id">{{id}}</div>
+            <button class="copy-btn">Copy</button>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}
+
+{% block scripts %}
+<script src="{% static '/js/thank-you.js' %}" defer></script>
+{% endblock scripts %}

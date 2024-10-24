@@ -8,6 +8,7 @@ urlpatterns = [
     path('pwa', views.home_page),
     path('login', views.user_login, name="login"),
     path('logout', views.user_logout, name="logout"),
+    path('thanks', views.thanks),
     path('get-login', views.validate_login, name="get_login"),
     path('signup', views.signup_page, name="signup"),
     path('privacy', views.privacy_policy, name="privacy_policy"),

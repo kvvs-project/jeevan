@@ -216,3 +216,10 @@ def terms_of_service(request):
 
 def about_us(request):
     return render(request, "about.html")
+
+
+
+def thanks(request, userId=None):
+    if not userId:
+        return redirect("/")
+    return render(request, "thankYou.html", {'id': userId})

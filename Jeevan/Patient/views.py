@@ -1,23 +1,49 @@
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from Jeevan import db_connect
+from Main.views import thanks
 import time
 
 
 def patient_pre_reg(request):
-    return render(request, "patientprereg.html")
+    return render(request, "patientPreSignUp.html")
+
+
+def patient_find_hospital(request):
+    con = db_connect()
+    cur = con.cursor()
+    name = request.POST["search"]
+    dist = request.POST["dist"]
+
+    condition = []
+    params = ()
+
+    base_query = """ 
+        SELECT ID,PhotoName,Name,Place,District,Phone,Email FROM hospital
+    """
+    if name is not None and name != '':
+        condition.append("MATCH (name)  AGAINST (%s IN NATURAL LANGUAGE MODE)")
+        params += (name,)
+    if dist is not None and dist != '':
+        condition.append("District = %s")
+        params += (dist,)
+
+    if condition:
+        query = f"{base_query} WHERE {' AND '.join(str(c) for c in condition)}"
+    else:
+        query = base_query
+
+    cur.execute(query, params)
+    records = cur.fetchall()
+    print(name, query, params)
+    return render(request, "patientPreSignUp.html", {'records': records, 'results': True})
 
 
 def patient_reg(request):
     con = db_connect()
     cur = con.cursor()
-    district = request.POST["dist"]
-    query = "select Name , ID, Place,District from Hospital where ID in ( select ID from HospitalApproval where status = 'Yes') and District = '" + district + "'"
-    cur.execute(query)
-    records = cur.fetchall()
-    con.commit()
-
-    return render(request, "patientreg.html", {'records': records})
+    hid = request.POST["id"]
+    return render(request, "patientSignUp.html", {'hid': hid})
 
 
 def validate_patient_reg(request):
@@ -54,7 +80,7 @@ def validate_patient_reg(request):
     photoName = photoName[26:]
 
     pid = "P1000"
-    query = "select * from Patient order by patientID desc"
+    query = "select * from Patient order by patientID desc limit 1"
     cur.execute(query)
     records = cur.fetchall()
     for row in records:
@@ -76,7 +102,7 @@ def validate_patient_reg(request):
     con.commit()
     msg = "ok stored"
 
-    return render(request, "patientreg.html", {'message': msg})
+    return thanks(request, userId=pid)
 
 
 def patient_make_new_organ_request(request):

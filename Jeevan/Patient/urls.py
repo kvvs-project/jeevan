@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('select-hospital', views.patient_pre_reg, name="patient_pre_reg"),
+    path('onboarding', views.patient_pre_reg, name="patient_pre_reg"),
+    path('select-hospital', views.patient_find_hospital, name="patient_find_hospital"),
     path('signup', views.patient_reg, name="patient_reg"),
     path('sign-up', views.validate_patient_reg, name="validate_patient_reg"),
     path('organ-match', views.patient_make_new_organ_request, name="patient_make_new_organ_request"),

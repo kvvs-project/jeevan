@@ -1,0 +1,121 @@
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static '/css/search.css' %}">
+<link rel="stylesheet" href="{% static '/css/base-card.css' %}">
+{% endblock links %}
+
+{% block nav %}
+<li><a href="/login">Log in</a></li>
+<li><a href="/">Home</a></li>
+{% endblock nav %}
+
+{% block main %}
+
+<div class="title">
+    <h1>Before we begin</h1>
+</div>
+<div class="search-container">
+    <div class="base-card-name">Select a District from the list bellow. So we can locate the nearest hospital to you.</div>
+<form action="{% url 'patient_find_hospital' %}" method="post">
+    {% csrf_token %}
+    <div class="search-wrapper">
+        <div class="input-box">
+            <input type="search" name="search" id="search" placeholder="" autofocus>
+            <label class="input-label" for="search">Enter Hospital Name</label>
+        </div>
+        <div class="search-options">
+            <label for="dist">District</label>
+            <select id="dist" name="dist">
+                <option value="">select</option>
+                <option value="Alappuzha">Alappuzha</option>
+                <option value="Ernakulam">Ernakulam</option>
+                <option value="Idukki">Idukki</option>
+                <option value="Kannur">Kannur</option>
+                <option value="Kasaragod">Kasaragod</option>
+                <option value="Kollam">Kollam</option>
+                <option value="Kottayam">Kottayam</option>
+                <option value="Kozhikode">Kozhikode</option>
+                <option value="Malappuram">Malappuram</option>
+                <option value="Palakkad">Palakkad</option>
+                <option value="Pathanamthitta">Pathanamthitta</option>
+                <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                <option value="Thrissur">Thrissur</option>
+                <option value="Wayanad">Wayanad</option>
+            </select>
+        </div>
+        <div class="search-btn-wrapper">
+            <button type="submit" class="search-btn">Search</button>
+        </div>
+</form>
+</div>
+{% if results %}
+{% if records %}
+<div class="base-card-container">    
+{% for ID,Image,Name,Place,District,Phone,Email in records %}
+
+<div class="base-card-wrapper">
+    <div class="base-card">
+        <div class="base-card-img skeleton">
+            <img src="/static/data/hospital/photo/{{Image}}" alt="{{ Name }} img">
+        </div>
+        <div class="base-card-text-container">
+            <div class="base-card-name">
+                {{ Name }}
+            </div>
+            <div class="base-card-items">
+                <div class="items">
+                    <div class="item-name">Place</div>
+                    <div class="item-content">{{Place}}</div>
+                </div>
+                <div class="items">
+                    <div class="item-name">District</div>
+                    <div class="item-content">{{District}}</div>
+                </div>
+                <div class="items">
+                    <div class="item-name">Phone</div>
+                    <div class="item-content">{{Phone}}</div>
+                </div>
+                <div class="items">
+                    <div class="item-name">Email</div>
+                    <div class="item-content">{{Email}}</div>
+                </div>
+                <form action="{% url 'patient_reg' %}" method="post">
+                <div class="base-card-button">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ID}}">
+                        <input type="submit" value="Show">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+</div>
+{% else %}
+<div id="not-found" class="div-not-found"></div>
+<div class="div-not-found"></div>
+<div class="search-not-found">
+<div class="not-found-wrapper">
+    <div class="not-found-text">
+        Sorry we are unable to find a match
+    </div>
+    <div class="not-found-img">
+        <img src="{% static 'img/search/sorry.jpg' %}" alt="">
+    </div>
+</div>
+</div>
+
+<script>
+location.href = "#"
+location.href = "#not-found"
+</script> 
+
+
+{% endif %}
+{% endif %}
+{% endblock main %}

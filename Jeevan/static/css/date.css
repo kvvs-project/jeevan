@@ -1,0 +1,136 @@
+.calendar {
+    justify-content: space-between;
+    align-items: stretch;
+    flex-flow: column;
+    position: absolute;
+    top: 30%;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 2vmin;
+    width: max(250px, 40vmin);
+    display: none;
+    z-index: 10;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.custom-select {
+    z-index: 10;
+    border-radius: 1rem;
+    position: relative;
+    display: inline-block;
+    width: max-content;
+    cursor: pointer;
+}
+
+.custom-options::-webkit-scrollbar {
+    position: absolute;
+    width: 0.25rem;
+    height: - 1rem;
+    background-color: transparent;
+    border-radius: 2rem;
+}
+
+.custom-options::-webkit-scrollbar-track {
+    background: transparent;
+    width: 0.250rem;
+    margin: 1rem;
+    border-radius: 2rem;
+}
+
+.custom-options::-webkit-scrollbar-thumb  {
+    background-color: darkgray;
+    border-radius: 2rem;
+}
+
+.custom-options::-webkit-scrollbar-track-piece:end {
+    background-color: transparent;
+    border-radius: 2rem;
+}
+
+.custom-select .select-trigger {
+    background: #f0f0f0;
+    border: 0.15rem solid #ccc;
+    padding: 0.5rem;
+    border-radius: 1rem;
+}
+
+.custom-options {
+    display: none;
+    position: absolute;
+    background: white;
+    top: 120%;
+    border: 0.15rem solid #ccc;
+    border-radius: 0.8rem;
+    width: max-content;
+    z-index: 10;
+    overflow-y: scroll;
+    height: max(15vmax, 300px);
+}
+
+.custom-option {
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.custom-option:hover {
+    background: #e8f0fe;
+}
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    border-radius: 0;
+    gap: 0.2vmin;
+}
+
+.days div {
+    padding: 0.5vmin;
+    border: 0.15rem solid transparent;
+    box-sizing: border-box;
+}
+
+.days div:hover {
+    background: #e8f0fe;
+    cursor: pointer;
+    border: 0.15rem darkgrey solid;
+    border-radius: 0.8rem;
+}
+
+#input-wrapper {
+    position: relative;
+}
+
+.input-box {
+    z-index: 0;
+    display: flex;
+    align-items: center;
+}
+
+.date-button {
+    margin-left: 10px;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.weekdays div {
+    padding: 0.25rem;
+}

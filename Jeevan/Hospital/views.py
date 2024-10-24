@@ -5,12 +5,13 @@ from django.core.files.storage import FileSystemStorage
 from Jeevan import db_connect, auth_check
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.csrf import csrf_exempt
+from Main.views import thanks
 import time
 import pymysql
 import json
 
 def hospital_reg(request):
-    return render(request, "hospitalreg.html")
+    return render(request, "hospitalSignUp.html")
 
 
 def validate_hospital_reg(request):
@@ -64,14 +65,13 @@ def validate_hospital_reg(request):
     query = "insert into UserLogin values ('" + hid + "','" + password + "')"
     cur.execute(query)
     con.commit()
-    msg = "ok stored"
-    return render(request, "hospitalreg.html", {'message': msg})
+    return thanks(request, userId=hid)
 
 
 def patient_approval(request):
     con = db_connect()
     cursor = con.cursor()
-    hid = request.POST['id']
+    hid = request.COOKIES['user-id']
     query = f"select patientid,Name,place,regdate from Patient where patientid not in(select id from PatientApproval) and HospitalID = '{hid}'"
     cursor.execute(query)
     records = cursor.fetchall()
@@ -132,7 +132,7 @@ def download_patient_report(request):
 def donor_approval(request):
     con = db_connect()
     cursor = con.cursor()
-    hid = request.POST['id']
+    hid = request.COOKIES['user-id']
     query = f"select donorid,Name,place,regdate from Donor where HospitalID = '{hid}' and donorid not in(select id from DonorApproval)"
     cursor.execute(query)
     records = cursor.fetchall()

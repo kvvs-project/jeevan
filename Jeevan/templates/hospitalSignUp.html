@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static '/css/form.css' %}">
+{% endblock links %}
+
+{% block nav %}
+<li><a href="/login">Log in</a></li>
+<li><a href="/">Home</a></li>
+{% endblock nav %}
+
+{% block main %}
+
+<div class="toast-container">
+    <div class="toast-wrapper">
+        <div class="toast-item">
+            <div class="toast-title">Error</div>
+            <div class="toast-message">An error occured</div>
+        </div>
+        <div class="toast-close-btn"></div>
+    </div>
+</div>
+
+<div class="title">
+    <h1>Signup as a hospital</h1>
+</div>
+
+<div class="form-container">
+    <form action="{% url 'get_hreg' %}" method="post" enctype="multipart/form-data" name="h_reg" id="signupForm" {{disabled}} >
+        <div class="form-wrapper">
+            {% csrf_token %}
+
+            <div class="input-box">
+                <input type="text" name="h_name" id="name" maxlength="50" placeholder="" autofocus autocomplete="username" {{disabled}}  required>
+                <label class="input-label" for="name">Hospital name</label>
+            </div>
+
+            <div class="input-box">
+                <input type="password" name="h_pass" id="new" maxlength="20" placeholder="" autocomplete="new-password" {{disabled}}  required>
+                <label class="input-label" for="new">Password</label>
+                <button class="show-pass-btn" type="button" tabindex="-1"></button>
+            </div>
+
+            <div class="input-box">
+                <input type="password" name="h_rpass" id="reType" maxlength="20" placeholder="" autocomplete="new-password" {{disabled}}  required>
+                <label class="input-label" for="reType">Re-enter Password</label>
+                <button class="show-pass-btn" type="button" tabindex="-1"></button>
+            </div>
+            
+            <div class="input-box">
+                <input type="email" name="h_email" id="h-email" placeholder="" {{disabled}}  required>
+                <label class="input-label" for="h-email">Email</label>
+            </div>
+
+            <div class="input-box">
+                <input type="number" name="h_phone" id="phone" placeholder="" {{disabled}}  required>
+                <label class="input-label" for="phone">Phone</label>
+            </div>
+
+            <div class="input-box">
+                <input type="text" name="h_place" id="h-place" maxlength="50" placeholder="" {{disabled}}  required>
+                <label class="input-label" for="h-place">Place</label>
+            </div>
+
+            <div class="input-box">
+                <input type="text" name="h_loc" id="h-loc" maxlength="50" placeholder="" {{disabled}}  required>
+                <label class="input-label" for="h-loc">Location</label>
+            </div>
+
+            <div class="input-box">
+                <input type="number" name="h_pin" id="pin" placeholder="" {{disabled}}  required>
+                <label class="input-label" for="pin">Pin</label>
+            </div>
+
+            <div class="input-options">
+                <label for="h-dist">District</label>
+                <select name="h_dist" id="h-dist" {{disabled}} >
+                    <option value="">Select a District</option>
+                    <option value="Alappuzha">Alappuzha</option>
+                    <option value="Ernakulam">Ernakulam</option>
+                    <option value="Idukki">Idukki</option>
+                    <option value="Kannur">Kannur</option>
+                    <option value="Kasaragod">Kasaragod</option>
+                    <option value="Kollam">Kollam</option>
+                    <option value="Kottayam">Kottayam</option>
+                    <option value="Kozhikode">Kozhikode</option>
+                    <option value="Malappuram">Malappuram</option>
+                    <option value="Palakkad">Palakkad</option>
+                    <option value="Pathanamthitta">Pathanamthitta</option>
+                    <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                    <option value="Thrissur">Thrissur</option>
+                    <option value="Wayanad">Wayanad</option>
+                </select>
+            </div>
+            
+            <div class="input-options">
+                <label for="h-type">Type of the Hospital</label>
+                <select name="h_type" id="h-type" {{disabled}} >
+                    <option value="">Select a Category</option>
+                    <option value="General">General Medical &amp; Surgical Hospitals</option>
+                    <option value="Specialty">Specialty Hospitals</option>
+                    <option value="Emergency">Emergency &amp; Other Outpatient Care Centers</option>
+                </select>
+            </div>
+
+            <div class="input-options">
+                <div>Does your Hospital have a blood bank</div>
+                <div class="form-radios">
+                    <div>
+                        <input type="radio" name="h_bb" id="h-bb-yes" value="Yes" {{disabled}} >
+                        <label for="h-bb-yes">Yes</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="h_bb" id="h-bb-no" value="No"  {{disabled}} checked>
+                        <label for="h-bb-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-options">
+                <label for="h-proof">Upload Proof</label>
+                <input type="file" name="h_proof" {{disabled}}  id="h-proof" accept=".pdf" required>
+            </div>
+
+            <div class="input-options">
+                <label for="h-photo">Upload Photo</label>
+                <input type="file" name="h_photo"  {{disabled}} id="h-photo" accept="image/*" required>
+            </div>
+
+            {% if message %}
+            <div class="msg" id="msg">{{message}}</div>
+            {% endif %}
+
+            <button type="submit" class="submit" {{disabled}} >Signup Now</button>
+        </div>
+    </form>
+</div>
+{% endblock main %}
+
+{% block scripts %}
+
+{% if message %}
+<script>
+    location.href = "#msg"
+</script>
+{% endif %}
+
+
+<script src="{% static '/js/signup.js' %}"></script>
+{% endblock scripts %}

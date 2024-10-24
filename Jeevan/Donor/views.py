@@ -3,23 +3,49 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from Jeevan import db_connect
+from Main.views import thanks
 import time
 
 
 def donor_pre_reg(request):
-    return render(request, "donorprereg.html")
+    return render(request, "donorPreSignUp.html")
+
+
+def donor_find_hospital(request):
+    con = db_connect()
+    cur = con.cursor()
+    name = request.POST["search"]
+    dist = request.POST["dist"]
+
+    condition = []
+    params = ()
+
+    base_query = """ 
+        SELECT ID,PhotoName,Name,Place,District,Phone,Email FROM hospital
+    """
+    if name is not None and name != '':
+        condition.append("MATCH (name)  AGAINST (%s IN NATURAL LANGUAGE MODE)")
+        params += (name,)
+    if dist is not None and dist != '':
+        condition.append("District = %s")
+        params += (dist,)
+
+    if condition:
+        query = f"{base_query} WHERE {' AND '.join(str(c) for c in condition)}"
+    else:
+        query = base_query
+
+    cur.execute(query, params)
+    records = cur.fetchall()
+    print(name, query, params)
+    return render(request, "donorPreSignUP.html", {'records': records, 'results': True})
 
 
 def donor_reg(request):
     con = db_connect()
     cur = con.cursor()
-    district = request.POST["dist"]
-    query = "select Name , ID, Place,District from Hospital where ID in ( select ID from HospitalApproval where status = 'Yes') and District = '" + district + "'"
-    cur.execute(query)
-    records = cur.fetchall()
-    con.commit()
-
-    return render(request, "donorreg.html", {'records': records, 'dist': district})
+    hid = request.POST["id"]
+    return render(request, "donorSignUp.html", {'hid': hid})
 
 
 def validate_donor_reg(request):
@@ -78,13 +104,7 @@ def validate_donor_reg(request):
     cur.execute(query)
     con.commit()
     msg = "ok stored"
-
-    query = "select Name , ID, Place,District from Hospital where ID in ( select ID from HospitalApproval where status = 'Yes') and District = '" + district + "'"
-    cur.execute(query)
-    records = cur.fetchall()
-    con.commit()
-
-    return render(request, "donorreg.html", {'message': msg, 'records': records, 'dist': district})
+    return thanks(request, userId=did)
 
 
 def donor_new_organ_donation(request):
